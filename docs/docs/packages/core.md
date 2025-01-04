@@ -2,73 +2,73 @@
 sidebar_position: 1
 ---
 
-# 📦 Core Package
+# 📦 核心包
 
-## Overview
+## 概述
 
-The Core Package (`@elizaos/core`) provides the fundamental building blocks of Eliza's architecture, handling essential functionalities like:
+核心包 (`@elizaos/core`) 提供了 Eliza 架构的基本构建模块，处理以下关键功能：
 
-- Memory Management & Semantic Search
-- Message Processing & Generation
-- Runtime Environment & State Management
-- Action & Evaluator Systems
-- Provider Integration & Context Composition
-- Service Infrastructure
+- 内存管理与语义搜索
+- 消息处理与生成
+- 运行环境与状态管理
+- 动作与评估系统
+- 提供者集成与上下文组合
+- 服务基础设施
 
-## Installation
+## 安装
 
 ```bash
 pnpm add @elizaos/core
 ```
 
-## Key Components
+## 关键组件
 
 ### AgentRuntime
 
-The AgentRuntime class serves as the central nervous system of Eliza, orchestrating all major components:
+AgentRuntime 类作为 Eliza 的中枢神经系统，协调所有主要组件：
 
 ```typescript
 import { AgentRuntime } from "@elizaos/core";
 
 const runtime = new AgentRuntime({
-    // Core configuration
+    // 核心配置
     databaseAdapter,
     token,
     modelProvider: ModelProviderName.OPENAI,
     character,
 
-    // Extension points
+    // 扩展点
     plugins: [bootstrapPlugin, nodePlugin],
     providers: [],
     actions: [],
     services: [],
     managers: [],
 
-    // Optional settings
+    // 可选设置
     conversationLength: 32,
     agentId: customId,
     fetch: customFetch,
 });
 ```
 
-Key capabilities:
+关键功能：
 
-- State composition and management
-- Plugin and service registration
-- Memory and relationship management
-- Action processing and evaluation
-- Message generation and handling
+- 状态组合与管理
+- 插件与服务注册
+- 内存与关系管理
+- 动作处理与评估
+- 消息生成与处理
 
-### Memory System
+### 内存系统
 
-The MemoryManager handles persistent storage and retrieval of context-aware information:
+MemoryManager 处理上下文感知信息的持久存储与检索：
 
 ```typescript
 class MemoryManager implements IMemoryManager {
     runtime: IAgentRuntime;
     tableName: string;
 
-    // Create new memories with embeddings
+    // 创建带有嵌入的记忆
     async createMemory(memory: Memory, unique = false): Promise<void> {
         if (!memory.embedding) {
             memory.embedding = await embed(this.runtime, memory.content.text);
@@ -81,7 +81,7 @@ class MemoryManager implements IMemoryManager {
         );
     }
 
-    // Semantic search with embeddings
+    // 使用嵌入进行语义搜索
     async searchMemoriesByEmbedding(
         embedding: number[],
         opts: {
@@ -103,12 +103,12 @@ class MemoryManager implements IMemoryManager {
 }
 ```
 
-### Context System
+### 上下文系统
 
-The context system manages state composition and template handling:
+上下文系统管理状态组合与模板处理：
 
 ```typescript
-// Template composition
+// 模板组合
 export const composeContext = ({
     state,
     template,
@@ -122,15 +122,15 @@ export const composeContext = ({
     });
 };
 
-// Header handling
+// 头部处理
 export const addHeader = (header: string, body: string): string => {
     return body.length > 0 ? `${header ? header + "\n" : header}${body}\n` : "";
 };
 ```
 
-### Action System
+### 动作系统
 
-Actions define the available behaviors and responses:
+动作定义了可用的行为与响应：
 
 ```typescript
 interface Action {
@@ -154,11 +154,11 @@ interface Action {
     ) => Promise<void>;
 }
 
-// Example action implementation
+// 示例动作实现
 const generateImageAction: Action = {
     name: "GENERATE_IMAGE",
     similes: ["CREATE_IMAGE", "MAKE_PICTURE"],
-    description: "Generate an AI image from text",
+    description: "从文本生成 AI 图像",
 
     validate: async (runtime, message) => {
         return (
@@ -181,11 +181,11 @@ const generateImageAction: Action = {
 
         callback?.(
             {
-                text: "Generated images",
+                text: "生成的图像",
                 attachments: images.data.map((image, i) => ({
                     id: crypto.randomUUID(),
                     url: image,
-                    title: "Generated image",
+                    title: "生成的图像",
                     description: captions[i].title,
                 })),
             },
@@ -195,9 +195,9 @@ const generateImageAction: Action = {
 };
 ```
 
-### Evaluation System
+### 评估系统
 
-Evaluators assess messages and guide agent behavior:
+评估器评估消息并指导代理行为：
 
 ```typescript
 interface Evaluator {
@@ -214,7 +214,7 @@ interface Evaluator {
     handler: (runtime: IAgentRuntime, message: Memory) => Promise<void>;
 }
 
-// Example evaluator
+// 示例评估器
 const factEvaluator: Evaluator = {
     name: "EVALUATE_FACTS",
     similes: ["CHECK_FACTS"],
@@ -233,7 +233,7 @@ const factEvaluator: Evaluator = {
         if (facts.length > 0) {
             await runtime.messageManager.createMemory({
                 content: {
-                    text: `Verified fact: ${facts[0].content.text}`,
+                    text: `已验证的事实: ${facts[0].content.text}`,
                 },
                 roomId: message.roomId,
                 userId: runtime.agentId,
@@ -243,37 +243,37 @@ const factEvaluator: Evaluator = {
 };
 ```
 
-### State Management
+### 状态管理
 
-The state system maintains conversation context and agent knowledge:
+状态系统维护对话上下文与代理知识：
 
 ```typescript
 interface State {
-    // Agent identity
+    // 代理身份
     agentId: UUID;
     agentName: string;
     bio: string;
     lore: string;
     adjective?: string;
 
-    // Conversation context
+    // 对话上下文
     senderName?: string;
     actors: string;
     actorsData: Actor[];
     recentMessages: string;
     recentMessagesData: Memory[];
 
-    // Objectives
+    // 目标
     goals: string;
     goalsData: Goal[];
 
-    // Behavioral guidance
+    // 行为指导
     actions: string;
     actionNames: string;
     evaluators: string;
     evaluatorNames: string;
 
-    // Additional context
+    // 额外上下文
     providers: string;
     attachments: string;
     characterPostExamples?: string;
@@ -281,12 +281,12 @@ interface State {
 }
 ```
 
-## Service Architecture
+## 服务架构
 
-The core implements a service-based architecture:
+核心实现了基于服务的架构：
 
 ```typescript
-// Service base class
+// 服务基类
 class Service {
     static serviceType: ServiceType;
 
@@ -296,14 +296,14 @@ class Service {
     ): Promise<void>;
 }
 
-// Service registry
+// 服务注册表
 class ServiceRegistry {
     private services = new Map<ServiceType, Service>();
 
     registerService(service: Service): void {
         const type = (service as typeof Service).serviceType;
         if (this.services.has(type)) {
-            console.warn(`Service ${type} already registered`);
+            console.warn(`服务 ${type} 已注册`);
             return;
         }
         this.services.set(type, service);
@@ -315,46 +315,46 @@ class ServiceRegistry {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Memory Management
+### 内存管理
 
 ```typescript
-// Use unique flags for important memories
+// 对重要记忆使用唯一标志
 await memoryManager.createMemory(memory, true);
 
-// Search with appropriate thresholds
+// 使用适当的阈值进行搜索
 const similar = await memoryManager.searchMemoriesByEmbedding(embedding, {
     match_threshold: 0.8,
     count: 10,
 });
 
-// Clean up old memories periodically
+// 定期清理旧记忆
 await memoryManager.removeAllMemories(roomId, tableName);
 ```
 
-### State Composition
+### 状态组合
 
 ```typescript
-// Compose full state
+// 组合完整状态
 const state = await runtime.composeState(message, {
-    additionalContext: "Custom context",
+    additionalContext: "自定义上下文",
 });
 
-// Update with recent messages
+// 更新最近消息状态
 const updatedState = await runtime.updateRecentMessageState(state);
 
-// Add custom providers
+// 添加自定义提供者
 state.providers = addHeader(
-    "# Additional Information",
+    "# 额外信息",
     await Promise.all(providers.map((p) => p.get(runtime, message))).join("\n"),
 );
 ```
 
-### Service Management
+### 服务管理
 
 ```typescript
-// Service initialization
+// 服务初始化
 class CustomService extends Service {
     static serviceType = ServiceType.CUSTOM;
 
@@ -370,16 +370,16 @@ class CustomService extends Service {
     }
 }
 
-// Service registration
+// 服务注册
 runtime.registerService(new CustomService());
 
-// Service usage
+// 服务使用
 const service = runtime.getService<CustomService>(ServiceType.CUSTOM);
 ```
 
-## Error Handling
+## 错误处理
 
-Implement proper error handling throughout:
+在整个过程中实现适当的错误处理：
 
 ```typescript
 try {
@@ -390,18 +390,18 @@ try {
     } else if (error instanceof DatabaseError) {
         await this.reconnectDatabase();
     } else {
-        console.error("Unexpected error:", error);
+        console.error("意外错误:", error);
         throw error;
     }
 }
 ```
 
-## Advanced Features
+## 高级功能
 
-### Custom Memory Types
+### 自定义内存类型
 
 ```typescript
-// Create specialized memory managers
+// 创建专门的内存管理器
 class DocumentMemoryManager extends MemoryManager {
     constructor(runtime: IAgentRuntime) {
         super({
@@ -427,10 +427,10 @@ class DocumentMemoryManager extends MemoryManager {
 }
 ```
 
-### Enhanced Embeddings
+### 增强嵌入
 
 ```typescript
-// Advanced embedding handling
+// 高级嵌入处理
 async function enhancedEmbed(
     runtime: IAgentRuntime,
     text: string,
@@ -440,7 +440,7 @@ async function enhancedEmbed(
         pooling?: "mean" | "max";
     },
 ): Promise<number[]> {
-    // Get cached embedding if available
+    // 获取缓存的嵌入（如果有）
     const cached = await runtime.databaseAdapter.getCachedEmbeddings({
         query_input: text,
         query_threshold: 0.95,
@@ -450,12 +450,12 @@ async function enhancedEmbed(
         return cached[0].embedding;
     }
 
-    // Generate new embedding
+    // 生成新的嵌入
     return embed(runtime, text, opts);
 }
 ```
 
-### State Persistence
+### 状态持久化
 
 ```typescript
 class StateManager {
@@ -485,6 +485,8 @@ class StateManager {
 }
 ```
 
-## Related Documentation
+## 相关文档
 
-- [API Reference](/api/classes/AgentRuntime)
+- [API 参考](/api/classes/AgentRuntime)
+
+---

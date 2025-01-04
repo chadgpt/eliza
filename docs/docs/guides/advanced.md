@@ -2,37 +2,37 @@
 sidebar_position: 10
 ---
 
-# 🔧 Advanced Usage Guide
+# 🔧 高级使用指南
 
-This guide covers advanced features and capabilities of Eliza, including complex integrations, custom services, and specialized plugins.
+本指南涵盖了Eliza的高级功能和能力，包括复杂的集成、自定义服务和专用插件。
 
-## Service Integration
+## 服务集成
 
-### Video Processing Service
+### 视频处理服务
 
-Eliza supports advanced video processing capabilities through the `VideoService`:
+Eliza通过`VideoService`支持高级视频处理功能：
 
 ```typescript
 import { VideoService } from "@elizaos/core/plugin-node";
 
-// Initialize service
+// 初始化服务
 const videoService = new VideoService();
 
-// Process video content
+// 处理视频内容
 const result = await videoService.processVideo(url, runtime);
 ```
 
-Key features:
+主要功能：
 
-- Automatic video downloading
-- Transcription support
-- Subtitle extraction
-- Cache management
-- Queue processing
+- 自动视频下载
+- 转录支持
+- 字幕提取
+- 缓存管理
+- 队列处理
 
-### Image Processing
+### 图像处理
 
-The `ImageDescriptionService` provides advanced image analysis:
+`ImageDescriptionService`提供高级图像分析：
 
 ```typescript
 import { ImageDescriptionService } from "@elizaos/core/plugin-node";
@@ -41,30 +41,30 @@ const imageService = new ImageDescriptionService();
 const description = await imageService.describeImage(imageUrl, "gpu", runtime);
 ```
 
-Features:
+功能：
 
-- Local and cloud processing options
-- CUDA acceleration support
-- Automatic format handling
-- GIF frame extraction
+- 本地和云处理选项
+- CUDA加速支持
+- 自动格式处理
+- GIF帧提取
 
-## Blockchain Integration
+## 区块链集成
 
-### Solana Integration
+### Solana集成
 
-The Solana plugin provides comprehensive blockchain functionality:
+Solana插件提供全面的区块链功能：
 
 ```typescript
 import { solanaPlugin } from "@elizaos/core/plugin-solana";
 
-// Initialize plugin
+// 初始化插件
 runtime.registerPlugin(solanaPlugin);
 ```
 
-#### Token Operations
+#### 代币操作
 
 ```typescript
-// Buy tokens
+// 购买代币
 const swapResult = await swapToken(
     connection,
     walletPublicKey,
@@ -73,7 +73,7 @@ const swapResult = await swapToken(
     amount,
 );
 
-// Sell tokens
+// 出售代币
 const sellResult = await sellToken({
     sdk,
     seller: walletKeypair,
@@ -86,30 +86,30 @@ const sellResult = await sellToken({
 });
 ```
 
-#### Trust Score System
+#### 信任评分系统
 
 ```typescript
 const trustScoreManager = new TrustScoreManager(tokenProvider, trustScoreDb);
 
-// Generate trust scores
+// 生成信任评分
 const score = await trustScoreManager.generateTrustScore(
     tokenAddress,
     recommenderId,
     recommenderWallet,
 );
 
-// Monitor trade performance
+// 监控交易表现
 await trustScoreManager.createTradePerformance(runtime, tokenAddress, userId, {
     buy_amount: amount,
     is_simulation: false,
 });
 ```
 
-## Custom Services
+## 自定义服务
 
-### Speech Generation
+### 语音生成
 
-Implement text-to-speech capabilities:
+实现文本到语音功能：
 
 ```typescript
 class SpeechService extends Service implements ISpeechService {
@@ -128,9 +128,9 @@ class SpeechService extends Service implements ISpeechService {
 }
 ```
 
-### PDF Processing
+### PDF处理
 
-Handle PDF document analysis:
+处理PDF文档分析：
 
 ```typescript
 class PdfService extends Service {
@@ -154,9 +154,9 @@ class PdfService extends Service {
 }
 ```
 
-## Advanced Memory Management
+## 高级内存管理
 
-### Retrievable Memory System
+### 可检索内存系统
 
 ```typescript
 class MemoryManager {
@@ -169,21 +169,21 @@ class MemoryManager {
         roomId: string;
         count: number;
     }): Promise<Memory[]> {
-        // Implement memory retrieval logic
+        // 实现内存检索逻辑
     }
 
     async createMemory(
         memory: Memory,
         allowDuplicates: boolean = false,
     ): Promise<void> {
-        // Implement memory storage logic
+        // 实现内存存储逻辑
     }
 }
 ```
 
-### Trust Score Database
+### 信任评分数据库
 
-Implement advanced scoring systems:
+实现高级评分系统：
 
 ```typescript
 class TrustScoreDatabase {
@@ -204,34 +204,34 @@ class TrustScoreDatabase {
 }
 ```
 
-## Plugin Development
+## 插件开发
 
-### Creating Custom Plugins
+### 创建自定义插件
 
 ```typescript
 const customPlugin: Plugin = {
     name: "custom-plugin",
     description: "Custom Plugin for Eliza",
     actions: [
-        // Custom actions
+        // 自定义操作
     ],
     evaluators: [
-        // Custom evaluators
+        // 自定义评估器
     ],
     providers: [
-        // Custom providers
+        // 自定义提供者
     ],
 };
 ```
 
-### Advanced Action Development
+### 高级操作开发
 
 ```typescript
 export const complexAction: Action = {
     name: "COMPLEX_ACTION",
     similes: ["ALTERNATIVE_NAME", "OTHER_NAME"],
     validate: async (runtime: IAgentRuntime, message: Memory) => {
-        // Implement validation logic
+        // 实现验证逻辑
         return true;
     },
     handler: async (
@@ -241,15 +241,15 @@ export const complexAction: Action = {
         options: { [key: string]: unknown },
         callback?: HandlerCallback,
     ): Promise<boolean> => {
-        // Implement complex handling logic
+        // 实现复杂处理逻辑
         return true;
     },
 };
 ```
 
-## Advanced Configuration
+## 高级配置
 
-### Custom Runtime Configuration
+### 自定义运行时配置
 
 ```typescript
 const customRuntime = new AgentRuntime({
@@ -264,7 +264,7 @@ const customRuntime = new AgentRuntime({
 });
 ```
 
-### Advanced Model Configuration
+### 高级模型配置
 
 ```typescript
 const modelConfig = {
@@ -283,9 +283,9 @@ const response = await generateText({
 });
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Caching Strategy
+### 缓存策略
 
 ```typescript
 class CacheManager {
@@ -299,12 +299,12 @@ class CacheManager {
     }
 
     private async getCachedData<T>(key: string): Promise<T | null> {
-        // Implement tiered caching strategy
+        // 实现分层缓存策略
     }
 }
 ```
 
-### Queue Management
+### 队列管理
 
 ```typescript
 class QueueManager {
@@ -326,9 +326,9 @@ class QueueManager {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Error Handling
+### 错误处理
 
 ```typescript
 try {
@@ -346,59 +346,61 @@ try {
 }
 ```
 
-### Resource Management
+### 资源管理
 
 ```typescript
 class ResourceManager {
     private resources: Map<string, Resource> = new Map();
 
     async acquire(id: string): Promise<Resource> {
-        // Implement resource acquisition with timeout
+        // 实现带超时的资源获取
     }
 
     async release(id: string): Promise<void> {
-        // Implement resource cleanup
+        // 实现资源清理
     }
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. Memory Leaks
+1. 内存泄漏
 
-    - Monitor memory usage
-    - Implement proper cleanup
-    - Use WeakMap for caching
+    - 监控内存使用
+    - 实现适当的清理
+    - 使用WeakMap进行缓存
 
-2. Performance Bottlenecks
+2. 性能瓶颈
 
-    - Profile slow operations
-    - Implement batching
-    - Use connection pooling
+    - 分析慢操作
+    - 实现批处理
+    - 使用连接池
 
-3. Integration Issues
-    - Verify API credentials
-    - Check network connectivity
-    - Validate request formatting
+3. 集成问题
+    - 验证API凭证
+    - 检查网络连接
+    - 验证请求格式
 
-### Debugging
+### 调试
 
 ```typescript
 const debug = require("debug")("eliza:advanced");
 
-debug("Detailed operation info: %O", {
+debug("详细操作信息: %O", {
     operation: "complexOperation",
     parameters: params,
     result: result,
 });
 ```
 
-## Further Resources
+## 进一步资源
 
-- [Infrastructure Guide](../advanced/infrastructure.md) for deployment
-- [Trust Engine Documentation](../advanced/trust-engine.md) for scoring system
-- [Autonomous Trading Guide](../advanced/autonomous-trading.md) for trading features
-- [Fine-tuning Guide](../advanced/fine-tuning.md) for model optimization
-- [Eliza in TEE](../advanced/eliza-in-tee.md) for TEE integration
+- [基础设施指南](../advanced/infrastructure.md) 用于部署
+- [信任引擎文档](../advanced/trust-engine.md) 用于评分系统
+- [自动交易指南](../advanced/autonomous-trading.md) 用于交易功能
+- [微调指南](../advanced/fine-tuning.md) 用于模型优化
+- [Eliza在TEE中的应用](../advanced/eliza-in-tee.md) 用于TEE集成
+
+---

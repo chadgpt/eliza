@@ -1,31 +1,31 @@
-# 🤖 Agent Package
+# 🤖 代理包
 
-## Overview
+## 概述
 
-The Agent Package (`@eliza/agent`) provides the high-level orchestration layer for Eliza, managing agent lifecycles, character loading, client initialization, and runtime coordination.
+代理包 (`@eliza/agent`) 提供了 Eliza 的高级编排层，管理代理生命周期、角色加载、客户端初始化和运行时协调。
 
-## Installation
+## 安装
 
 ```bash
 pnpm add @eliza/agent
 ```
 
-## Quick Start
+## 快速开始
 
 ```typescript
 import { startAgents, loadCharacters } from "@eliza/agent";
 
-// Start agents with default or custom characters
+// 使用默认或自定义角色启动代理
 const args = parseArguments();
 const characters = await loadCharacters(args.characters);
 
-// Initialize agents
+// 初始化代理
 await startAgents();
 ```
 
-## Core Components
+## 核心组件
 
-### Agent Creation
+### 代理创建
 
 ```typescript
 export async function createAgent(
@@ -41,7 +41,7 @@ export async function createAgent(
     plugins: [
       bootstrapPlugin,
       nodePlugin,
-      // Conditional plugins
+      // 条件插件
       character.settings.secrets.WALLET_PUBLIC_KEY ? solanaPlugin : null,
     ].filter(Boolean),
     providers: [],
@@ -52,13 +52,13 @@ export async function createAgent(
 }
 ```
 
-### Character Loading
+### 角色加载
 
 ```typescript
 export async function loadCharacters(
   charactersArg: string,
 ): Promise<Character[]> {
-  // Parse character paths
+  // 解析角色路径
   let characterPaths = charactersArg
     ?.split(",")
     .map((path) => path.trim())
@@ -66,23 +66,23 @@ export async function loadCharacters(
 
   const loadedCharacters = [];
 
-  // Load each character file
+  // 加载每个角色文件
   for (const path of characterPaths) {
     try {
       const character = JSON.parse(fs.readFileSync(path, "utf8"));
 
-      // Load plugins if specified
+      // 如果指定了插件，则加载插件
       if (character.plugins) {
         character.plugins = await loadPlugins(character.plugins);
       }
 
       loadedCharacters.push(character);
     } catch (error) {
-      console.error(`Error loading character from ${path}: ${error}`);
+      console.error(`从 ${path} 加载角色时出错: ${error}`);
     }
   }
 
-  // Fall back to default character if none loaded
+  // 如果没有加载任何角色，则回退到默认角色
   if (loadedCharacters.length === 0) {
     loadedCharacters.push(defaultCharacter);
   }
@@ -91,7 +91,7 @@ export async function loadCharacters(
 }
 ```
 
-### Client Initialization
+### 客户端初始化
 
 ```typescript
 export async function initializeClients(
@@ -118,23 +118,23 @@ export async function initializeClients(
 }
 ```
 
-## Database Management
+## 数据库管理
 
 ```typescript
 function initializeDatabase(): IDatabaseAdapter {
-  // Use PostgreSQL if URL provided
+  // 如果提供了 URL，则使用 PostgreSQL
   if (process.env.POSTGRES_URL) {
     return new PostgresDatabaseAdapter({
       connectionString: process.env.POSTGRES_URL,
     });
   }
 
-  // Fall back to SQLite
+  // 回退到 SQLite
   return new SqliteDatabaseAdapter(new Database("./db.sqlite"));
 }
 ```
 
-## Token Management
+## 令牌管理
 
 ```typescript
 export function getTokenForProvider(
@@ -154,37 +154,37 @@ export function getTokenForProvider(
         settings.ANTHROPIC_API_KEY
       );
 
-    // Handle other providers...
+    // 处理其他提供者...
   }
 }
 ```
 
-## Agent Lifecycle Management
+## 代理生命周期管理
 
-### Starting Agents
+### 启动代理
 
 ```typescript
 async function startAgent(character: Character, directClient: any) {
   try {
-    // Get provider token
+    // 获取提供者令牌
     const token = getTokenForProvider(character.modelProvider, character);
 
-    // Initialize database
+    // 初始化数据库
     const db = initializeDatabase();
 
-    // Create runtime
+    // 创建运行时
     const runtime = await createAgent(character, db, token);
 
-    // Initialize clients
+    // 初始化客户端
     const clients = await initializeClients(character, runtime);
 
-    // Register with direct client
+    // 向直接客户端注册代理
     directClient.registerAgent(runtime);
 
     return clients;
   } catch (error) {
     console.error(
-      `Error starting agent for character ${character.name}:`,
+      `启动角色 ${character.name} 的代理时出错:`,
       error,
     );
     throw error;
@@ -192,7 +192,7 @@ async function startAgent(character: Character, directClient: any) {
 }
 ```
 
-### Shell Interface
+### Shell 接口
 
 ```typescript
 const rl = readline.createInterface({
@@ -223,16 +223,16 @@ async function handleUserInput(input, agentId) {
     );
 
     const data = await response.json();
-    data.forEach((message) => console.log(`Agent: ${message.text}`));
+    data.forEach((message) => console.log(`代理: ${message.text}`));
   } catch (error) {
-    console.error("Error:", error);
+    console.error("错误:", error);
   }
 }
 ```
 
-## Advanced Features
+## 高级功能
 
-### Plugin Management
+### 插件管理
 
 ```typescript
 async function loadPlugins(pluginPaths: string[]) {
@@ -245,17 +245,17 @@ async function loadPlugins(pluginPaths: string[]) {
 }
 ```
 
-### Character Hot Reloading
+### 角色热重载
 
 ```typescript
 async function reloadCharacter(runtime: IAgentRuntime, characterPath: string) {
-  // Load new character
+  // 加载新角色
   const character = JSON.parse(fs.readFileSync(characterPath, "utf8"));
 
-  // Update runtime
+  // 更新运行时
   runtime.character = character;
 
-  // Reload plugins
+  // 重新加载插件
   if (character.plugins) {
     const plugins = await loadPlugins(character.plugins);
     runtime.registerPlugins(plugins);
@@ -263,7 +263,7 @@ async function reloadCharacter(runtime: IAgentRuntime, characterPath: string) {
 }
 ```
 
-### Multi-Agent Coordination
+### 多代理协调
 
 ```typescript
 class AgentCoordinator {
@@ -279,7 +279,7 @@ class AgentCoordinator {
   }
 
   async coordinate(agents: string[], task: Task) {
-    // Coordinate multiple agents on a task
+    // 协调多个代理执行任务
     const selectedAgents = agents.map((id) => this.agents.get(id));
 
     return await this.executeCoordinatedTask(selectedAgents, task);
@@ -287,23 +287,23 @@ class AgentCoordinator {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Character Management
+### 角色管理
 
 ```typescript
-// Validate character before loading
+// 在加载前验证角色
 function validateCharacter(character: Character) {
   if (!character.name) {
-    throw new Error("Character must have a name");
+    throw new Error("角色必须有一个名称");
   }
 
   if (!character.modelProvider) {
-    throw new Error("Model provider must be specified");
+    throw new Error("必须指定模型提供者");
   }
 }
 
-// Use character versioning
+// 使用角色版本控制
 const character = {
   name: "Agent",
   version: "1.0.0",
@@ -311,19 +311,19 @@ const character = {
 };
 ```
 
-### Error Handling
+### 错误处理
 
 ```typescript
 async function handleAgentError(error: Error, character: Character) {
-  // Log error with context
-  console.error(`Agent ${character.name} error:`, error);
+  // 记录带有上下文的错误
+  console.error(`代理 ${character.name} 错误:`, error);
 
-  // Attempt recovery
+  // 尝试恢复
   if (error.code === "TOKEN_EXPIRED") {
     await refreshToken(character);
   }
 
-  // Notify monitoring
+  // 通知监控
   await notify({
     level: "error",
     character: character.name,
@@ -332,23 +332,23 @@ async function handleAgentError(error: Error, character: Character) {
 }
 ```
 
-### Resource Management
+### 资源管理
 
 ```typescript
 class ResourceManager {
   async cleanup() {
-    // Close database connections
+    // 关闭数据库连接
     await this.db.close();
 
-    // Shutdown clients
+    // 关闭客户端
     await Promise.all(this.clients.map((client) => client.stop()));
 
-    // Clear caches
+    // 清除缓存
     this.cache.clear();
   }
 
   async monitor() {
-    // Monitor resource usage
+    // 监控资源使用情况
     const usage = process.memoryUsage();
     if (usage.heapUsed > threshold) {
       await this.cleanup();
@@ -357,25 +357,25 @@ class ResourceManager {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Character Loading Failures**
+1. **角色加载失败**
 
 ```typescript
 try {
   await loadCharacters(charactersArg);
 } catch (error) {
   if (error.code === "ENOENT") {
-    console.error("Character file not found");
+    console.error("角色文件未找到");
   } else if (error instanceof SyntaxError) {
-    console.error("Invalid character JSON");
+    console.error("无效的角色 JSON");
   }
 }
 ```
 
-2. **Client Initialization Errors**
+2. **客户端初始化错误**
 
 ```typescript
 async function handleClientError(error: Error) {
@@ -387,7 +387,7 @@ async function handleClientError(error: Error) {
 }
 ```
 
-3. **Database Connection Issues**
+3. **数据库连接问题**
 
 ```typescript
 async function handleDbError(error: Error) {
@@ -399,9 +399,9 @@ async function handleDbError(error: Error) {
 }
 ```
 
-## Related Resources
+## 相关资源
 
-- [Character Creation Guide](#)
-- [Client Configuration](#)
-- [Plugin Development](#)
-- [Multi-Agent Setup](../packages/agents)
+- [角色创建指南](#)
+- [客户端配置](#)
+- [插件开发](#)
+- [多代理设置](../packages/agents)

@@ -5,7 +5,7 @@ dotenv.config();
 
 const config = {
   title: "eliza",
-  tagline: "Flexible, scalable AI agents for everyone",
+  tagline: "灵活、可扩展的AI代理，适用于所有人",
   favicon: "img/favicon.ico",
   url: "https://elizaos.github.io",
   baseUrl: "/eliza/",
@@ -158,21 +158,17 @@ const config = {
           type: "docSidebar",
           sidebarId: "tutorialSidebar",
           position: "left",
-          label: "Documentation",
+          label: "文档",
         },
         {
-          type: "doc",
-          docsPluginId: "api",
-          position: "left",
+          href: "https://elizaos.github.io/eliza/api/",
           label: "API",
-          docId: "index",
+          position: "left",
         },
         {
-          type: "doc",
-          docsPluginId: "community",
+          href: "https://t.me/elizaCN",
+          label: "社区",
           position: "left",
-          label: "Community",
-          docId: "index",
         },
         {
           href: "https://github.com/elizaos/eliza",
@@ -185,16 +181,16 @@ const config = {
       style: "dark",
       links: [
         {
-          title: "Docs",
+          title: "文档",
           items: [
             {
-              label: "General",
+              label: "概述",
               href: "./",
             },
           ],
         },
         {
-          title: "Community",
+          title: "社区",
           items: [
             {
               label: "Discord",
@@ -207,7 +203,7 @@ const config = {
           ],
         },
         {
-          title: "More",
+          title: "更多",
           items: [
             {
               label: "GitHub",

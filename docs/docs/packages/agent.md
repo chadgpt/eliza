@@ -2,73 +2,73 @@
 sidebar_position: 1
 ---
 
-# 🤖 Agent Package
+# 🤖 代理包
 
-The Agent Package (`@eliza/agent`) provides the high-level orchestration layer for Eliza, managing agent lifecycles, character loading, client initialization, and runtime coordination.
+代理包 (`@eliza/agent`) 提供了 Eliza 的高级编排层，管理代理生命周期、角色加载、客户端初始化和运行时协调。
 
-## Architecture Overview
+## 架构概述
 
 ```mermaid
 graph TD
-    AP["Agent Package"]
-    AP --> CS["Character System"]
-    AP --> RT["Runtime Management"]
-    AP --> DB["Database Integration"]
-    AP --> CL["Client Management"]
+    AP["代理包"]
+    AP --> CS["角色系统"]
+    AP --> RT["运行时管理"]
+    AP --> DB["数据库集成"]
+    AP --> CL["客户端管理"]
 
-    CS --> CF["Character Loading"]
-    CS --> CP["Plugin Loading"]
-    CS --> CT["Token Management"]
+    CS --> CF["角色加载"]
+    CS --> CP["插件加载"]
+    CS --> CT["令牌管理"]
 
-    RT --> AR["Agent Runtime"]
-    RT --> AM["Agent Monitoring"]
-    RT --> AH["Shell Interface"]
+    RT --> AR["代理运行时"]
+    RT --> AM["代理监控"]
+    RT --> AH["Shell 接口"]
 
-    DB --> PS["PostgreSQL Support"]
-    DB --> SL["SQLite Support"]
+    DB --> PS["PostgreSQL 支持"]
+    DB --> SL["SQLite 支持"]
 
-    CL --> DC["Direct Client"]
-    CL --> PC["Platform Clients"]
+    CL --> DC["直接客户端"]
+    CL --> PC["平台客户端"]
 
-    %% Simple styling with black text
+    %% 简单的黑色文本样式
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,color:black
     classDef highlight fill:#e9e9e9,stroke:#333,stroke-width:2px,color:black
 
     class AP highlight
 ```
 
-## Key Responsibilities
+## 主要职责
 
-The Agent Package (`@elizaos/agent`) serves as the orchestration layer for Eliza, handling:
+代理包 (`@elizaos/agent`) 作为 Eliza 的编排层，负责：
 
-- Character and plugin loading
-- Runtime initialization and management
-- Database adapter selection
-- Client initialization and coordination
-- Token and environment management
+- 角色和插件加载
+- 运行时初始化和管理
+- 数据库适配器选择
+- 客户端初始化和协调
+- 令牌和环境管理
 
-## Installation
+## 安装
 
 ```bash
 pnpm add @elizaos/agent
 ```
 
-## Quick Start
+## 快速开始
 
 ```typescript
 import { startAgents, loadCharacters } from "@elizaos/agent";
 
-// Load characters from files
+// 从文件加载角色
 const args = parseArguments();
 const characters = await loadCharacters(args.characters || args.character);
 
-// Start agent system
+// 启动代理系统
 await startAgents();
 ```
 
-## Core Features
+## 核心功能
 
-### Character Loading
+### 角色加载
 
 ```typescript
 export async function loadCharacters(
@@ -81,7 +81,7 @@ export async function loadCharacters(
         try {
             const character = JSON.parse(fs.readFileSync(path, "utf8"));
 
-            // Load plugins if specified
+            // 如果指定了插件，则加载插件
             if (character.plugins) {
                 character.plugins = await Promise.all(
                     character.plugins.map(async (plugin) => {
@@ -93,16 +93,16 @@ export async function loadCharacters(
 
             loadedCharacters.push(character);
         } catch (error) {
-            console.error(`Error loading character from ${path}: ${error}`);
+            console.error(`从 ${path} 加载角色时出错: ${error}`);
         }
     }
 
-    // Fall back to default if none loaded
+    // 如果没有加载任何角色，则回退到默认角色
     return loadedCharacters.length > 0 ? loadedCharacters : [defaultCharacter];
 }
 ```
 
-### Agent Creation
+### 代理创建
 
 ```typescript
 export async function createAgent(
@@ -128,7 +128,7 @@ export async function createAgent(
 }
 ```
 
-### Client Initialization
+### 客户端初始化
 
 ```typescript
 export async function initializeClients(
@@ -156,19 +156,19 @@ export async function initializeClients(
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Token Management
+### 令牌管理
 
-Tokens can be configured in two ways:
+令牌可以通过两种方式配置：
 
-1. Using namespaced environment variables:
+1. 使用命名空间环境变量：
 ```env
 CHARACTER.YOUR_CHARACTER_NAME.OPENAI_API_KEY=sk-...
 CHARACTER.YOUR_CHARACTER_NAME.ANTHROPIC_API_KEY=sk-...
 ```
 
-2. Using character settings:
+2. 使用角色设置：
 ```typescript
 export function getTokenForProvider(
     provider: ModelProviderName,
@@ -185,17 +185,17 @@ export function getTokenForProvider(
                 character.settings?.secrets?.ANTHROPIC_API_KEY ||
                 settings.ANTHROPIC_API_KEY
             );
-        // Handle other providers...
+        // 处理其他提供者...
     }
 }
 ```
 
-The system will check for tokens in the following order:
-1. Character-specific namespaced env variables
-2. Character settings from JSON
-3. Global environment variables
+系统将按以下顺序检查令牌：
+1. 角色特定的命名空间环境变量
+2. 来自 JSON 的角色设置
+3. 全局环境变量
 
-### Database Selection
+### 数据库选择
 
 ```typescript
 function initializeDatabase() {
@@ -208,32 +208,35 @@ function initializeDatabase() {
 }
 ```
 
-## Common Issues & Solutions
+## 常见问题及解决方案
 
-1. **Character Loading**
+1. **角色加载**
 
 ```typescript
-// Handle missing character files
+// 处理缺少角色文件的情况
 if (!characters || characters.length === 0) {
-    console.log("No characters found, using default character");
+    console.log("未找到角色，使用默认角色");
     characters = [defaultCharacter];
 }
 ```
 
-2. **Plugin Loading**
+2. **插件加载**
 
 ```typescript
-// Handle plugin import errors
+// 处理插件导入错误
 try {
     character.plugins = await Promise.all(
         character.plugins.map((plugin) => import(plugin)),
     );
 } catch (error) {
-    console.error(`Error loading plugin: ${error.message}`);
+    console.error(`加载插件时出错: ${error.message}`);
     character.plugins = [];
 }
 ```
 
-## Related Resources
+## 相关资源
 
-- [Plugin System](../../packages/plugins)
+- [插件系统](../../packages/plugins)
+
+---
+

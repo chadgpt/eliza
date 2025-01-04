@@ -1,14 +1,14 @@
-# [Eliza](https://github.com/elizaos/eliza) Chatbot Docker Setup Guide
+# [Eliza](https://github.com/elizaos/eliza) 聊天机器人 Docker 设置指南
 
-This guide provides instructions for installing and running the Eliza chatbot using either Docker or direct installation on a server.
+本指南提供了使用 Docker 或直接在服务器上安装和运行 Eliza 聊天机器人的说明。
 
-## Prerequisites
+## 先决条件
 
-- A Linux-based server (Ubuntu/Debian recommended)
-- Git installed
-- Docker (optional, for containerized deployment)
+- 基于 Linux 的服务器（推荐使用 Ubuntu/Debian）
+- 已安装 Git
+- Docker（可选，用于容器化部署）
 
-1. **Install NVM**:
+1. **安装 NVM**：
 
     ```bash
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -16,119 +16,119 @@ This guide provides instructions for installing and running the Eliza chatbot us
     nvm install v23.3.0
     ```
 
-2. **Install Build Essentials** (Optional):
+2. **安装构建工具**（可选）：
 
     ```bash
     apt install -y build-essential
     ```
 
-3. **Install PNPM**:
+3. **安装 PNPM**：
     ```bash
     curl -fsSL https://get.pnpm.io/install.sh | sh -
     source /root/.bashrc
     ```
 
-## Docker Installation
+## Docker 安装
 
-1. **Install Docker**:
+1. **安装 Docker**：
 
     ```bash
-    # Add Docker's official GPG key
+    # 添加 Docker 官方 GPG 密钥
     sudo apt-get update
     sudo apt-get install ca-certificates curl
     sudo install -m 0755 -d /etc/apt/keyrings
     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-    # Add Docker repository
+    # 添加 Docker 仓库
     echo \
       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
       $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-    # Install Docker packages
+    # 安装 Docker 包
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
 
-2. **Clone the Repository**:
+2. **克隆仓库**：
 
     ```bash
     git clone https://github.com/YOUR_USERNAME/eliza.git
     cd eliza
     ```
 
-3. **Configure Environment**:
+3. **配置环境**：
 
     ```bash
     cp .env.example .env
     ```
 
-4. **Fix Unix Script Issues** (if needed):
+4. **修复 Unix 脚本问题**（如有需要）：
 
     ```bash
     apt install dos2unix
     dos2unix ./scripts/*
     ```
 
-5. **Run with Docker**:
+5. **使用 Docker 运行**：
     ```bash
     pnpm docker
     ```
 
-## Docker Management Commands
+## Docker 管理命令
 
-- Check running containers:
+- 检查运行中的容器：
 
     ```bash
     docker ps
     ```
 
-- Remove Eliza container:
+- 移除 Eliza 容器：
 
     ```bash
     docker rm /eliza
     ```
 
-- Restart with a different character:
+- 使用不同角色重新启动：
     ```bash
     pnpm start --character="characters/YOUR_CHARACTER.character.json"
     ```
 
-## Customization
+## 自定义
 
-- Modify the `.env` file to customize your bot's settings
-- Character files are located in the `characters/` directory
-- Create new character files by copying and modifying existing ones
+- 修改 `.env` 文件以自定义机器人的设置
+- 角色文件位于 `characters/` 目录中
+- 通过复制和修改现有文件创建新角色文件
 
-## Troubleshooting
+## 故障排除
 
-- If Docker container fails to start, check logs:
+- 如果 Docker 容器无法启动，请检查日志：
     ```bash
     docker logs eliza
     ```
-- For permission issues, ensure proper file ownership and permissions
-- For script formatting issues, run `dos2unix` on problematic files
+- 对于权限问题，请确保文件所有权和权限正确
+- 对于脚本格式问题，请对有问题的文件运行 `dos2unix`
 
-- Remove All Docker Images
-    - Run the following command to delete all images:
+- 删除所有 Docker 镜像
+    - 运行以下命令删除所有镜像：
 
 ```bash
 docker rmi -f $(docker images -aq)
 ```
 
-- Remove All Build Cache
-    - To clear the build cache entirely, use:
+- 删除所有构建缓存
+    - 要完全清除构建缓存，请使用：
     ```bash
     docker builder prune -a -f
     ```
-- Verify Cleanup
-    - Check Docker disk usage again to ensure everything is removed:
+- 验证清理
+    - 再次检查 Docker 磁盘使用情况以确保所有内容已删除：
 
 ```bash
 docker system df
 ```
 
-## License
+## 许可证
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+此项目根据 MIT 许可证授权 - 详情请参见 [LICENSE](LICENSE) 文件。

@@ -2,244 +2,244 @@
 sidebar_position: 2
 ---
 
-# Quickstart Guide
+# 快速入门指南
 
-## Prerequisites
+## 先决条件
 
-Before getting started with Eliza, ensure you have:
+在开始使用 Eliza 之前，请确保您具备以下条件：
 
 - [Node.js 23+](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [pnpm 9+](https://pnpm.io/installation)
-- Git for version control
-- A code editor ([VS Code](https://code.visualstudio.com/) or [VSCodium](https://vscodium.com) recommended)
-- [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit) (optional, for GPU acceleration)
+- 用于版本控制的 Git
+- 代码编辑器（推荐 [VS Code](https://code.visualstudio.com/) 或 [VSCodium](https://vscodium.com)）
+- [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)（可选，用于 GPU 加速）
 
-## Installation
+## 安装
 
-1. **Clone and Install**
+1. **克隆并安装**
 
-    Please be sure to check what the [latest available stable version tag](https://github.com/elizaos/eliza/tags) is.
+    请务必检查 [最新可用的稳定版本标签](https://github.com/elizaos/eliza/tags)。
 
-    Clone the repository
+    克隆仓库
 
     ```bash
     git clone https://github.com/elizaos/eliza.git
     ```
 
-    Enter directory
+    进入目录
 
     ```bash
     cd eliza
     ```
 
-    Switch to latest tagged release
+    切换到最新的标签版本
 
     ```bash
-     # Checkout the latest release
-     # This project iterates fast, so we recommend checking out the latest release
+     # 检出最新版本
+     # 该项目迭代迅速，因此我们建议检出最新版本
      git checkout $(git describe --tags --abbrev=0)
     ```
 
-    Install dependencies (on initial run)
+    安装依赖项（首次运行时）
 
     ```bash
     pnpm install --no-frozen-lockfile
     ```
 
-    # Quickstart Guide Update
+    # 快速入门指南更新
 
-**Important Note on pnpm Lockfile Management**
+**关于 pnpm 锁文件管理的重要说明**
 
-By default, the `pnpm` lockfile will not be updated during installations based off of .npmrc frozen-lockfile=true. To update the lockfile, you need to run the command:
+默认情况下，基于 .npmrc frozen-lockfile=true 的安装过程中，`pnpm` 锁文件不会更新。要更新锁文件，您需要运行以下命令：
 
 ```bash
 pnpm install --no-frozen-lockfile
 ```
 
-Please only use this command when you initially instantiating the repo or are bumping the version of a package or adding a new package to your package.json. This practice helps maintain consistency in your project's dependencies and prevents unintended changes to the lockfile.
+请仅在首次初始化仓库或升级包版本或向 package.json 添加新包时使用此命令。此做法有助于保持项目依赖项的一致性，并防止锁文件的意外更改。
 
-Build the local libraries
+构建本地库
 
 ```bash
 pnpm build
 ```
 
-2. **Configure Environment**
+2. **配置环境**
 
-    Copy example environment file
+    复制示例环境文件
 
     ```bash
     cp .env.example .env
     ```
 
-    Edit `.env` and add your values:
+    编辑 `.env` 并添加您的值：
 
     ```bash
-    # Suggested quickstart environment variables
-    DISCORD_APPLICATION_ID=  # For Discord integration
-    DISCORD_API_TOKEN=      # Bot token
-    HEURIST_API_KEY=       # Heurist API key for LLM and image generation
-    OPENAI_API_KEY=        # OpenAI API key
-    GROK_API_KEY=          # Grok API key
-    ELEVENLABS_XI_API_KEY= # API key from elevenlabs (for voice)
-    LIVEPEER_GATEWAY_URL=  # Livepeer gateway URL
+    # 建议的快速入门环境变量
+    DISCORD_APPLICATION_ID=  # 用于 Discord 集成
+    DISCORD_API_TOKEN=      # 机器人令牌
+    HEURIST_API_KEY=       # Heurist API 密钥，用于 LLM 和图像生成
+    OPENAI_API_KEY=        # OpenAI API 密钥
+    GROK_API_KEY=          # Grok API 密钥
+    ELEVENLABS_XI_API_KEY= # 来自 elevenlabs 的 API 密钥（用于语音）
+    LIVEPEER_GATEWAY_URL=  # Livepeer 网关 URL
     ```
 
-## Choose Your Model
+## 选择您的模型
 
-Eliza supports multiple AI models:
+Eliza 支持多种 AI 模型：
 
-- **Heurist**: Set `modelProvider: "heurist"` in your character file. Most models are uncensored.
-    - LLM: Select available LLMs [here](https://docs.heurist.ai/dev-guide/supported-models#large-language-models-llms) and configure `SMALL_HEURIST_MODEL`,`MEDIUM_HEURIST_MODEL`,`LARGE_HEURIST_MODEL`
-    - Image Generation: Select available Stable Diffusion or Flux models [here](https://docs.heurist.ai/dev-guide/supported-models#image-generation-models) and configure `HEURIST_IMAGE_MODEL` (default is FLUX.1-dev)
-- **Llama**: Set `XAI_MODEL=meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`
-- **Grok**: Set `XAI_MODEL=grok-beta`
-- **OpenAI**: Set `XAI_MODEL=gpt-4o-mini` or `gpt-4o`
-- **Livepeer**: Set `LIVEPEER_IMAGE_MODEL` to your chosen Livepeer image model, available models [here](https://livepeer-eliza.com/)
+- **Heurist**：在角色文件中设置 `modelProvider: "heurist"`。大多数模型未经过审查。
+    - LLM：在 [此处](https://docs.heurist.ai/dev-guide/supported-models#large-language-models-llms) 选择可用的 LLM，并配置 `SMALL_HEURIST_MODEL`、`MEDIUM_HEURIST_MODEL`、`LARGE_HEURIST_MODEL`
+    - 图像生成：在 [此处](https://docs.heurist.ai/dev-guide/supported-models#image-generation-models) 选择可用的 Stable Diffusion 或 Flux 模型，并配置 `HEURIST_IMAGE_MODEL`（默认是 FLUX.1-dev）
+- **Llama**：设置 `XAI_MODEL=meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`
+- **Grok**：设置 `XAI_MODEL=grok-beta`
+- **OpenAI**：设置 `XAI_MODEL=gpt-4o-mini` 或 `gpt-4o`
+- **Livepeer**：设置 `LIVEPEER_IMAGE_MODEL` 为您选择的 Livepeer 图像模型，可用模型在 [此处](https://livepeer-eliza.com/)
 
-You set which model to use inside the character JSON file
+您可以在角色 JSON 文件中设置使用哪个模型
 
-### Local inference
+### 本地推理
 
-    #### For llama_local inference:
+    #### 对于 llama_local 推理：
 
-      1. Set `XAI_MODEL` to your chosen model
-      2. Leave `X_SERVER_URL` and `XAI_API_KEY` blank
-      3. The system will automatically download the model from Hugging Face
-      4. `LOCAL_LLAMA_PROVIDER` can be blank
+      1. 设置 `XAI_MODEL` 为您选择的模型
+      2. 保持 `X_SERVER_URL` 和 `XAI_API_KEY` 为空
+      3. 系统将自动从 Hugging Face 下载模型
+      4. `LOCAL_LLAMA_PROVIDER` 可以为空
 
-      Note: llama_local requires a GPU, it currently will not work with CPU inference
+      注意：llama_local 需要 GPU，目前不支持 CPU 推理
 
-    #### For Ollama inference:
+    #### 对于 Ollama 推理：
 
-      - If `OLLAMA_SERVER_URL` is left blank, it defaults to `localhost:11434`
-      - If `OLLAMA_EMBEDDING_MODE` is left blank, it defaults to `mxbai-embed-large`
+      - 如果 `OLLAMA_SERVER_URL` 为空，默认为 `localhost:11434`
+      - 如果 `OLLAMA_EMBEDDING_MODE` 为空，默认为 `mxbai-embed-large`
 
-## Create Your First Agent
+## 创建您的第一个代理
 
-1. **Create a Character File**
+1. **创建角色文件**
 
-    Check out `characters/trump.character.json` or `characters/tate.character.json` as a template you can use to copy and customize your agent's personality and behavior.
-    Additionally you can read `core/src/core/defaultCharacter.ts` (in 0.0.10 but post-refactor will be in `packages/core/src/defaultCharacter.ts`)
+    查看 `characters/trump.character.json` 或 `characters/tate.character.json` 作为模板，您可以用来复制和自定义代理的个性和行为。
+    此外，您还可以阅读 `core/src/core/defaultCharacter.ts`（在 0.0.10 版本中，但重构后将在 `packages/core/src/defaultCharacter.ts` 中）
 
-    📝 [Character Documentation](./core/characterfile.md)
+    📝 [角色文档](./core/characterfile.md)
 
-2. **Start the Agent**
+2. **启动代理**
 
-    Inform it which character you want to run:
+    告诉它您要运行哪个角色：
 
     ```bash
     pnpm start --character="characters/trump.character.json"
     ```
 
-    You can also load multiple characters with the characters option with a comma separated list:
+    您还可以使用逗号分隔的列表加载多个角色：
 
     ```bash
     pnpm start --characters="characters/trump.character.json,characters/tate.character.json"
     ```
 
-3. **Interact with the Agent**
+3. **与代理互动**
 
-    Now you're ready to start a conversation with your agent!
-    Open a new terminal window
+    现在您可以开始与您的代理对话了！
+    打开一个新的终端窗口
 
     ```bash
     pnpm start:client
     ```
 
-    Once the client is running, you'll see a message like this:
+    一旦客户端运行，您将看到如下消息：
 
 ```
 ➜  Local:   http://localhost:5173/
 ```
 
-Simply click the link or open your browser to `http://localhost:5173/`. You'll see the chat interface connect to the system, and you can begin interacting with your character.
+只需点击链接或打开浏览器到 `http://localhost:5173/`。您将看到聊天界面连接到系统，并可以开始与您的角色互动。
 
-## Platform Integration
+## 平台集成
 
-### Discord Bot Setup
+### Discord 机器人设置
 
-1. Create a new application at [Discord Developer Portal](https://discord.com/developers/applications)
-2. Create a bot and get your token
-3. Add bot to your server using OAuth2 URL generator
-4. Set `DISCORD_API_TOKEN` and `DISCORD_APPLICATION_ID` in your `.env`
+1. 在 [Discord 开发者门户](https://discord.com/developers/applications) 创建一个新应用
+2. 创建一个机器人并获取令牌
+3. 使用 OAuth2 URL 生成器将机器人添加到您的服务器
+4. 在 `.env` 中设置 `DISCORD_API_TOKEN` 和 `DISCORD_APPLICATION_ID`
 
-### Twitter Integration
+### Twitter 集成
 
-Add to your `.env`:
+在 `.env` 中添加：
 
 ```bash
-TWITTER_USERNAME=  # Account username
-TWITTER_PASSWORD=  # Account password
-TWITTER_EMAIL=    # Account email
+TWITTER_USERNAME=  # 账户用户名
+TWITTER_PASSWORD=  # 账户密码
+TWITTER_EMAIL=    # 账户邮箱
 ```
 
-**Important:** Log in to the [Twitter Developer Portal](https://developer.twitter.com) and enable the "Automated" label for your account to avoid being flagged as inauthentic.
+**重要提示：** 登录 [Twitter 开发者门户](https://developer.twitter.com) 并为您的账户启用“自动化”标签，以避免被标记为不真实。
 
-### Telegram Bot
+### Telegram 机器人
 
-1. Create a bot
-2. Add your bot token to `.env`:
+1. 创建一个机器人
+2. 将您的机器人令牌添加到 `.env`：
 
 ```bash
 TELEGRAM_BOT_TOKEN=your_token_here
 ```
 
-## Optional: GPU Acceleration
+## 可选：GPU 加速
 
-If you have an NVIDIA GPU:
+如果您有 NVIDIA GPU：
 
 ```bash
-# Install CUDA support
+# 安装 CUDA 支持
 npx --no node-llama-cpp source download --gpu cuda
 
-# Ensure CUDA Toolkit, cuDNN, and cuBLAS are installed
+# 确保已安装 CUDA Toolkit、cuDNN 和 cuBLAS
 ```
 
-## Basic Usage Examples
+## 基本使用示例
 
-### Chat with Your Agent
+### 与您的代理聊天
 
 ```bash
-# Start chat interface
+# 启动聊天界面
 pnpm start
 ```
 
-### Run Multiple Agents
+### 运行多个代理
 
 ```bash
 pnpm start --characters="characters/trump.character.json,characters/tate.character.json"
 ```
 
-## Common Issues & Solutions
+## 常见问题及解决方案
 
-1. **Node.js Version**
+1. **Node.js 版本**
 
-   - Ensure Node.js 23.3.0 is installed
-   - Use `node -v` to check version
-   - Consider using [nvm](https://github.com/nvm-sh/nvm) to manage Node versions
+   - 确保已安装 Node.js 23.3.0
+   - 使用 `node -v` 检查版本
+   - 考虑使用 [nvm](https://github.com/nvm-sh/nvm) 管理 Node 版本
 
-   NOTE: pnpm may be bundled with a different node version, ignoring nvm. If this is the case, you can use
+   注意：pnpm 可能捆绑了不同的 node 版本，忽略 nvm。如果是这种情况，您可以使用
    ```bash
    pnpm env use --global 23.3.0
    ```
-   to force it to use the correct one.
+   强制使用正确的版本。
 
-2. **Sharp Installation**
-   If you see Sharp-related errors:
+2. **Sharp 安装**
+   如果看到与 Sharp 相关的错误：
 
     ```bash
     pnpm install --include=optional sharp
     ```
 
-3. **CUDA Setup**
+3. **CUDA 设置**
 
-    - Verify CUDA Toolkit installation
-    - Check GPU compatibility with toolkit
-    - Ensure proper environment variables are set
+    - 验证 CUDA Toolkit 安装
+    - 检查 GPU 与工具包的兼容性
+    - 确保设置了正确的环境变量
 
-4. **Exit Status 1**
-   If you see
+4. **退出状态 1**
+   如果看到
 
     ```
     triggerUncaughtException(
@@ -249,33 +249,33 @@ pnpm start --characters="characters/trump.character.json,characters/tate.charact
     }
     ```
 
-    You can try these steps, which aim to add `@types/node` to various parts of the project
+    您可以尝试以下步骤，旨在将 `@types/node` 添加到项目的各个部分
 
     ```
-    # Add dependencies to workspace root
+    # 将依赖项添加到工作区根目录
     pnpm add -w -D ts-node typescript @types/node
 
-    # Add dependencies to the agent package specifically
+    # 将依赖项添加到代理包中
     pnpm add -D ts-node typescript @types/node --filter "@elizaos/agent"
 
-    # Also add to the core package since it's needed there too
+    # 还需要添加到核心包中
     pnpm add -D ts-node typescript @types/node --filter "@elizaos/core"
 
-    # First clean everything
+    # 首先清理所有内容
     pnpm clean
 
-    # Install all dependencies recursively
+    # 递归安装所有依赖项
     pnpm install -r
 
-    # Build the project
+    # 构建项目
     pnpm build
 
-    # Then try to start
+    # 然后尝试启动
     pnpm start
     ```
 
-5. **Better sqlite3 was compiled against a different Node.js version**
-   If you see
+5. **Better sqlite3 是针对不同的 Node.js 版本编译的**
+   如果看到
 
     ```
     Error starting agents: Error: The module '.../eliza-agents/dv/eliza/node_modules/better-sqlite3/build/Release/better_sqlite3.node'
@@ -284,33 +284,33 @@ pnpm start --characters="characters/trump.character.json,characters/tate.charact
     NODE_MODULE_VERSION 127. Please try re-compiling or re-installing
     ```
 
-    You can try this, which will attempt to rebuild better-sqlite3.
+    您可以尝试以下方法，尝试重建 better-sqlite3。
 
     ```bash
     pnpm rebuild better-sqlite3
     ```
 
-    If that doesn't work, try clearing your node_modules in the root folder
+    如果这不起作用，请尝试清除根文件夹中的 node_modules
 
     ```bash
     rm -fr node_modules; pnpm store prune
     ```
 
-    Then reinstall the requirements
+    然后重新安装依赖项
 
     ```bash
     pnpm i
     ```
 
-## Next Steps
+## 下一步
 
-Once you have your agent running, explore:
+一旦您的代理运行起来，探索：
 
-1. 🤖 [Understand Agents](./core/agents.md)
-2. 📝 [Create Custom Characters](./core/characterfile.md)
-3. ⚡ [Add Custom Actions](./core/actions.md)
-4. 🔧 [Advanced Configuration](./guides/configuration.md)
+1. 🤖 [了解代理](./core/agents.md)
+2. 📝 [创建自定义角色](./core/characterfile.md)
+3. ⚡ [添加自定义操作](./core/actions.md)
+4. 🔧 [高级配置](./guides/configuration.md)
 
-For detailed API documentation, troubleshooting, and advanced features, check out our [full documentation](https://elizaos.github.io/eliza/).
+有关详细的 API 文档、故障排除和高级功能，请查看我们的 [完整文档](https://elizaos.github.io/eliza/)。
 
-Join our [Discord community](https://discord.gg/ai16z) for support and updates!
+加入我们的 [Discord 社区](https://discord.gg/ai16z) 获取支持和更新！

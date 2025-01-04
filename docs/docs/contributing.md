@@ -1,129 +1,129 @@
-# Contributing to Eliza
+# 贡献 Eliza
 
-First off, thank you for considering contributing to Eliza! We welcome contributions from everyone, regardless of experience level.
+首先，感谢您考虑为 Eliza 做出贡献！我们欢迎所有人的贡献，无论经验水平如何。
 
-## Contribution License Agreement
+## 贡献许可协议
 
-By contributing to Eliza, you agree that your contributions will be licensed under the MIT License. This means:
+通过为 Eliza 做出贡献，您同意您的贡献将根据 MIT 许可证进行许可。这意味着：
 
-1. You grant us (and everyone else) a perpetual, worldwide, non-exclusive, royalty-free license to use your contributions.
-2. Your contributions are and will be available as Free and Open Source Software (FOSS).
-3. You have the right to submit the work under this license.
-4. You understand that your contributions are public and that a record of the contribution is maintained indefinitely.
+1. 您授予我们（以及其他人）永久的、全球范围的、非独占的、免版税的许可来使用您的贡献。
+2. 您的贡献将作为自由和开源软件（FOSS）提供。
+3. 您有权根据此许可证提交工作。
+4. 您理解您的贡献是公开的，并且贡献记录将无限期地保留。
 
-## The OODA Loop: A Framework for Contribution
+## OODA 循环：贡献框架
 
-We believe in the power of the OODA Loop - a decision-making framework that emphasizes speed and adaptability. OODA stands for:
+我们相信 OODA 循环的力量——一个强调速度和适应性的决策框架。OODA 代表：
 
-- **Observe**: Gather information and insights about the project, the community, and the broader AI ecosystem.
-- **Orient**: Analyze your observations to identify opportunities for contribution and improvement.
-- **Decide**: Choose a course of action based on your analysis. This could be proposing a new feature, fixing a bug, or creating content.
-- **Act**: Execute your decision and share your work with the community.
+- **观察**：收集有关项目、社区和更广泛的 AI 生态系统的信息和见解。
+- **定位**：分析您的观察结果，以确定贡献和改进的机会。
+- **决策**：根据您的分析选择行动方案。这可能是提出新功能、修复错误或创建内容。
+- **行动**：执行您的决定并与社区分享您的工作。
 
-## How to Contribute
+## 如何贡献
 
-### For Developers
+### 对于开发者
 
-1. **Extend Eliza's Capabilities**
+1. **扩展 Eliza 的功能**
 
-    - Develop new actions, evaluators, and providers
-    - Improve existing components and modules
+    - 开发新的操作、评估器和提供者
+    - 改进现有组件和模块
 
-2. **Enhance Infrastructure**
+2. **增强基础设施**
 
-    - Review open issues and submit PRs
-    - Test and update documentation
-    - Optimize performance
-    - Improve deployment solutions
+    - 审查未解决的问题并提交 PR
+    - 测试和更新文档
+    - 优化性能
+    - 改进部署解决方案
 
-3. Fork the repo and create your branch from `main`.
-    1. The name of the branch should start with the issue number and be descriptive of the changes you are making.
-    2. Example: 9999--add-test-for-bug-123
-4. If you've added code that should be tested, add tests.
-5. Ensure the test suite passes.
-6. Make sure your code lints.
-7. Issue that pull request!
+3. Fork 仓库并从 `main` 创建您的分支。
+    1. 分支名称应以问题编号开头，并描述您正在进行的更改。
+    2. 示例：9999--add-test-for-bug-123
+4. 如果您添加了需要测试的代码，请添加测试。
+5. 确保测试套件通过。
+6. 确保您的代码通过 lint 检查。
+7. 提交 pull request！
 
-## Styleguides
+## 风格指南
 
-### Git Commit Messages
+### Git 提交消息
 
-- Use the present tense ("Add feature" not "Added feature")
-- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-- Limit the first line to 72 characters or less
-- Reference issues and pull requests liberally after the first line
+- 使用现在时（“添加功能”而不是“已添加功能”）
+- 使用祈使语气（“移动光标到...”而不是“移动光标到...”）
+- 将第一行限制为 72 个字符或更少
+- 在第一行之后自由引用问题和 pull request
 
-### JavaScript Styleguide
+### JavaScript 风格指南
 
-- All JavaScript must adhere to [JavaScript Standard Style](https://standardjs.com/).
+- 所有 JavaScript 必须遵循 [JavaScript Standard Style](https://standardjs.com/)。
 
-### TypeScript Styleguide
+### TypeScript 风格指南
 
-- All TypeScript must adhere to [TypeScript Standard Style](https://github.com/standard/ts-standard).
+- 所有 TypeScript 必须遵循 [TypeScript Standard Style](https://github.com/standard/ts-standard)。
 
-### Documentation Styleguide
+### 文档风格指南
 
-- Use [Markdown](https://daringfireball.net/projects/markdown/) for documentation.
+- 使用 [Markdown](https://daringfireball.net/projects/markdown/) 编写文档。
 
-## Additional Notes
+## 其他注意事项
 
-### Issue and Pull Request Labels
+### 问题和 Pull Request 标签
 
-This section lists the labels we use to help us track and manage issues and pull requests.
+本节列出了我们用来帮助跟踪和管理问题和 pull request 的标签。
 
-- `bug` - Issues that are bugs.
-- `enhancement` - Issues that are feature requests.
-- `documentation` - Issues or pull requests related to documentation.
-- `good first issue` - Good for newcomers.
+- `bug` - 错误问题。
+- `enhancement` - 功能请求问题。
+- `documentation` - 与文档相关的问题或 pull request。
+- `good first issue` - 适合新手的问题。
 
-## Getting Help
+## 获取帮助
 
-- Join [Discord](https://discord.gg/ai16z)
-- Check [FAQ](docs/community/faq.md)
-- Create GitHub issues
+- 加入 [Discord](https://discord.gg/ai16z)
+- 查看 [FAQ](docs/community/faq.md)
+- 创建 GitHub 问题
 
-## Additional Resources
+## 其他资源
 
-- [Local Development Guide](docs/guides/local-development.md)
-- [Configuration Guide](docs/guides/configuration.md)
-- [API Documentation](docs/api)
+- [本地开发指南](docs/guides/local-development.md)
+- [配置指南](docs/guides/configuration.md)
+- [API 文档](docs/api)
 
-## Contributor Guide
+## 贡献者指南
 
-Welcome to the Eliza contributor guide! This document is designed to help you understand how you can be part of building the future of autonomous AI agents, regardless of your technical background.
+欢迎来到 Eliza 贡献者指南！本文档旨在帮助您了解如何成为构建自主 AI 代理未来的一部分，无论您的技术背景如何。
 
-### Code of Conduct
+### 行为准则
 
-#### Our Pledge
+#### 我们的承诺
 
-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+为了营造一个开放和欢迎的环境，我们作为贡献者和维护者承诺，使每个人在我们的项目和社区中的参与都成为一种无骚扰的体验，无论年龄、体型、残疾、种族、性别特征、性别认同和表达、经验水平、教育、社会经济地位、国籍、个人外貌、种族、宗教或性取向如何。
 
-#### Our Standards
+#### 我们的标准
 
-Examples of behavior that contributes to creating a positive environment include:
+有助于创造积极环境的行为示例包括：
 
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
+- 使用欢迎和包容的语言
+- 尊重不同的观点和经验
+- 优雅地接受建设性批评
+- 专注于对社区最有利的事情
+- 对其他社区成员表现出同理心
 
-Examples of unacceptable behavior include:
+不可接受行为的示例包括：
 
-- The use of sexualized language or imagery and unwelcome sexual attention or advances
-- Trolling, insulting/derogatory comments, and personal or political attacks
-- Public or private harassment
-- Publishing others' private information without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a professional setting
+- 使用性化语言或图像以及不受欢迎的性关注或挑逗
+- 挑衅、侮辱/贬低性评论和个人或政治攻击
+- 公开或私下骚扰
+- 未经明确许可发布他人的私人信息
+- 其他在专业环境中合理认为不适当的行为
 
-#### Our Responsibilities
+#### 我们的责任
 
-Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
+项目维护者有责任澄清可接受行为的标准，并期望对任何不可接受行为的实例采取适当和公平的纠正措施。
 
-Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
+项目维护者有权利和责任删除、编辑或拒绝与本行为准则不一致的评论、提交、代码、wiki 编辑、问题和其他贡献，或暂时或永久禁止任何贡献者因其他他们认为不适当、威胁、冒犯或有害的行为。
 
-#### Scope
+#### 范围
 
-This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
+本行为准则适用于项目空间内以及当个人代表项目或其社区时的公共空间。代表项目或社区的示例包括使用官方项目电子邮件地址，通过官方社交媒体帐户发布，或在在线或离线活动中担任指定代表。
 
-Thank you for contributing to Eliza and helping build the future of autonomous AI agents! 🎉
+感谢您为 Eliza 做出贡献并帮助构建自主 AI 代理的未来！ 🎉

@@ -6,34 +6,28 @@ import styles from "./styles.module.css";
 const FeatureList = [
   {
     icon: "🤖",
-    title: "Multi-Agent Framework",
+    title: "多代理框架",
     description: (
       <>
-        Build and deploy <strong>autonomous AI agents</strong> with consistent
-        personalities across Discord, Twitter, and Telegram. Full support for
-        voice, text, and media interactions.
+        构建和部署具有一致个性的<strong>自主AI代理</strong>，支持Discord、Twitter和Telegram。全面支持语音、文本和媒体交互。
       </>
     ),
   },
   {
     icon: "🧠",
-    title: "Advanced Capabilities",
+    title: "高级功能",
     description: (
       <>
-        Built-in RAG memory system, document processing, media analysis, and
-        autonomous trading capabilities. Supports multiple AI models including
-        Llama, GPT-4, and Claude.
+        内置RAG记忆系统、文档处理、媒体分析和自主交易功能。支持包括Llama、GPT-4和Claude在内的多种AI模型。
       </>
     ),
   },
   {
     icon: "🔌",
-    title: "Extensible Design",
+    title: "可扩展设计",
     description: (
       <>
-        Create custom actions, add new platform integrations, and extend
-        functionality through a <b>modular plugin system</b>. Full TypeScript
-        support.
+        通过<b>模块化插件系统</b>创建自定义操作、添加新平台集成并扩展功能。全面支持TypeScript。
       </>
     ),
   },

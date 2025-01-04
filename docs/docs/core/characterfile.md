@@ -2,22 +2,22 @@
 sidebar_position: 4
 ---
 
-# 📝 Character Files
+# 📝 角色文件
 
-Character files are JSON-formatted configurations that define an AI character's personality, knowledge, and behavior patterns. This guide explains how to create effective character files for use with Eliza agents.
+角色文件是定义AI角色的个性、知识和行为模式的JSON格式配置。本指南解释了如何为Eliza代理创建有效的角色文件。
 
 ---
 
-## Overview
+## 概述
 
-A `characterfile` implements the [Character](/api/type-aliases/character) type and defines the character's:
+`characterfile` 实现了 [Character](/api/type-aliases/character) 类型，并定义了角色的：
 
-- Core identity and behavior
-- Model provider configuration
-- Client settings and capabilities
-- Interaction examples and style guidelines
+- 核心身份和行为
+- 模型提供者配置
+- 客户端设置和功能
+- 互动示例和风格指南
 
-**Example:**
+**示例：**
 
 ```json
 {
@@ -27,33 +27,33 @@ A `characterfile` implements the [Character](/api/type-aliases/character) type a
         "voice": { "model": "en_US-male-medium" }
     },
     "bio": [
-        "Built a strong economy and reduced inflation.",
-        "Promises to make America the crypto capital and restore affordability."
+        "建立了强大的经济并降低了通货膨胀。",
+        "承诺使美国成为加密货币之都并恢复可负担性。"
     ],
     "lore": [
-        "Secret Service allocations used for election interference.",
-        "Promotes WorldLibertyFi for crypto leadership."
+        "特勤局分配用于选举干预。",
+        "推广WorldLibertyFi以领导加密货币。"
     ],
     "knowledge": [
-        "Understands border issues, Secret Service dynamics, and financial impacts on families."
+        "了解边境问题、特勤局动态及对家庭的财务影响。"
     ],
     "messageExamples": [
         {
             "user": "{{user1}}",
-            "content": { "text": "What about the border crisis?" },
-            "response": "Current administration lets in violent criminals. I secured the border; they destroyed it."
+            "content": { "text": "边境危机怎么样了？" },
+            "response": "现任政府让暴力罪犯入境。我巩固了边境，他们摧毁了它。"
         }
     ],
     "postExamples": [
-        "End inflation and make America affordable again.",
-        "America needs law and order, not crime creation."
+        "结束通货膨胀，让美国再次可负担。",
+        "美国需要法律和秩序，而不是犯罪制造。"
     ]
 }
 ```
 
 ---
 
-## Core Components
+## 核心组件
 
 ```json
 {
@@ -67,136 +67,136 @@ A `characterfile` implements the [Character](/api/type-aliases/character) type a
         "model": "CharacterModel",
         "embeddingModel": "EmbeddingModelName"
     },
-    "bio": "Character biography or description",
+    "bio": "角色传记或描述",
     "lore": [
-        "Storyline or backstory element 1",
-        "Storyline or backstory element 2"
+        "故事线或背景元素1",
+        "故事线或背景元素2"
     ],
-    "messageExamples": [["Message example 1", "Message example 2"]],
-    "postExamples": ["Post example 1", "Post example 2"],
+    "messageExamples": [["消息示例1", "消息示例2"]],
+    "postExamples": ["帖子示例1", "帖子示例2"],
     "topics": ["Topic1", "Topic2"],
     "adjectives": ["Adjective1", "Adjective2"],
     "style": {
-        "all": ["All style guidelines"],
-        "chat": ["Chat-specific style guidelines"],
-        "post": ["Post-specific style guidelines"]
+        "all": ["所有风格指南"],
+        "chat": ["聊天特定风格指南"],
+        "post": ["帖子特定风格指南"]
     }
 }
 ```
 
-### Key Fields
+### 关键字段
 
-#### `name` (required)
+#### `name` (必需)
 
-The character's display name for identification and in conversations.
+用于识别和对话的角色显示名称。
 
-#### `modelProvider` (required)
+#### `modelProvider` (必需)
 
-Specifies the AI model provider. Supported options from [ModelProviderName](/api/enumerations/modelprovidername) include `anthropic`, `llama_local`, `openai`, and others.
+指定AI模型提供者。支持的选项包括 `anthropic`、`llama_local`、`openai` 等。
 
-#### `clients` (required)
+#### `clients` (必需)
 
-Array of supported client types from [Clients](/api/enumerations/clients) e.g., `discord`, `direct`, `twitter`, `telegram`, `farcaster`.
+支持的客户端类型数组，例如 `discord`、`direct`、`twitter`、`telegram`、`farcaster`。
 
 #### `bio`
 
-Character background as a string or array of statements.
+角色背景信息，可以是字符串或语句数组。
 
-- Contains biographical information about the character
-- Can be a single comprehensive biography or multiple shorter statements
-- Multiple statements are randomized to create variety in responses
+- 包含角色的传记信息
+- 可以是单个综合传记或多个简短语句
+- 多个语句随机化以创建多样化的响应
 
-Example:
+示例：
 
 ```json
 "bio": [
-  "Mark Andreessen is an American entrepreneur and investor",
-  "Co-founder of Netscape and Andreessen Horowitz",
-  "Pioneer of the early web, created NCSA Mosaic"
+  "马克·安德森是美国企业家和投资者",
+  "Netscape和Andreessen Horowitz的联合创始人",
+  "早期网络的先驱，创建了NCSA Mosaic"
 ]
 ```
 
 #### `lore`
 
-Backstory elements and unique character traits. These help define personality and can be randomly sampled in conversations.
+背景元素和独特的角色特征。这些有助于定义个性，并可以在对话中随机抽取。
 
-Example:
+示例：
 
 ```json
 "lore": [
-  "Believes strongly in the power of software to transform industries",
-  "Known for saying 'Software is eating the world'",
-  "Early investor in Facebook, Twitter, and other tech giants"
+  "坚信软件的力量可以改变行业",
+  "以'软件正在吞噬世界'而闻名",
+  "早期投资于Facebook、Twitter等科技巨头"
 ]
 ```
 
 #### `knowledge`
 
-Array used for Retrieval Augmented Generation (RAG), containing facts or references to ground the character's responses.
+用于检索增强生成（RAG）的数组，包含事实或参考资料以支持角色的响应。
 
-- Can contain chunks of text from articles, books, or other sources
-- Helps ground the character's responses in factual information
-- Knowledge can be generated from PDFs or other documents using provided tools
+- 可以包含来自文章、书籍或其他来源的文本块
+- 有助于使角色的响应基于事实信息
+- 可以使用提供的工具从PDF或其他文档生成知识
 
 #### `messageExamples`
 
-Sample conversations for establishing interaction patterns, helps establish the character's conversational style.
+用于建立互动模式的示例对话，有助于建立角色的对话风格。
 
 ```json
 "messageExamples": [
   [
-    {"user": "user1", "content": {"text": "What's your view on AI?"}},
-    {"user": "character", "content": {"text": "AI is transforming every industry..."}}
+    {"user": "user1", "content": {"text": "你对AI的看法是什么？"}},
+    {"user": "character", "content": {"text": "AI正在改变每一个行业..."}}
   ]
 ]
 ```
 
 #### `postExamples`
 
-Sample social media posts to guide content style:
+用于指导内容风格的社交媒体帖子示例：
 
 ```json
 "postExamples": [
-  "No tax on tips, overtime, or social security for seniors!",
-  "End inflation and make America affordable again."
+  "小费、加班费和老年人社会保障不征税！",
+  "结束通货膨胀，让美国再次可负担。"
 ]
 ```
 
-### Style Configuration
+### 风格配置
 
-Contains three key sections:
+包含三个关键部分：
 
-1. `all`: General style instructions for all interactions
-2. `chat`: Specific instructions for chat interactions
-3. `post`: Specific instructions for social media posts
+1. `all`: 所有互动的通用风格说明
+2. `chat`: 聊天互动的特定说明
+3. `post`: 社交媒体帖子的特定说明
 
-Each section can contain multiple instructions that guide the character's communication style.
+每个部分可以包含多个指导角色沟通风格的说明。
 
-The `style` object defines behavior patterns across contexts:
+`style` 对象定义了跨上下文的行为模式：
 
 ```json
 "style": {
-  "all": ["maintain technical accuracy", "be approachable and clear"],
-  "chat": ["ask clarifying questions", "provide examples when helpful"],
-  "post": ["share insights concisely", "focus on practical applications"]
+  "all": ["保持技术准确性", "亲切且清晰"],
+  "chat": ["提出澄清问题", "在有帮助时提供示例"],
+  "post": ["简明分享见解", "关注实际应用"]
 }
 ```
 
-### Topics Array
+### 主题数组
 
-- List of subjects the character is interested in or knowledgeable about
-- Used to guide conversations and generate relevant content
-- Helps maintain character consistency
+- 角色感兴趣或了解的主题列表
+- 用于指导对话和生成相关内容
+- 有助于保持角色一致性
 
-### Adjectives Array
+### 形容词数组
 
-- Words that describe the character's traits and personality
-- Used for generating responses with consistent tone
-- Can be used in "Mad Libs" style content generation
+- 描述角色特征和个性的词语
+- 用于生成具有一致语气的响应
+- 可用于“填字游戏”风格的内容生成
 
-### Settings Configuration
+### 设置配置
 
-The `settings` object defines additional configurations like secrets and voice models.
+`settings` 对象定义了额外的配置，如密钥和语音模型。
 
 ```json
 "settings": {
@@ -207,9 +207,9 @@ The `settings` object defines additional configurations like secrets and voice m
 }
 ```
 
-### Templates Configuration
+### 模板配置
 
-The `templates` object defines customizable prompt templates used for various tasks and interactions. Below is the list of available templates:
+`templates` 对象定义了用于各种任务和互动的可定制提示模板。以下是可用模板的列表：
 
 - `goalsTemplate`
 - `factsTemplate`
@@ -227,17 +227,17 @@ The `templates` object defines customizable prompt templates used for various ta
 - `discordShouldRespondTemplate`
 - `discordMessageHandlerTemplate`
 
-### Example: Twitter Post Template
+### 示例：Twitter帖子模板
 
-Here’s an example of a `twitterPostTemplate`:
+以下是一个 `twitterPostTemplate` 示例：
 
 ```js
 templates: {
     twitterPostTemplate: `
-# Areas of Expertise
+# 专业领域
 {{knowledge}}
 
-# About {{agentName}} (@{{twitterUserName}}):
+# 关于 {{agentName}} (@{{twitterUserName}}):
 {{bio}}
 {{lore}}
 {{topics}}
@@ -248,58 +248,58 @@ templates: {
 
 {{postDirections}}
 
-# Task: Generate a post in the voice and style and perspective of {{agentName}} @{{twitterUserName}}.
-Write a 1-3 sentence post that is {{adjective}} about {{topic}} (without mentioning {{topic}} directly), from the perspective of {{agentName}}. Do not add commentary or acknowledge this request, just write the post.
-Your response should not contain any questions. Brief, concise statements only. The total character count MUST be less than {{maxTweetLength}}. No emojis. Use \\n\\n (double spaces) between statements.`,
+# 任务：以 {{agentName}} @{{twitterUserName}} 的声音、风格和视角生成一条帖子。
+写一条1-3句的帖子，内容是 {{adjective}} 关于 {{topic}}（不直接提及 {{topic}}），从 {{agentName}} 的角度出发。不要添加评论或承认此请求，只写帖子。
+你的回应不应包含任何问题。简短、简明的陈述。总字符数必须少于 {{maxTweetLength}}。不使用表情符号。使用 \\n\\n（双空格）分隔陈述。`,
 }
 ```
 
 ---
 
-## Example: Complete Character File
+## 示例：完整角色文件
 
 ```json
 {
     "name": "TechAI",
     "modelProvider": "anthropic",
     "clients": ["discord", "direct"],
-    "bio": "AI researcher and educator focused on practical applications",
+    "bio": "专注于实际应用的AI研究员和教育者",
     "lore": [
-        "Pioneer in open-source AI development",
-        "Advocate for AI accessibility"
+        "开源AI开发的先驱",
+        "AI可及性的倡导者"
     ],
     "messageExamples": [
         [
             {
                 "user": "{{user1}}",
-                "content": { "text": "Can you explain how AI models work?" }
+                "content": { "text": "你能解释一下AI模型是如何工作的吗？" }
             },
             {
                 "user": "TechAI",
                 "content": {
-                    "text": "Think of AI models like pattern recognition systems."
+                    "text": "把AI模型想象成模式识别系统。"
                 }
             }
         ]
     ],
     "postExamples": [
-        "Understanding AI doesn't require a PhD - let's break it down simply",
-        "The best AI solutions focus on real human needs"
+        "理解AI不需要博士学位 - 让我们简单地分解",
+        "最好的AI解决方案关注实际的人类需求"
     ],
     "topics": [
-        "artificial intelligence",
-        "machine learning",
-        "technology education"
+        "人工智能",
+        "机器学习",
+        "技术教育"
     ],
     "style": {
         "all": [
-            "explain complex topics simply",
-            "be encouraging and supportive"
+            "简单解释复杂话题",
+            "鼓励和支持"
         ],
-        "chat": ["use relevant examples", "check understanding"],
-        "post": ["focus on practical insights", "encourage learning"]
+        "chat": ["使用相关示例", "检查理解"],
+        "post": ["关注实际见解", "鼓励学习"]
     },
-    "adjectives": ["knowledgeable", "approachable", "practical"],
+    "adjectives": ["知识渊博", "平易近人", "实用"],
     "settings": {
         "model": "claude-3-opus-20240229",
         "voice": { "model": "en-US-neural" }
@@ -309,73 +309,75 @@ Your response should not contain any questions. Brief, concise statements only. 
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Randomization for Variety**
+1. **随机化以增加多样性**
 
-- Break bio and lore into smaller chunks
-- This creates more natural, varied responses
-- Prevents repetitive or predictable behavior
+- 将传记和背景分成较小的块
+- 这会创建更自然、多样化的响应
+- 防止重复或可预测的行为
 
-2. **Knowledge Management**
+2. **知识管理**
 
-Use the provided tools to convert documents into knowledge:
+使用提供的工具将文档转换为知识：
 
 - [folder2knowledge](https://github.com/elizaos/characterfile/blob/main/scripts/folder2knowledge.js)
 - [knowledge2character](https://github.com/elizaos/characterfile/blob/main/scripts/knowledge2character.js)
 - [tweets2character](https://github.com/elizaos/characterfile/blob/main/scripts/tweets2character.js)
 
-Example:
+示例：
 
 ```bash
 npx folder2knowledge <path/to/folder>
 npx knowledge2character <character-file> <knowledge-file>
 ```
 
-3. **Style Instructions**
+3. **风格说明**
 
-- Be specific about communication patterns
-- Include both dos and don'ts
-- Consider platform-specific behavior (chat vs posts)
+- 具体说明沟通模式
+- 包括做与不做
+- 考虑平台特定行为（聊天与帖子）
 
-4. **Message Examples**
+4. **消息示例**
 
-- Include diverse scenarios
-- Show character-specific responses
-- Demonstrate typical interaction patterns
-
----
-
-## Tips for Quality
-
-1. **Bio and Lore**
-
-- Mix factual and personality-defining information
-- Include both historical and current details
-- Break into modular, reusable pieces
-
-2. **Style Instructions**
-
-- Be specific about tone and mannerisms
-- Include platform-specific guidance
-- Define clear boundaries and limitations
-
-3. **Examples**
-
-- Cover common scenarios
-- Show character-specific reactions
-- Demonstrate proper tone and style
-
-4. **Knowledge**
-
-- Focus on relevant information
-- Organize in digestible chunks
-- Update regularly to maintain relevance
+- 包括多样化的场景
+- 显示角色特定的响应
+- 展示典型的互动模式
 
 ---
 
-## Further Reading
+## 质量提示
 
-- [Agents Documentation](./agents.md)
-- [Model Providers](../../advanced/fine-tuning)
-- [Client Integration](../../packages/clients)
+1. **传记和背景**
+
+- 混合事实和定义个性的信息
+- 包括历史和当前细节
+- 分成模块化、可重用的部分
+
+2. **风格说明**
+
+- 具体说明语气和习惯
+- 包括平台特定的指导
+- 定义明确的边界和限制
+
+3. **示例**
+
+- 涵盖常见场景
+- 显示角色特定的反应
+- 展示正确的语气和风格
+
+4. **知识**
+
+- 关注相关信息
+- 以易消化的块组织
+- 定期更新以保持相关性
+
+---
+
+## 进一步阅读
+
+- [代理文档](./agents.md)
+- [模型提供者](../../advanced/fine-tuning)
+- [客户端集成](../../packages/clients)
+
+---

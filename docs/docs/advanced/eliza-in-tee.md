@@ -2,66 +2,66 @@
 sidebar_position: 17
 ---
 
-# 🫖 Eliza in TEE
+# 🫖 Eliza在TEE中
 
 ![](/img/eliza_in_tee.jpg)
 
-## Overview
+## 概述
 
-The Eliza agent can be deployed in a TEE environment to ensure the security and privacy of the agent's data. This guide will walk you through the process of setting up and running an Eliza agent in a TEE environment by utilizing the TEE Plugin in the Eliza Framework.
+Eliza代理可以部署在TEE环境中，以确保代理数据的安全性和隐私性。本指南将引导您通过使用Eliza框架中的TEE插件，在TEE环境中设置和运行Eliza代理的过程。
 
-### Background
+### 背景
 
-The TEE Plugin in the Eliza Framework is built on top of the [Dstack SDK](https://github.com/Dstack-TEE/dstack), which is designed to simplify the steps for developers to deploy programs to CVM (Confidential VM), and to follow the security best practices by default. The main features include:
+Eliza框架中的TEE插件是基于[Dstack SDK](https://github.com/Dstack-TEE/dstack)构建的，旨在简化开发人员将程序部署到CVM（保密虚拟机）的步骤，并默认遵循安全最佳实践。其主要功能包括：
 
-- Convert any docker container to a CVM image to deploy on supported TEEs
-- Remote Attestation API and a chain-of-trust visualization on Web UI
-- Automatic RA-HTTPS wrapping with content addressing domain on 0xABCD.dstack.host
-- Decouple the app execution and state persistent from specific hardware with decentralized Root-of-Trust
-
----
-
-## Core Components
-
-Eliza's TEE implementation consists of two primary providers that handle secure key management operations and remote attestations.
-
-These components work together to provide:
-
-1. Secure key derivation within the TEE
-2. Verifiable proof of TEE execution
-3. Support for both development (simulator) and production environments
-
-The providers are typically used together, as seen in the wallet key derivation process where each derived key includes an attestation quote to prove it was generated within the TEE environment.
+- 将任何Docker容器转换为CVM镜像，以部署在支持的TEE上
+- 远程认证API和Web UI上的信任链可视化
+- 在0xABCD.dstack.host上使用内容寻址域自动进行RA-HTTPS封装
+- 通过去中心化的信任根，将应用程序执行和状态持久化与特定硬件解耦
 
 ---
 
-### Derive Key Provider
+## 核心组件
 
-The DeriveKeyProvider enables secure key derivation within TEE environments. It supports:
+Eliza的TEE实现由两个主要提供者组成，负责安全密钥管理操作和远程认证。
 
-- Multiple TEE modes:
-    - `LOCAL`: Connects to simulator at `localhost:8090` for local development on Mac/Windows
-    - `DOCKER`: Connects to simulator via `host.docker.internal:8090` for local development on Linux
-    - `PRODUCTION`: Connects to actual TEE environment when deployed to the [TEE Cloud](https://teehouse.vercel.app)
+这些组件共同提供以下功能：
 
-Key features:
+1. 在TEE内进行安全密钥派生
+2. 可验证的TEE执行证明
+3. 支持开发（模拟器）和生产环境
 
-- Support to deriveEd25519 (Solana) and ECDSA (EVM) keypairs
-- Generates deterministic keys based on a secret salt and agent ID
-- Includes remote attestation for each derived key
-- Supports raw key derivation for custom use cases
+通常情况下，这些提供者一起使用，例如在钱包密钥派生过程中，每个派生密钥都包含一个认证报告，以证明它是在TEE环境中生成的。
 
-Example usage:
+---
+
+### 密钥派生提供者
+
+DeriveKeyProvider在TEE环境中实现了安全密钥派生。它支持：
+
+- 多种TEE模式：
+    - `LOCAL`：在Mac/Windows上进行本地开发时连接到`localhost:8090`的模拟器
+    - `DOCKER`：在Linux上进行本地开发时通过`host.docker.internal:8090`连接到模拟器
+    - `PRODUCTION`：在部署到[TEE云](https://teehouse.vercel.app)时连接到实际TEE环境
+
+主要特点：
+
+- 支持派生Ed25519（Solana）和ECDSA（EVM）密钥对
+- 基于秘密盐和代理ID生成确定性密钥
+- 包含每个派生密钥的远程认证
+- 支持自定义用例的原始密钥派生
+
+示例用法：
 
 ```typescript
 const provider = new DeriveKeyProvider(teeMode);
-// For Solana
+// 对于Solana
 const { keypair, attestation } = await provider.deriveEd25519Keypair(
     "/",
     secretSalt,
     agentId,
 );
-// For EVM
+// 对于EVM
 const { keypair, attestation } = await provider.deriveEcdsaKeypair(
     "/",
     secretSalt,
@@ -71,87 +71,87 @@ const { keypair, attestation } = await provider.deriveEcdsaKeypair(
 
 ---
 
-### Remote Attestation Provider
+### 远程认证提供者
 
-The RemoteAttestationProvider handles TEE environment verification and quote generation. It:
+RemoteAttestationProvider处理TEE环境的验证和报告生成。它：
 
-- Connects to the same TEE modes as DeriveKeyProvider
-- Generates TDX quotes with replay protection (RTMRs)
-- Provides attestation data that can be verified by third parties
+- 连接到与DeriveKeyProvider相同的TEE模式
+- 生成带有重放保护（RTMRs）的TDX报告
+- 提供可由第三方验证的认证数据
 
-Key features:
+主要特点：
 
-- Generates attestation quotes with custom report data
-- Includes timestamp for quote verification
-- Supports both simulator and production environments
+- 生成带有自定义报告数据的认证报告
+- 包含报告验证的时间戳
+- 支持模拟器和生产环境
 
-Example usage:
+示例用法：
 
 ```typescript
 const provider = new RemoteAttestationProvider(teeMode);
 const quote = await provider.generateAttestation(reportData);
 ```
 
-## Tutorial
+## 教程
 
 ---
 
-### Prerequisites
+### 先决条件
 
-Before getting started with Eliza, ensure you have:
+在开始使用Eliza之前，请确保您已经：
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [Orbstack](https://orbstack.dev/) (Orbstack is recommended)
-- For Mac/Windows: Check the prerequisites from [Quickstart Guide](../quickstart.md)
-- For Linux: You just need Docker
+- 安装[Docker Desktop](https://www.docker.com/products/docker-desktop/)或[Orbstack](https://orbstack.dev/)（推荐使用Orbstack）
+- 对于Mac/Windows：请查看[快速入门指南](../quickstart.md)中的先决条件
+- 对于Linux：您只需要安装Docker
 
 ---
 
-### Environment Setup
+### 环境设置
 
-To set up your environment for TEE development:
+为了设置TEE开发环境，请执行以下步骤：
 
-1. **Configure TEE Mode**
+1. **配置TEE模式**
 
-    Set the `TEE_MODE` environment variable to one of:
+    将`TEE_MODE`环境变量设置为以下之一：
 
     ```env
-    # For Mac/Windows local development
+    # 用于Mac/Windows本地开发
     TEE_MODE=LOCAL
 
-    # For Linux/Docker local development
+    # 用于Linux/Docker本地开发
     TEE_MODE=DOCKER
 
-    # For production deployment
+    # 用于生产部署
     TEE_MODE=PRODUCTION
     ```
 
-2. **Set Required Environment Variables**
+2. **设置所需的环境变量**
 
     ```env
-    # Required for key derivation
+    # 用于密钥派生
     WALLET_SECRET_SALT=your_secret_salt
     ```
 
-3. **Start the TEE Simulator**
+3. **启动TEE模拟器**
 
     ```bash
     docker pull phalanetwork/tappd-simulator:latest
-    # by default the simulator is available in localhost:8090
+    # 默认情况下，模拟器在localhost:8090上可用
     docker run --rm -p 8090:8090 phalanetwork/tappd-simulator:latest
     ```
 
-### Run an Eliza Agent Locally with TEE Simulator
+### 在本地使用TEE模拟器运行Eliza代理
 
-1. **Configure Eliza Agent**
+1. **配置Eliza代理**
 
-    Go through the [configuration guide](../guides/configuration.md) to set up your Eliza agent.
+    按照[配置指南](../guides/configuration.md)设置您的Eliza代理。
 
-2. **Start the TEE Simulator**
-   Follow the simulator setup instructions above based on your TEE mode.
+2. **启动TEE模拟器**
+   根据您的TEE模式，按照上述模拟器设置说明进行操作。
 
-3. **For Mac/Windows**
+3. **对于Mac/Windows**
 
-    Make sure to set the `TEE_MODE` environment variable to `LOCAL`. Then you can install the dependencies and run the agent locally:
+    确保将`TEE_MODE`环境变量设置为`LOCAL`。然后，您可以安装依赖并在本地运行代理：
 
     ```bash
     pnpm i
@@ -159,15 +159,15 @@ To set up your environment for TEE development:
     pnpm start --character=./characters/yourcharacter.character.json
     ```
 
-4. **Verify TEE Attestation**
+4. **验证TEE认证**
 
-    You can verify the TEE attestation quote by going to the [TEE RA Explorer](https://ra-quote-explorer.vercel.app/) and pasting the attestation quote from the agent logs. Here's an example of interacting with the Eliza agent to ask for the agent's wallet address:
+    您可以通过访问[TEE RA Explorer](https://ra-quote-explorer.vercel.app/)并粘贴代理日志中的认证报告来验证TEE认证报告。以下是与Eliza代理交互以获取代理钱包地址的示例：
 
     ```bash
-    You: what's your wallet address?
+    您：你的钱包地址是什么？
     ```
 
-    Log output from the agent:
+    代理的日志输出：
 
     ```bash
     Generating attestation for:  {"agentId":"025e0996-69d7-0dce-8189-390e354fd1c1","publicKey":"9yZBmCRRFEBtA3KYokxC24igv1ijFp6tyvzKxRs3khTE"}
@@ -181,57 +181,58 @@ To set up your environment for TEE development:
     }
     ```
 
-    Take the `quote` field and paste it into the [TEE RA Explorer](https://ra-quote-explorer.vercel.app/) to verify the attestation. **Note**: The verification will be unverified since the quote is generated from the TEE simulator.
+    将`quote`字段复制并粘贴到[TEE RA Explorer](https://ra-quote-explorer.vercel.app/)中以验证认证。**注意**：由于报告是从TEE模拟器生成的，因此验证将为未验证状态。
 
     ![](https://i.imgur.com/xYGMeP4.png)
 
     ![](https://i.imgur.com/BugdNUy.png)
 
-### Build, Test, and Publish an Eliza Agent Docker Image
+---
+### 构建、测试和发布 Eliza Agent Docker 镜像
 
-Now that we have run the Eliza agent in the TEE simulator, we can build and publish an Eliza agent Docker image to prepare for deployment to a real TEE environment.
+现在我们已经在 TEE 模拟器中运行了 Eliza agent，可以构建并发布 Eliza agent Docker 镜像，为部署到真实的 TEE 环境做准备。
 
-First, you need to create a Docker account and publish your image to a container registry. Here we will use [Docker Hub](https://hub.docker.com/) as an example.
+首先，您需要创建一个 Docker 账户并将您的镜像发布到容器注册表。这里我们将使用 [Docker Hub](https://hub.docker.com/) 作为示例。
 
-Login to Docker Hub:
+登录 Docker Hub：
 
 ```bash
 docker login
 ```
 
-Build the Docker image:
+构建 Docker 镜像：
 
 ```bash
-# For Linux/AMD64 machines run
+# 对于 Linux/AMD64 机器运行
 docker build -t username/eliza-agent:latest .
 
-# For architecture other than AMD64, run
+# 对于非 AMD64 架构，运行
 docker buildx build --platform=linux/amd64 -t username/eliza-agent:latest .
 ```
 
-For Linux/AMD64 machines, you can now test the agent locally by updating the `TEE_MODE` environment variable to `DOCKER` and setting the environment variables in the [docker-compose.yaml](https://github.com/elizaos/eliza/blob/main/docker-compose.yaml) file. Once you have done that, you can start the agent by running:
+对于 Linux/AMD64 机器，您现在可以通过将 `TEE_MODE` 环境变量更新为 `DOCKER` 并在 [docker-compose.yaml](https://github.com/elizaos/eliza/blob/main/docker-compose.yaml) 文件中设置环境变量来本地测试 agent。完成后，您可以通过运行以下命令启动 agent：
 
-> **Note**: Make sure the TEE simulator is running before starting the agent through docker compose.
+> **注意**：在通过 docker compose 启动 agent 之前，请确保 TEE 模拟器正在运行。
 
 ```bash
 docker compose up
 ```
 
-Publish the Docker image to a container registry:
+将 Docker 镜像发布到容器注册表：
 
 ```bash
 docker push username/eliza-agent:latest
 ```
 
-Now we are ready to deploy the Eliza agent to a real TEE environment.
+现在我们准备将 Eliza agent 部署到真实的 TEE 环境。
 
-### Run an Eliza Agent in a Real TEE Environment
+### 在真实的 TEE 环境中运行 Eliza Agent
 
-Before deploying the Eliza agent to a real TEE environment, you need to create a new TEE account on the [TEE Cloud](https://teehouse.vercel.app). Reach out to Phala Network on [Discord](https://discord.gg/phalanetwork) if you need help.
+在将 Eliza agent 部署到真实的 TEE 环境之前，您需要在 [TEE Cloud](https://teehouse.vercel.app) 上创建一个新的 TEE 账户。如果需要帮助，请联系 Phala Network 的 [Discord](https://discord.gg/phalanetwork)。
 
-Next, you will need to take the docker-compose.yaml file in the root folder of the project and edit it based on your agent configuration.
+接下来，您需要在项目根文件夹中找到 docker-compose.yaml 文件，并根据您的 agent 配置进行编辑。
 
-> **Note**: The API Keys and other secret environment variables should be set in your secret environment variables configuration in the TEE Cloud dashboard.
+> **注意**：API 密钥和其他秘密环境变量应在 TEE Cloud 仪表板中的秘密环境变量配置中设置。
 
 ```yaml
 # docker-compose.yaml
@@ -285,36 +286,36 @@ volumes:
     tee:
 ```
 
-Now you can deploy the Eliza agent to a real TEE environment. Go to the [TEE Cloud](https://teehouse.vercel.app) and click on the `Create VM` button to configure your Eliza agent deployment.
+现在您可以将 Eliza agent 部署到真实的 TEE 环境。前往 [TEE Cloud](https://teehouse.vercel.app) 并点击 `Create VM` 按钮来配置您的 Eliza agent 部署。
 
-Click on the `Compose Manifest Mode` tab and paste the docker-compose.yaml file content into the `Compose Manifest` field.
+点击 `Compose Manifest Mode` 选项卡，并将 docker-compose.yaml 文件内容粘贴到 `Compose Manifest` 字段中。
 
 ![Compose Manifest](https://i.imgur.com/wl6pddX.png)
 
-Next, go to the `Resources` tab and configure your VM resources.
+接下来，前往 `Resources` 选项卡并配置您的 VM 资源。
 
-> **Note**: The `CPU` and `Memory` resources should be greater than the minimum requirements for your agent configuration (Recommended: 2 CPU, 4GB Memory, 50GB Disk).
+> **注意**：`CPU` 和 `Memory` 资源应大于您的 agent 配置的最低要求（推荐：2 CPU，4GB 内存，50GB 磁盘）。
 
 ![Resources](https://i.imgur.com/HsmupO1.png)
 
-Finally, click on the `Submit` button to deploy your Eliza agent.
+最后，点击 `Submit` 按钮以部署您的 Eliza agent。
 
-This will take a few minutes to complete. Once the deployment is complete, you can click on the `View` button to view your Eliza agent.
+这将需要几分钟时间完成。部署完成后，您可以点击 `View` 按钮查看您的 Eliza agent。
 
-Here is an example of a deployed agent named `vitailik2077`:
+以下是一个名为 `vitailik2077` 的已部署 agent 示例：
 
 ![Deployed Agent](https://i.imgur.com/ie8gpg9.png)
 
-I can go to the dashboard and view the remote attestation info:
+我可以前往仪表板并查看远程认证信息：
 
 ![Agent Dashboard](https://i.imgur.com/vUqHGjF.png)
 
-Click on the `Logs` tab to view the agent logs.
+点击 `Logs` 选项卡查看 agent 日志。
 
 ![Agent Logs](https://i.imgur.com/aU3i0Dv.png)
 
-Now we can verify the REAL TEE attestation quote by going to the [TEE RA Explorer](https://ra-quote-explorer.vercel.app/) and pasting the attestation quote from the agent logs.
+现在我们可以通过访问 [TEE RA Explorer](https://ra-quote-explorer.vercel.app/) 并粘贴来自 agent 日志的认证引文来验证真实的 TEE 认证引文。
 
 ![TEE RA Explorer](https://i.imgur.com/TJ5299l.png)
 
-Congratulations! You have successfully run an Eliza agent in a real TEE environment.
+恭喜！您已成功在真实的 TEE 环境中运行 Eliza agent。

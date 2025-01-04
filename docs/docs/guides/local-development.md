@@ -2,117 +2,116 @@
 sidebar_position: 12
 ---
 
-# 💻 Local Development Guide
+# 💻 本地开发指南
 
-This guide covers setting up and working with Eliza in a development environment.
+本指南涵盖在开发环境中设置和使用 Eliza 的步骤。
 
-## Prerequisites
+## 先决条件
 
-Before you begin, ensure you have:
+在开始之前，请确保您已具备：
 
 ```bash
-# Required
+# 必需
 Node.js 23+
 pnpm
 Git
 
-# Optional but recommended
+# 可选但推荐
 VS Code
-Docker (for database development)
-CUDA Toolkit (for GPU acceleration)
+Docker（用于数据库开发）
+CUDA Toolkit（用于 GPU 加速）
 ```
 
-## Initial Setup
+## 初始设置
 
-### 1. Repository Setup
+### 1. 仓库设置
 
 ```bash
-# Clone the repository
+# 克隆仓库
 git clone https://github.com/elizaos/eliza.git
 cd eliza
 
-# Install dependencies
+# 安装依赖
 pnpm install
 
-# Install optional dependencies
+# 安装可选依赖
 pnpm install --include=optional sharp
 ```
 
-### 2. Environment Configuration
+### 2. 环境配置
 
-Create your development environment file:
+创建您的开发环境文件：
 
 ```bash
 cp .env.example .env
 ```
 
-Configure essential development variables:
+配置基本的开发变量：
 
 ```bash
-# Minimum required for local development
-OPENAI_API_KEY=sk-*           # Optional, for OpenAI features
-X_SERVER_URL=                 # Leave blank for local inference
-XAI_API_KEY=                 # Leave blank for local inference
-XAI_MODEL=meta-llama/Llama-3.1-7b-instruct  # Local model
+# 本地开发的最低要求
+OPENAI_API_KEY=sk-*           # 可选，用于 OpenAI 功能
+X_SERVER_URL=                 # 本地推理时留空
+XAI_API_KEY=                 # 本地推理时留空
+XAI_MODEL=meta-llama/Llama-3.1-7b-instruct  # 本地模型
 ```
 
-### 3. Local Model Setup
+### 3. 本地模型设置
 
-For local inference without API dependencies:
+用于无 API 依赖的本地推理：
 
 ```bash
-# Install CUDA support for NVIDIA GPUs
+# 为 NVIDIA GPU 安装 CUDA 支持
 npx --no node-llama-cpp source download --gpu cuda
 
-# The system will automatically download models from
-# Hugging Face on first run
+# 系统将在首次运行时自动从 Hugging Face 下载模型
 ```
 
-## Development Workflow
+## 开发工作流程
 
-### Running the Development Server
+### 运行开发服务器
 
 ```bash
-# Start with default character
+# 使用默认角色启动
 pnpm run dev
 
-# Start with specific character
+# 使用特定角色启动
 pnpm run dev --characters="characters/my-character.json"
 
-# Start with multiple characters
+# 使用多个角色启动
 pnpm run dev --characters="characters/char1.json,characters/char2.json"
 ```
 
-### Development Commands
+### 开发命令
 
 ```bash
-pnpm run build          # Build the project
-pnpm run clean         # Clean build artifacts
-pnpm run dev           # Start development server
-pnpm run test          # Run tests
-pnpm run test:watch    # Run tests in watch mode
-pnpm run lint          # Lint code
+pnpm run build          # 构建项目
+pnpm run clean         # 清理构建产物
+pnpm run dev           # 启动开发服务器
+pnpm run test          # 运行测试
+pnpm run test:watch    # 监视模式下运行测试
+pnpm run lint          # 代码检查
 ```
 
-### Direct Client Chat UI
+### 直接客户端聊天界面
 
 ```
-# Open a terminal and Start with specific character
+# 打开终端并使用特定角色启动
 pnpm run dev --characters="characters/my-character.json"
 ```
 
 ```
-# Open a 2nd terminal and start the client
+# 打开第二个终端并启动客户端
 pnpm start:client
 ```
 
-Look for the message:
+查找消息：
 `  ➜  Local:   http://localhost:5173/`
-Click on that link or open a browser window to that location. Once you do that you should see the chat interface connect with the system and you can start interacting with your character.
+点击该链接或在浏览器窗口中打开该位置。完成后，您应该会看到聊天界面与系统连接，并可以开始与您的角色互动。
 
-## Database Development
+## 数据库开发
 
-### SQLite (Recommended for Development)
+### SQLite（推荐用于开发）
 
 ```typescript
 import { SqliteDatabaseAdapter } from "@elizaos/core/adapters";
@@ -121,7 +120,7 @@ import Database from "better-sqlite3";
 const db = new SqliteDatabaseAdapter(new Database("./dev.db"));
 ```
 
-### In-Memory Database (for Testing)
+### 内存数据库（用于测试）
 
 ```typescript
 import { SqlJsDatabaseAdapter } from "@elizaos/core/adapters";
@@ -129,46 +128,46 @@ import { SqlJsDatabaseAdapter } from "@elizaos/core/adapters";
 const db = new SqlJsDatabaseAdapter(new Database(":memory:"));
 ```
 
-### Schema Management
+### 模式管理
 
 ```bash
-# Create new migration
+# 创建新迁移
 pnpm run migration:create
 
-# Run migrations
+# 运行迁移
 pnpm run migration:up
 
-# Rollback migrations
+# 回滚迁移
 pnpm run migration:down
 ```
 
-## Testing
+## 测试
 
-### Running Tests
+### 运行测试
 
 ```bash
-# Run all tests
+# 运行所有测试
 pnpm test
 
-# Run specific test file
+# 运行特定测试文件
 pnpm test tests/specific.test.ts
 
-# Run tests with coverage
+# 运行带覆盖率的测试
 pnpm test:coverage
 
-# Run database-specific tests
+# 运行特定数据库的测试
 pnpm test:sqlite
 pnpm test:sqljs
 ```
 
-### Writing Tests
+### 编写测试
 
 ```typescript
 import { runAiTest } from "@elizaos/core/test_resources";
 
 describe("Feature Test", () => {
     beforeEach(async () => {
-        // Setup test environment
+        // 设置测试环境
     });
 
     it("should perform expected behavior", async () => {
@@ -186,9 +185,9 @@ describe("Feature Test", () => {
 });
 ```
 
-## Plugin Development
+## 插件开发
 
-### Creating a New Plugin
+### 创建新插件
 
 ```typescript
 // plugins/my-plugin/src/index.ts
@@ -203,7 +202,7 @@ export const myPlugin: Plugin = {
 };
 ```
 
-### Custom Action Development
+### 自定义动作开发
 
 ```typescript
 // plugins/my-plugin/src/actions/myAction.ts
@@ -214,18 +213,18 @@ export const myAction: Action = {
         return true;
     },
     handler: async (runtime: IAgentRuntime, message: Memory) => {
-        // Implementation
+        // 实现
         return true;
     },
     examples: [],
 };
 ```
 
-## Debugging
+## 调试
 
-### VS Code Configuration
+### VS Code 配置
 
-Create `.vscode/launch.json`:
+创建 `.vscode/launch.json`：
 
 ```json
 {
@@ -246,42 +245,42 @@ Create `.vscode/launch.json`:
 }
 ```
 
-### Debugging Tips
+### 调试技巧
 
-1. Enable Debug Logging
+1. 启用调试日志
 
 ```bash
-# Add to your .env file
+# 添加到您的 .env 文件
 DEBUG=eliza:*
 ```
 
-2. Use Debug Points
+2. 使用调试点
 
 ```typescript
 const debug = require("debug")("eliza:dev");
 
-debug("Operation details: %O", {
+debug("操作详情: %O", {
     operation: "functionName",
     params: parameters,
     result: result,
 });
 ```
 
-3. Memory Debugging
+3. 内存调试
 
 ```bash
-# Increase Node.js memory for development
+# 增加 Node.js 内存用于开发
 NODE_OPTIONS="--max-old-space-size=8192" pnpm run dev
 ```
 
-## Common Development Tasks
+## 常见开发任务
 
-### 1. Adding a New Character
+### 1. 添加新角色
 
 ```json
 {
     "name": "DevBot",
-    "description": "Development testing bot",
+    "description": "开发测试机器人",
     "modelProvider": "openai",
     "settings": {
         "debug": true,
@@ -290,26 +289,26 @@ NODE_OPTIONS="--max-old-space-size=8192" pnpm run dev
 }
 ```
 
-### 2. Creating Custom Services
+### 2. 创建自定义服务
 
 ```typescript
 class CustomService extends Service {
     static serviceType = ServiceType.CUSTOM;
 
     async initialize() {
-        // Setup code
+        // 设置代码
     }
 
     async process(input: any): Promise<any> {
-        // Service logic
+        // 服务逻辑
     }
 }
 ```
 
-### 3. Working with Models
+### 3. 使用模型
 
 ```typescript
-// Local model configuration
+// 本地模型配置
 const localModel = {
     modelProvider: "llamalocal",
     settings: {
@@ -318,7 +317,7 @@ const localModel = {
     },
 };
 
-// Cloud model configuration
+// 云模型配置
 const cloudModel = {
     modelProvider: "openai",
     settings: {
@@ -328,20 +327,20 @@ const cloudModel = {
 };
 ```
 
-## Performance Optimization
+## 性能优化
 
-### CUDA Setup
+### CUDA 设置
 
-For NVIDIA GPU users:
+对于 NVIDIA GPU 用户：
 
-1. Install CUDA Toolkit with cuDNN and cuBLAS
-2. Set environment variables:
+1. 安装带有 cuDNN 和 cuBLAS 的 CUDA Toolkit
+2. 设置环境变量：
 
 ```bash
 CUDA_PATH=/usr/local/cuda  # Windows: C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0
 ```
 
-### Memory Management
+### 内存管理
 
 ```typescript
 class MemoryManager {
@@ -350,101 +349,101 @@ class MemoryManager {
 
     async cleanup() {
         if (this.cache.size > this.maxSize) {
-            // Implement cleanup logic
+            // 实现清理逻辑
         }
     }
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. Model Loading Issues
+1. 模型加载问题
 
 ```bash
-# Clear model cache
+# 清除模型缓存
 rm -rf ./models/*
-# Restart with fresh download
+# 重新启动并重新下载
 ```
 
-2. Database Connection Issues
+2. 数据库连接问题
 
 ```bash
-# Test database connection
+# 测试数据库连接
 pnpm run test:db-connection
 ```
 
-3. Memory Issues
+3. 内存问题
 
 ```bash
-# Check memory usage
+# 检查内存使用情况
 node --trace-gc index.js
 ```
 
-### Development Tools
+### 开发工具
 
 ```bash
-# Generate TypeScript documentation
+# 生成 TypeScript 文档
 pnpm run docs:generate
 
-# Check for circular dependencies
+# 检查循环依赖
 pnpm run madge
 
-# Analyze bundle size
+# 分析包大小
 pnpm run analyze
 ```
 
-## Best Practices
+## 最佳实践
 
-1. Code Organization
+1. 代码组织
 
-    - Place custom actions in `custom_actions/`
-    - Keep character files in `characters/`
-    - Store test data in `tests/fixtures/`
+    - 将自定义动作放在 `custom_actions/`
+    - 将角色文件保存在 `characters/`
+    - 将测试数据存储在 `tests/fixtures/`
 
-2. Testing Strategy
+2. 测试策略
 
-    - Write unit tests for new features
-    - Use integration tests for plugins
-    - Test with multiple model providers
+    - 为新功能编写单元测试
+    - 为插件使用集成测试
+    - 使用多个模型提供商进行测试
 
-3. Git Workflow
-    - Create feature branches
-    - Follow conventional commits
-    - Keep PRs focused
+3. Git 工作流程
+    - 创建功能分支
+    - 遵循常规提交
+    - 保持 PR 集中
 
-## Additional Tools
+## 其他工具
 
-### Character Development
+### 角色开发
 
 ```bash
-# Generate character from Twitter data
+# 从 Twitter 数据生成角色
 npx tweets2character
 
-# Convert documents to knowledge base
+# 将文档转换为知识库
 npx folder2knowledge <path/to/folder>
 
-# Add knowledge to character
+# 将知识添加到角色
 npx knowledge2character <character-file> <knowledge-file>
 ```
 
-### Development Scripts
+### 开发脚本
 
 ```bash
-# Analyze codebase
+# 分析代码库
 ./scripts/analyze-codebase.ts
 
-# Extract tweets for training
+# 提取训练用推文
 ./scripts/extracttweets.js
 
-# Clean build artifacts
+# 清理构建产物
 ./scripts/clean.sh
 ```
 
-## Further Resources
+## 进一步资源
 
-- [Configuration Guide](./configuration.md) for setup details
-- [Advanced Usage](./advanced.md) for complex features
-- [API Documentation](/api) for complete API reference
-- [Contributing Guide](../contributing.md) for contribution guidelines
+- [配置指南](./configuration.md) 了解设置详情
+- [高级用法](./advanced.md) 了解复杂功能
+- [API 文档](/api) 完整的 API 参考
+- [贡献指南](../contributing.md) 了解贡献指南

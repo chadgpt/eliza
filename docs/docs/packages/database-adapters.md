@@ -1,19 +1,19 @@
-# 🔧 Database Adapters
+# 🔧 数据库适配器
 
-## Overview
+## 概述
 
-Database Adapters provide the persistence layer for Eliza, enabling storage and retrieval of memories, relationships, goals, and other core data. The system supports multiple database backends through a unified interface.
+数据库适配器为Eliza提供持久层，支持存储和检索记忆、关系、目标及其他核心数据。系统通过统一接口支持多种数据库后端。
 
-## Available Adapters
+## 可用适配器
 
-Eliza includes the following database adapters:
+Eliza包含以下数据库适配器：
 
-- **PostgreSQL Adapter** (`@eliza/adapter-postgres`) - Production-ready adapter for PostgreSQL databases
-- **SQLite Adapter** (`@eliza/adapter-sqlite`) - Lightweight adapter for SQLite, perfect for development
-- **SQL.js Adapter** (`@eliza/adapter-sqljs`) - In-memory SQLite adapter for testing
-- **Supabase Adapter** (`@eliza/adapter-supabase`) - Cloud-native adapter for Supabase
+- **PostgreSQL适配器** (`@eliza/adapter-postgres`) - 适用于生产环境的PostgreSQL数据库适配器
+- **SQLite适配器** (`@eliza/adapter-sqlite`) - 轻量级的SQLite适配器，适合开发使用
+- **SQL.js适配器** (`@eliza/adapter-sqljs`) - 用于测试的内存SQLite适配器
+- **Supabase适配器** (`@eliza/adapter-supabase`) - 云原生的Supabase适配器
 
-## Installation
+## 安装
 
 ```bash
 # PostgreSQL
@@ -29,9 +29,9 @@ pnpm add @eliza/adapter-sqljs
 pnpm add @eliza/adapter-supabase
 ```
 
-## Quick Start
+## 快速开始
 
-### SQLite (Development)
+### SQLite（开发环境）
 
 ```typescript
 import { SqliteDatabaseAdapter } from "@eliza/adapter-sqlite";
@@ -40,21 +40,21 @@ import Database from "better-sqlite3";
 const db = new SqliteDatabaseAdapter(new Database("./dev.db"));
 ```
 
-### PostgreSQL (Production)
+### PostgreSQL（生产环境）
 
 ```typescript
 import { PostgresDatabaseAdapter } from "@eliza/adapter-postgres";
 
 const db = new PostgresDatabaseAdapter({
   connectionString: process.env.DATABASE_URL,
-  // Optional connection pool settings
+  // 可选的连接池设置
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
 ```
 
-### Supabase (Cloud)
+### Supabase（云端）
 
 ```typescript
 import { SupabaseDatabaseAdapter } from "@eliza/adapter-supabase";
@@ -65,11 +65,11 @@ const db = new SupabaseDatabaseAdapter(
 );
 ```
 
-## Core Concepts
+## 核心概念
 
-### Memory Storage
+### 记忆存储
 
-Memories are the fundamental unit of storage in Eliza. They represent messages, documents, and other content with optional embeddings for semantic search.
+记忆是Eliza中存储的基本单位。它们表示消息、文档及其他内容，并可选地包含用于语义搜索的嵌入。
 
 ```typescript
 interface Memory {
@@ -86,9 +86,9 @@ interface Memory {
 }
 ```
 
-### Relationships
+### 关系
 
-Relationships track connections between users and agents:
+关系用于跟踪用户和代理之间的连接：
 
 ```typescript
 interface Relationship {
@@ -98,9 +98,9 @@ interface Relationship {
 }
 ```
 
-### Goals
+### 目标
 
-Goals track objectives and their progress:
+目标用于跟踪目标及其进展：
 
 ```typescript
 interface Goal {
@@ -113,12 +113,12 @@ interface Goal {
 }
 ```
 
-## Common Operations
+## 常见操作
 
-### Memory Management
+### 记忆管理
 
 ```typescript
-// Create a memory
+// 创建记忆
 await db.createMemory(
   {
     id: uuid(),
@@ -131,14 +131,14 @@ await db.createMemory(
   "messages",
 );
 
-// Search memories by embedding
+// 通过嵌入搜索记忆
 const similar = await db.searchMemoriesByEmbedding(embedding, {
   match_threshold: 0.8,
   count: 10,
   roomId: room.id,
 });
 
-// Get recent memories
+// 获取最近的记忆
 const recent = await db.getMemories({
   roomId: room.id,
   count: 10,
@@ -146,25 +146,25 @@ const recent = await db.getMemories({
 });
 ```
 
-### Relationship Management
+### 关系管理
 
 ```typescript
-// Create relationship
+// 创建关系
 await db.createRelationship({
   userA: user1.id,
   userB: user2.id,
 });
 
-// Get relationships for user
+// 获取用户的关系
 const relationships = await db.getRelationships({
   userId: user.id,
 });
 ```
 
-### Goal Management
+### 目标管理
 
 ```typescript
-// Create goal
+// 创建目标
 await db.createGoal({
   id: uuid(),
   roomId: room.id,
@@ -174,29 +174,29 @@ await db.createGoal({
   objectives: [],
 });
 
-// Get active goals
+// 获取活跃目标
 const goals = await db.getGoals({
   roomId: room.id,
   onlyInProgress: true,
 });
 ```
 
-## Vector Search
+## 向量搜索
 
-All adapters support vector similarity search for memory retrieval:
+所有适配器都支持用于记忆检索的向量相似性搜索：
 
 ```typescript
-// Search by embedding vector
+// 通过嵌入向量搜索
 const memories = await db.searchMemories({
   tableName: "memories",
   roomId: room.id,
-  embedding: [0.1, 0.2, ...], // 1536-dimensional vector
+  embedding: [0.1, 0.2, ...], // 1536维向量
   match_threshold: 0.8,
   match_count: 10,
   unique: true
 });
 
-// Get cached embeddings
+// 获取缓存的嵌入
 const cached = await db.getCachedEmbeddings({
   query_table_name: "memories",
   query_threshold: 0.8,
@@ -207,35 +207,35 @@ const cached = await db.getCachedEmbeddings({
 });
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Connection Pooling (PostgreSQL)
+### 连接池（PostgreSQL）
 
 ```typescript
 const db = new PostgresDatabaseAdapter({
   connectionString: process.env.DATABASE_URL,
-  max: 20, // Maximum pool size
+  max: 20, // 最大池大小
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
 ```
 
-### Memory Usage (SQLite)
+### 内存使用（SQLite）
 
 ```typescript
 const db = new SqliteDatabaseAdapter(
   new Database("./dev.db", {
-    memory: true, // In-memory database
+    memory: true, // 内存数据库
     readonly: false,
     fileMustExist: false,
   }),
 );
 ```
 
-### Caching (All Adapters)
+### 缓存（所有适配器）
 
 ```typescript
-// Enable memory caching
+// 启用内存缓存
 const memory = new MemoryManager({
   runtime,
   tableName: "messages",
@@ -244,9 +244,9 @@ const memory = new MemoryManager({
 });
 ```
 
-## Schema Management
+## 模式管理
 
-### PostgreSQL Migrations
+### PostgreSQL迁移
 
 ```sql
 -- migrations/20240318103238_remote_schema.sql
@@ -263,7 +263,7 @@ CREATE TABLE memories (
 );
 ```
 
-### SQLite Schema
+### SQLite模式
 
 ```typescript
 const sqliteTables = `
@@ -281,30 +281,30 @@ CREATE TABLE IF NOT EXISTS memories (
 `;
 ```
 
-## Error Handling
+## 错误处理
 
 ```typescript
 try {
   await db.createMemory(memory);
 } catch (error) {
   if (error.code === "SQLITE_CONSTRAINT") {
-    // Handle unique constraint violation
+    // 处理唯一约束违规
   } else if (error.code === "23505") {
-    // Handle Postgres unique violation
+    // 处理Postgres唯一违规
   } else {
-    // Handle other errors
+    // 处理其他错误
   }
 }
 ```
 
-## Extending Adapters
+## 扩展适配器
 
-To create a custom adapter, implement the `DatabaseAdapter` interface:
+要创建自定义适配器，实现`DatabaseAdapter`接口：
 
 ```typescript
 class CustomDatabaseAdapter extends DatabaseAdapter {
   async createMemory(memory: Memory, tableName: string): Promise<void> {
-    // Custom implementation
+    // 自定义实现
   }
 
   async getMemories(params: {
@@ -312,69 +312,69 @@ class CustomDatabaseAdapter extends DatabaseAdapter {
     count?: number;
     unique?: boolean;
   }): Promise<Memory[]> {
-    // Custom implementation
+    // 自定义实现
   }
 
-  // Implement other required methods...
+  // 实现其他必需的方法...
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Connection Management**
+1. **连接管理**
 
-   - Use connection pooling for PostgreSQL
-   - Close connections properly when using SQLite
-   - Handle connection errors gracefully
+   - 对PostgreSQL使用连接池
+   - 使用SQLite时正确关闭连接
+   - 优雅地处理连接错误
 
-2. **Vector Search**
+2. **向量搜索**
 
-   - Set appropriate match thresholds based on your use case
-   - Index embedding columns for better performance
-   - Cache frequently accessed embeddings
+   - 根据用例设置适当的匹配阈值
+   - 为嵌入列创建索引以提高性能
+   - 缓存频繁访问的嵌入
 
-3. **Memory Management**
+3. **内存管理**
 
-   - Implement cleanup strategies for old memories
-   - Use unique flags to prevent duplicates
-   - Consider partitioning large tables
+   - 实施旧记忆的清理策略
+   - 使用唯一标志防止重复
+   - 考虑对大表进行分区
 
-4. **Error Handling**
-   - Implement retries for transient failures
-   - Log database errors with context
-   - Use transactions for atomic operations
+4. **错误处理**
+   - 对于瞬态故障实施重试
+   - 记录带有上下文的数据库错误
+   - 对于原子操作使用事务
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Connection Timeouts**
+1. **连接超时**
 
 ```typescript
-// Increase connection timeout
+// 增加连接超时
 const db = new PostgresDatabaseAdapter({
   connectionTimeoutMillis: 5000,
 });
 ```
 
-2. **Memory Leaks**
+2. **内存泄漏**
 
 ```typescript
-// Clean up old memories periodically
+// 定期清理旧记忆
 await db.removeAllMemories(roomId, tableName);
 ```
 
-3. **Vector Search Performance**
+3. **向量搜索性能**
 
 ```typescript
-// Create appropriate indexes
+// 创建适当的索引
 CREATE INDEX embedding_idx ON memories
 USING ivfflat (embedding vector_cosine_ops)
 WITH (lists = 100);
 ```
 
-## Related Resources
+## 相关资源
 
-- [Memory Manager Documentation](../packages/core)
-- [Vector Search Guide](../packages/database-adapters)
-- [Database Schema Reference](/api)
+- [记忆管理器文档](../packages/core)
+- [向量搜索指南](../packages/database-adapters)
+- [数据库模式参考](/api)

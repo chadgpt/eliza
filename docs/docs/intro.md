@@ -2,121 +2,123 @@
 sidebar_position: 1
 ---
 
-# Introduction to Eliza
+# Eliza 介绍
 
 ![](/img/eliza_banner.jpg)
 
-_As seen powering [@DegenSpartanAI](https://x.com/degenspartanai) and [@MarcAIndreessen](https://x.com/pmairca)_
+_如在 [@DegenSpartanAI](https://x.com/degenspartanai) 和 [@MarcAIndreessen](https://x.com/pmairca) 中所见_
 
-## What is Eliza?
+## 什么是 Eliza？
 
-Eliza is a powerful multi-agent simulation framework designed to create, deploy, and manage autonomous AI agents. Built with TypeScript, it provides a flexible and extensible platform for developing intelligent agents that can interact across multiple platforms while maintaining consistent personalities and knowledge.
+Eliza 是一个强大的多代理模拟框架，旨在创建、部署和管理自主 AI 代理。使用 TypeScript 构建，它提供了一个灵活且可扩展的平台，用于开发能够跨多个平台互动的智能代理，同时保持一致的个性和知识。
 
-## Key Features
+## 主要特点
 
-### Core Capabilities
+### 核心能力
 
-- **Multi-Agent Architecture**: Deploy and manage multiple unique AI personalities simultaneously
-- **Character System**: Create diverse agents using the [characterfile](https://github.com/lalalune/characterfile/) framework
-- **Memory Management**: Advanced RAG (Retrieval Augmented Generation) system for long-term memory and context awareness
-- **Platform Integration**: Seamless connectivity with Discord, Twitter, and other platforms
+- **多代理架构**：同时部署和管理多个独特的 AI 个性
+- **角色系统**：使用 [characterfile](https://github.com/lalalune/characterfile/) 框架创建多样化的代理
+- **内存管理**：先进的 RAG（检索增强生成）系统，用于长期记忆和上下文意识
+- **平台集成**：与 Discord、Twitter 和其他平台的无缝连接
 
-### Communication & Media
+### 通信与媒体
 
-- **Multi-Platform Support**:
+- **多平台支持**：
 
-    - Full-featured Discord integration with voice channel support
-    - Twitter/X bot capabilities
-    - Telegram integration
-    - Direct API access
+    - 全功能的 Discord 集成，支持语音频道
+    - Twitter/X 机器人功能
+    - Telegram 集成
+    - 直接 API 访问
 
-- **Media Processing**:
-    - PDF document reading and analysis
-    - Link content extraction and summarization
-    - Audio transcription
-    - Video content processing
-    - Image analysis and description
-    - Conversation summarization
+- **媒体处理**：
+    - PDF 文档阅读和分析
+    - 链接内容提取和总结
+    - 音频转录
+    - 视频内容处理
+    - 图像分析和描述
+    - 对话总结
 
-### AI & Technical Features
+### AI 与技术特点
 
-- **Flexible Model Support**:
+- **灵活的模型支持**：
 
-    - Local inference with open-source models
-    - Cloud-based inference through OpenAI
-    - Default configuration with Nous Hermes Llama 3.1B
-    - Integration with Claude for complex queries
+    - 使用开源模型进行本地推理
+    - 通过 OpenAI 进行云端推理
+    - 默认配置 Nous Hermes Llama 3.1B
+    - 与 Claude 集成以处理复杂查询
 
-- **Technical Foundation**:
-    - 100% TypeScript implementation
-    - Modular architecture
-    - Extensible action system
-    - Custom client support
-    - Comprehensive API
+- **技术基础**：
+    - 100% TypeScript 实现
+    - 模块化架构
+    - 可扩展的动作系统
+    - 自定义客户端支持
+    - 全面的 API
 
-## Use Cases
+## 使用案例
 
-Eliza can be used to create:
+Eliza 可用于创建：
 
-1. **AI Assistants**
+1. **AI 助手**
 
-    - Customer support agents
-    - Community moderators
-    - Personal assistants
+    - 客户支持代理
+    - 社区管理员
+    - 个人助手
 
-2. **Social Media Personas**
+2. **社交媒体角色**
 
-    - Automated content creators
-    - Engagement bots
-    - Brand representatives
+    - 自动内容创建者
+    - 互动机器人
+    - 品牌代表
 
-3. **Knowledge Workers**
+3. **知识工作者**
 
-    - Research assistants
-    - Content analysts
-    - Document processors
+    - 研究助手
+    - 内容分析师
+    - 文档处理器
 
-4. **Interactive Characters**
-    - Role-playing characters
-    - Educational tutors
-    - Entertainment bots
+4. **互动角色**
+    - 角色扮演角色
+    - 教育导师
+    - 娱乐机器人
 
-## Getting Started
+## 入门
 
-Eliza is designed to be accessible while maintaining powerful capabilities:
+Eliza 设计为易于访问，同时保持强大的功能：
 
-- **Quick Start**: Begin with basic configuration and default character
-- **Customization**: Extend functionality through custom actions and clients
-- **Scaling**: Deploy multiple agents with different personalities
-- **Integration**: Connect to various platforms and services
+- **快速开始**：使用基本配置和默认角色开始
+- **自定义**：通过自定义动作和客户端扩展功能
+- **扩展**：部署具有不同个性的多个代理
+- **集成**：连接到各种平台和服务
 
-Check out our [Quickstart Guide](./quickstart.md) to begin your journey with Eliza.
+查看我们的 [快速入门指南](./quickstart.md) 开始您的 Eliza 之旅。
 
-## Architecture Overview
+## 架构概述
 
 ```mermaid
 graph TD
-    A[Agent Runtime] --> B[Character System]
-    A --> C[Memory Manager]
-    A --> D[Action System]
-    B --> E[Model Provider]
-    C --> F[Database]
-    D --> G[Platform Clients]
+    A[代理运行时] --> B[角色系统]
+    A --> C[内存管理器]
+    A --> D[动作系统]
+    B --> E[模型提供者]
+    C --> F[数据库]
+    D --> G[平台客户端]
 ```
 
-## Community and Support
+## 社区与支持
 
-Eliza is backed by an active community of developers and users:
+Eliza 由活跃的开发者和用户社区支持：
 
-- **Open Source**: Contribute to the project on [GitHub](https://github.com/elizaos/eliza)
-- **Documentation**: Comprehensive guides and API references
-- **Examples**: Ready-to-use character templates and implementations
-- **Support**: Active community for troubleshooting and discussion
+- **开源**：在 [GitHub](https://github.com/elizaos/eliza) 上为项目做出贡献
+- **文档**：全面的指南和 API 参考
+- **示例**：现成的角色模板和实现
+- **支持**：活跃的社区进行故障排除和讨论
 
-## Next Steps
+## 下一步
 
-- [Create Your First Agent](../quickstart)
-- [Understand Core Concepts](../core/agents)
-- [Explore Advanced Features](./guides/advanced.md)
+- [创建您的第一个代理](../quickstart)
+- [了解核心概念](../core/agents)
+- [探索高级功能](./guides/advanced.md)
 
-Join us in building the future of autonomous AI agents with Eliza!
+加入我们，与 Eliza 一起构建自主 AI 代理的未来！
+
+---

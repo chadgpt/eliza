@@ -1,49 +1,49 @@
-# 🔌 Client Packages
+# 🔌 客户端包
 
-## Overview
+## 概述
 
-Eliza's client packages enable integration with various platforms and services. Each client provides a standardized interface for sending and receiving messages, handling media, and interacting with platform-specific features.
+Eliza 的客户端包支持与各种平台和服务的集成。每个客户端提供标准化接口，用于发送和接收消息、处理媒体以及与平台特定功能交互。
 
-### Architecture Overview
+### 架构概述
 
 ```mermaid
 graph TD
-    RT["Agent Runtime"]
-    CI["Client Interface"]
+    RT["代理运行时"]
+    CI["客户端接口"]
     RT --> CI
 
-    %% Main Clients
-    CI --> DC["Direct Client"]
-    CI --> DSC["Discord Client"]
-    CI --> TC["Telegram Client"]
-    CI --> TWC["Twitter Client"]
-    CI --> AC["Auto Client"]
+    %% 主要客户端
+    CI --> DC["直接客户端"]
+    CI --> DSC["Discord 客户端"]
+    CI --> TC["Telegram 客户端"]
+    CI --> TWC["Twitter 客户端"]
+    CI --> AC["自动客户端"]
 
-    %% Key Features - one per client for clarity
-    DC --> |"REST API"| DC1["Messages & Images"]
-    DSC --> |"Bot Integration"| DSC1["Voice & Messages"]
-    TC --> |"Bot API"| TC1["Commands & Media"]
-    TWC --> |"Social"| TWC1["Posts & Interactions"]
-    AC --> |"Trading"| AC1["Analysis & Execution"]
+    %% 关键功能 - 每个客户端一个
+    DC --> |"REST API"| DC1["消息和图片"]
+    DSC --> |"机器人集成"| DSC1["语音和消息"]
+    TC --> |"机器人 API"| TC1["命令和媒体"]
+    TWC --> |"社交"| TWC1["帖子和互动"]
+    AC --> |"交易"| AC1["分析和执行"]
 
-    %% Simple styling with better contrast and black text
+    %% 简单的样式，具有更好的对比度和黑色文本
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px,color:black
     classDef highlight fill:#e9e9e9,stroke:#333,stroke-width:2px,color:black
 
     class RT,CI highlight
 ```
 
-## Available Clients
+## 可用客户端
 
-- **Discord** (`@eliza/client-discord`) - Full Discord bot integration
-- **Twitter** (`@eliza/client-twitter`) - Twitter bot and interaction handling
-- **Telegram** (`@eliza/client-telegram`) - Telegram bot integration
-- **Direct** (`@eliza/client-direct`) - Direct API interface for custom integrations
-- **Auto** (`@eliza/client-auto`) - Automated trading and interaction client
+- **Discord** (`@eliza/client-discord`) - 完整的 Discord 机器人集成
+- **Twitter** (`@eliza/client-twitter`) - Twitter 机器人和互动处理
+- **Telegram** (`@eliza/client-telegram`) - Telegram 机器人集成
+- **Direct** (`@eliza/client-direct`) - 自定义集成的直接 API 接口
+- **Auto** (`@eliza/client-auto`) - 自动交易和互动客户端
 
 ---
 
-## Installation
+## 安装
 
 ```bash
 # Discord
@@ -64,41 +64,41 @@ pnpm add @eliza/client-auto
 
 ---
 
-## Discord Client
+## Discord 客户端
 
-The Discord client provides full integration with Discord's features including voice, reactions, and attachments.
+Discord 客户端提供与 Discord 功能的完整集成，包括语音、反应和附件。
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 import { DiscordClientInterface } from "@eliza/client-discord";
 
-// Initialize client
+// 初始化客户端
 const client = await DiscordClientInterface.start(runtime);
 
-// Configuration in .env
+// 在 .env 中配置
 DISCORD_APPLICATION_ID = your_app_id;
 DISCORD_API_TOKEN = your_bot_token;
 ```
 
-### Features
+### 功能
 
-- Voice channel integration
-- Message attachments
-- Reactions handling
-- Media transcription
-- Room management
+- 语音频道集成
+- 消息附件
+- 反应处理
+- 媒体转录
+- 房间管理
 
-### Voice Integration
+### 语音集成
 
 ```typescript
 class VoiceManager {
-  // Join a voice channel
+  // 加入语音频道
   async handleJoinChannelCommand(interaction) {
     await this.joinVoiceChannel(channel);
   }
 
-  // Handle voice state updates
+  // 处理语音状态更新
   async handleVoiceStateUpdate(oldState, newState) {
     if (newState.channelId) {
       await this.handleUserJoinedChannel(newState);
@@ -107,49 +107,49 @@ class VoiceManager {
 }
 ```
 
-### Message Handling
+### 消息处理
 
 ```typescript
 class MessageManager {
   async handleMessage(message) {
-    // Ignore bot messages
+    // 忽略机器人消息
     if (message.author.bot) return;
 
-    // Process attachments
+    // 处理附件
     if (message.attachments.size > 0) {
       await this.processAttachments(message);
     }
 
-    // Generate response
+    // 生成响应
     await this.generateResponse(message);
   }
 }
 ```
 
-## Twitter Client
+## Twitter 客户端
 
-The Twitter client enables posting, searching, and interacting with Twitter users.
+Twitter 客户端支持发布、搜索和与 Twitter 用户互动。
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 import { TwitterClientInterface } from "@eliza/client-twitter";
-// Initialize client
+// 初始化客户端
 const client = await TwitterClientInterface.start(runtime);
 
-// Configuration in .env
+// 在 .env 中配置
 TWITTER_USERNAME = your_username;
 TWITTER_PASSWORD = your_password;
 TWITTER_EMAIL = your_email;
 ```
 
-### Components
+### 组件
 
-- **PostClient**: Handles creating and managing posts
-- **SearchClient**: Handles search functionality
-- **InteractionClient**: Manages user interactions
+- **PostClient**: 处理创建和管理帖子
+- **SearchClient**: 处理搜索功能
+- **InteractionClient**: 管理用户互动
 
-### Post Management
+### 帖子管理
 
 ```typescript
 class TwitterPostClient {
@@ -169,7 +169,7 @@ class TwitterPostClient {
 }
 ```
 
-### Search Features
+### 搜索功能
 
 ```typescript
 class TwitterSearchClient {
@@ -185,64 +185,64 @@ class TwitterSearchClient {
 }
 ```
 
-## Telegram Client
+## Telegram 客户端
 
-The Telegram client provides messaging and bot functionality for Telegram.
+Telegram 客户端提供消息和机器人功能。
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 import { TelegramClientInterface } from "@eliza/client-telegram";
 
-// Initialize client
+// 初始化客户端
 const client = await TelegramClientInterface.start(runtime);
 
-// Configuration in .env
+// 在 .env 中配置
 TELEGRAM_BOT_TOKEN = your_bot_token;
 ```
 
-### Message Management
+### 消息管理
 
 ```typescript
 class TelegramClient {
   async handleMessage(message) {
-    // Process message content
+    // 处理消息内容
     const content = await this.processMessage(message);
 
-    // Generate response
+    // 生成响应
     const response = await this.generateResponse(content);
 
-    // Send response
+    // 发送响应
     await this.sendMessage(message.chat.id, response);
   }
 }
 ```
 
-## Direct Client
+## Direct 客户端
 
-The Direct client provides a REST API interface for custom integrations.
+Direct 客户端提供自定义集成的 REST API 接口。
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 import { DirectClientInterface } from "@eliza/client-direct";
 
-// Initialize client
+// 初始化客户端
 const client = await DirectClientInterface.start(runtime);
 ```
 
-### API Endpoints
+### API 端点
 
 ```typescript
 class DirectClient {
   constructor() {
-    // Message endpoint
+    // 消息端点
     this.app.post("/:agentId/message", async (req, res) => {
       const response = await this.handleMessage(req.body);
       res.json(response);
     });
 
-    // Image generation endpoint
+    // 图片生成端点
     this.app.post("/:agentId/image", async (req, res) => {
       const images = await this.generateImage(req.body);
       res.json(images);
@@ -251,53 +251,53 @@ class DirectClient {
 }
 ```
 
-## Auto Client
+## Auto 客户端
 
-The Auto client enables automated interactions and trading.
+Auto 客户端支持自动互动和交易。
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 import { AutoClientInterface } from "@eliza/client-auto";
 
-// Initialize client
+// 初始化客户端
 const client = await AutoClientInterface.start(runtime);
 ```
 
-### Automated Trading
+### 自动交易
 
 ```typescript
 class AutoClient {
   constructor(runtime: IAgentRuntime) {
     this.runtime = runtime;
 
-    // Start trading loop
+    // 启动交易循环
     this.interval = setInterval(
       () => {
         this.makeTrades();
       },
       60 * 60 * 1000,
-    ); // 1 hour interval
+    ); // 1 小时间隔
   }
 
   async makeTrades() {
-    // Get recommendations
+    // 获取推荐
     const recommendations = await this.getHighTrustRecommendations();
 
-    // Analyze tokens
+    // 分析代币
     const analysis = await this.analyzeTokens(recommendations);
 
-    // Execute trades
+    // 执行交易
     await this.executeTrades(analysis);
   }
 }
 ```
 
-## Common Features
+## 通用功能
 
-### Message Handling
+### 消息处理
 
-All clients implement standard message handling:
+所有客户端实现标准消息处理：
 
 ```typescript
 interface ClientInterface {
@@ -307,7 +307,7 @@ interface ClientInterface {
 }
 ```
 
-### Media Processing
+### 媒体处理
 
 ```typescript
 interface MediaProcessor {
@@ -317,12 +317,12 @@ interface MediaProcessor {
 }
 ```
 
-### Error Handling
+### 错误处理
 
 ```typescript
 class BaseClient {
   protected async handleError(error: Error) {
-    console.error("Client error:", error);
+    console.error("客户端错误:", error);
 
     if (error.code === "RATE_LIMIT") {
       await this.handleRateLimit(error);
@@ -335,32 +335,32 @@ class BaseClient {
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Authentication**
+1. **认证**
 
-   - Store credentials securely in environment variables
-   - Implement token refresh mechanisms
-   - Handle authentication errors gracefully
+   - 将凭据安全地存储在环境变量中
+   - 实现令牌刷新机制
+   - 优雅地处理认证错误
 
-2. **Rate Limiting**
+2. **速率限制**
 
-   - Implement exponential backoff
-   - Track API usage
-   - Queue messages during rate limits
+   - 实现指数退避
+   - 跟踪 API 使用情况
+   - 在速率限制期间排队消息
 
-3. **Error Handling**
+3. **错误处理**
 
-   - Log errors with context
-   - Implement retry logic
-   - Handle platform-specific errors
+   - 记录带有上下文的错误
+   - 实现重试逻辑
+   - 处理平台特定错误
 
-4. **Media Processing**
-   - Validate media before processing
-   - Handle different file formats
-   - Implement size limits
+4. **媒体处理**
+   - 在处理前验证媒体
+   - 处理不同的文件格式
+   - 实现大小限制
 
-### Error Handling
+### 错误处理
 
 ```typescript
 class BaseClient {
@@ -373,8 +373,8 @@ class BaseClient {
       await this.reconnect();
     }
 
-    // Log error
-    console.error("Client error:", {
+    // 记录错误
+    console.error("客户端错误:", {
       type: error.name,
       message: error.message,
       code: error.code,
@@ -384,18 +384,18 @@ class BaseClient {
 }
 ```
 
-### Resource Management
+### 资源管理
 
 ```typescript
 class ClientManager {
   private async cleanup() {
-    // Close connections
+    // 关闭连接
     await Promise.all(this.connections.map((conn) => conn.close()));
 
-    // Clear caches
+    // 清除缓存
     this.cache.clear();
 
-    // Cancel timers
+    // 取消计时器
     this.timers.forEach((timer) => clearInterval(timer));
   }
 
@@ -407,7 +407,7 @@ class ClientManager {
 }
 ```
 
-### Rate Limiting
+### 速率限制
 
 ```typescript
 class RateLimiter {
@@ -425,9 +425,9 @@ class RateLimiter {
 
 ---
 
-## Performance Optimization
+## 性能优化
 
-### Connection Management
+### 连接管理
 
 ```typescript
 class ClientManager {
@@ -439,7 +439,7 @@ class ClientManager {
 }
 ```
 
-### Message Queuing
+### 消息排队
 
 ```typescript
 class MessageQueue {
@@ -450,24 +450,24 @@ class MessageQueue {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Authentication Failures**
+1. **认证失败**
 
 ```typescript
-// Implement token refresh
+// 实现令牌刷新
 async refreshAuth() {
   const newToken = await this.requestNewToken();
   await this.updateToken(newToken);
 }
 ```
 
-2. **Rate Limits**
+2. **速率限制**
 
 ```typescript
-// Handle rate limiting
+// 处理速率限制
 async handleRateLimit(error) {
   const delay = this.calculateBackoff(error);
   await wait(delay);
@@ -475,10 +475,10 @@ async handleRateLimit(error) {
 }
 ```
 
-3. **Connection Issues**
+3. **连接问题**
 
 ```typescript
-// Implement reconnection logic
+// 实现重新连接逻辑
 async handleDisconnect() {
   await this.reconnect({
     maxAttempts: 5,
@@ -487,7 +487,7 @@ async handleDisconnect() {
 }
 ```
 
-4. **Message Processing Failure**
+4. **消息处理失败**
 
 ```typescript
 async processMessage(message) {
@@ -502,6 +502,8 @@ async processMessage(message) {
 }
 ```
 
-## Related Resources
+## 相关资源
 
-- [Error Handling](../../packages/core)
+- [错误处理](../../packages/core)
+
+---

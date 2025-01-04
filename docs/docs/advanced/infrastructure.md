@@ -2,41 +2,41 @@
 sidebar_position: 14
 ---
 
-# 🏗️ Infrastructure Guide
+# 🏗️ 基础设施指南
 
-## Overview
+## 概述
 
-Eliza's infrastructure is built on a flexible database architecture that supports multiple adapters and efficient data storage mechanisms for AI agent interactions, memory management, and relationship tracking.
+Eliza的基础设施建立在灵活的数据库架构上，支持多种适配器和高效的数据存储机制，用于AI代理交互、内存管理和关系跟踪。
 
-## Core Components
+## 核心组件
 
-### Database Adapters
+### 数据库适配器
 
-Eliza supports multiple database backends through a pluggable adapter system:
+Eliza通过可插拔的适配器系统支持多种数据库后端：
 
-- **PostgreSQL** - Full-featured adapter with vector search capabilities
-- **SQLite** - Lightweight local database option
-- **SQL.js** - In-memory database for testing and development
-- **Supabase** - Cloud-hosted PostgreSQL with additional features
+- **PostgreSQL** - 功能齐全的适配器，具备向量搜索功能
+- **SQLite** - 轻量级本地数据库选项
+- **SQL.js** - 用于测试和开发的内存数据库
+- **Supabase** - 具有附加功能的云托管PostgreSQL
 
-### Schema Structure
+### 架构结构
 
-The database schema includes several key tables:
+数据库架构包括几个关键表：
 
 ```sql
-- accounts: User and agent identities
-- rooms: Conversation spaces
-- memories: Vector-indexed message storage
-- goals: Agent objectives and progress
-- participants: Room membership tracking
-- relationships: Inter-agent connections
+- accounts: 用户和代理身份
+- rooms: 对话空间
+- memories: 向量索引的消息存储
+- goals: 代理目标和进度
+- participants: 房间成员跟踪
+- relationships: 代理间连接
 ```
 
-## Setting Up Infrastructure
+## 设置基础设施
 
-### PostgreSQL Setup
+### PostgreSQL 设置
 
-1. **Install PostgreSQL Extensions**
+1. **安装 PostgreSQL 扩展**
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -44,10 +44,10 @@ CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 ```
 
-2. **Initialize Core Tables**
+2. **初始化核心表**
 
 ```sql
--- Create base tables
+-- 创建基础表
 CREATE TABLE accounts (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -83,7 +83,7 @@ CREATE TABLE participants (
 );
 ```
 
-3. **Set Up Indexes**
+3. **设置索引**
 
 ```sql
 CREATE INDEX idx_memories_embedding ON memories
@@ -96,28 +96,28 @@ CREATE INDEX idx_participants_room ON participants("roomId");
 
 ```
 
-### Connection Configuration
+### 连接配置
 
 ```typescript
-// PostgreSQL Configuration
+// PostgreSQL 配置
 const postgresConfig = {
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 };
 
-// Supabase Configuration
+// Supabase 配置
 const supabaseConfig = {
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_KEY,
 };
 ```
 
-## Memory Management
+## 内存管理
 
-### Vector Storage
+### 向量存储
 
-The memory system uses vector embeddings for semantic search:
+内存系统使用向量嵌入进行语义搜索：
 
 ```typescript
 async function storeMemory(runtime: IAgentRuntime, content: string) {
@@ -133,7 +133,7 @@ async function storeMemory(runtime: IAgentRuntime, content: string) {
 }
 ```
 
-### Memory Retrieval
+### 内存检索
 
 ```typescript
 async function searchMemories(runtime: IAgentRuntime, query: string) {
@@ -147,54 +147,54 @@ async function searchMemories(runtime: IAgentRuntime, query: string) {
 }
 ```
 
-## Scaling Considerations
+## 扩展考虑
 
-### Database Optimization
+### 数据库优化
 
-1. **Index Management**
+1. **索引管理**
 
-   - Use HNSW indexes for vector similarity search
-   - Create appropriate indexes for frequent query patterns
-   - Regularly analyze and update index statistics
+   - 使用HNSW索引进行向量相似性搜索
+   - 为频繁查询模式创建适当的索引
+   - 定期分析和更新索引统计信息
 
-2. **Connection Pooling**
+2. **连接池管理**
 
    ```typescript
    const pool = new Pool({
-     max: 20, // Maximum pool size
+     max: 20, // 最大池大小
      idleTimeoutMillis: 30000,
      connectionTimeoutMillis: 2000,
    });
    ```
 
-3. **Query Optimization**
-   - Use prepared statements
-   - Implement efficient pagination
-   - Optimize vector similarity searches
+3. **查询优化**
+   - 使用预处理语句
+   - 实现高效分页
+   - 优化向量相似性搜索
 
-### High Availability
+### 高可用性
 
-1. **Database Replication**
+1. **数据库复制**
 
-   - Set up read replicas for scaling read operations
-   - Configure streaming replication for failover
-   - Implement connection retry logic
+   - 设置只读副本以扩展读取操作
+   - 配置流复制以进行故障转移
+   - 实现连接重试逻辑
 
-2. **Backup Strategy**
+2. **备份策略**
 
    ```sql
-   -- Regular backups
+   -- 定期备份
    pg_dump -Fc mydb > backup.dump
 
-   -- Point-in-time recovery
+   -- 时间点恢复
    pg_basebackup -D backup -Fp -Xs -P
    ```
 
-## Security
+## 安全
 
-### Access Control
+### 访问控制
 
-1. **Row Level Security**
+1. **行级安全**
 
 ```sql
 ALTER TABLE memories ENABLE ROW LEVEL SECURITY;
@@ -203,26 +203,26 @@ CREATE POLICY "memories_isolation" ON memories
     USING (auth.uid() = "userId" OR auth.uid() = "agentId");
 ```
 
-2. **Role Management**
+2. **角色管理**
 
 ```sql
--- Create application role
+-- 创建应用角色
 CREATE ROLE app_user;
 
--- Grant necessary permissions
+-- 授予必要权限
 GRANT SELECT, INSERT ON memories TO app_user;
 GRANT USAGE ON SCHEMA public TO app_user;
 ```
 
-### Data Protection
+### 数据保护
 
-1. **Encryption**
+1. **加密**
 
-   - Use TLS for connections
-   - Encrypt sensitive data at rest
-   - Implement key rotation
+   - 使用TLS进行连接
+   - 对静态敏感数据进行加密
+   - 实现密钥轮换
 
-2. **Audit Logging**
+2. **审计日志**
 
 ```sql
 CREATE TABLE logs (
@@ -235,9 +235,9 @@ CREATE TABLE logs (
 );
 ```
 
-## Monitoring
+## 监控
 
-### Health Checks
+### 健康检查
 
 ```typescript
 async function checkDatabaseHealth(): Promise<boolean> {
@@ -251,45 +251,45 @@ async function checkDatabaseHealth(): Promise<boolean> {
 }
 ```
 
-### Performance Metrics
+### 性能指标
 
-Track key metrics:
+跟踪关键指标：
 
-- Query performance
-- Connection pool utilization
-- Memory usage
-- Vector search latency
+- 查询性能
+- 连接池利用率
+- 内存使用情况
+- 向量搜索延迟
 
-## Maintenance
+## 维护
 
-### Regular Tasks
+### 定期任务
 
-1. **Vacuum Operations**
+1. **真空操作**
 
 ```sql
--- Regular vacuum
+-- 定期真空
 VACUUM ANALYZE memories;
 
--- Analyze statistics
+-- 分析统计信息
 ANALYZE memories;
 ```
 
-2. **Index Maintenance**
+2. **索引维护**
 
 ```sql
--- Reindex vector similarity index
+-- 重新索引向量相似性索引
 REINDEX INDEX idx_memories_embedding;
 ```
 
-### Data Lifecycle
+### 数据生命周期
 
-1. **Archival Strategy**
+1. **归档策略**
 
-   - Archive old conversations
-   - Compress inactive memories
-   - Implement data retention policies
+   - 归档旧对话
+   - 压缩非活动内存
+   - 实施数据保留策略
 
-2. **Cleanup Jobs**
+2. **清理作业**
 
 ```typescript
 async function cleanupOldMemories() {
@@ -306,44 +306,46 @@ async function cleanupOldMemories() {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Connection Problems**
+1. **连接问题**
 
-   - Check connection pool settings
-   - Verify network connectivity
-   - Review firewall rules
+   - 检查连接池设置
+   - 验证网络连接
+   - 查看防火墙规则
 
-2. **Performance Issues**
+2. **性能问题**
 
-   - Analyze query plans
-   - Check index usage
-   - Monitor resource utilization
+   - 分析查询计划
+   - 检查索引使用情况
+   - 监控资源利用率
 
-3. **Vector Search Problems**
-   - Verify embedding dimensions
-   - Check similarity thresholds
-   - Review index configuration
+3. **向量搜索问题**
+   - 验证嵌入维度
+   - 检查相似性阈值
+   - 查看索引配置
 
-### Diagnostic Queries
+### 诊断查询
 
 ```sql
--- Check connection status
+-- 检查连接状态
 SELECT * FROM pg_stat_activity;
 
--- Analyze query performance
+-- 分析查询性能
 EXPLAIN ANALYZE
 SELECT * FROM memories
 WHERE embedding <-> $1 < 0.3
 LIMIT 10;
 
--- Monitor index usage
+-- 监控索引使用情况
 SELECT schemaname, tablename, indexname, idx_scan
 FROM pg_stat_user_indexes;
 ```
 
-## Further Reading
+## 延伸阅读
 
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [PostgreSQL 文档](https://www.postgresql.org/docs/)
+
+---

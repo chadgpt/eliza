@@ -2,86 +2,86 @@
 sidebar_position: 9
 ---
 
-# ⚙️ Configuration Guide
+# ⚙️ 配置指南
 
-This guide covers how to configure Eliza for different use cases and environments. We'll walk through all available configuration options and best practices.
+本指南涵盖了如何为不同的用例和环境配置Eliza。我们将逐步介绍所有可用的配置选项和最佳实践。
 
-## Environment Configuration
+## 环境配置
 
-### Basic Setup
+### 基本设置
 
-The first step is creating your environment configuration file:
+第一步是创建您的环境配置文件：
 
 ```bash
 cp .env.example .env
 ```
 
-### Core Environment Variables
+### 核心环境变量
 
-Here are the essential environment variables you need to configure:
+以下是您需要配置的基本环境变量：
 
 ```bash
-# Core API Keys
-OPENAI_API_KEY=sk-your-key # Required for OpenAI features
-ANTHROPIC_API_KEY=your-key  # Required for Claude models
-TOGETHER_API_KEY=your-key   # Required for Together.ai models
+# 核心API密钥
+OPENAI_API_KEY=sk-your-key # OpenAI功能所需
+ANTHROPIC_API_KEY=your-key  # Claude模型所需
+TOGETHER_API_KEY=your-key   # Together.ai模型所需
 
-# Default Settings
-XAI_MODEL=gpt-4o-mini      # Default model to use
-X_SERVER_URL=              # Optional model API endpoint
+# 默认设置
+XAI_MODEL=gpt-4o-mini      # 默认使用的模型
+X_SERVER_URL=              # 可选的模型API端点
 ```
 
-### Client-Specific Configuration
+### 客户端特定配置
 
-#### Discord Configuration
+#### Discord配置
 
 ```bash
-DISCORD_APPLICATION_ID=     # Your Discord app ID
-DISCORD_API_TOKEN=         # Discord bot token
+DISCORD_APPLICATION_ID=     # 您的Discord应用ID
+DISCORD_API_TOKEN=         # Discord机器人令牌
 ```
 
-#### Twitter Configuration
+#### Twitter配置
 
 ```bash
-TWITTER_USERNAME=          # Bot Twitter username
-TWITTER_PASSWORD=          # Bot Twitter password
-TWITTER_EMAIL=            # Twitter account email
-TWITTER_DRY_RUN=false    # Test mode without posting
+TWITTER_USERNAME=          # 机器人Twitter用户名
+TWITTER_PASSWORD=          # 机器人Twitter密码
+TWITTER_EMAIL=            # Twitter账户邮箱
+TWITTER_DRY_RUN=false    # 测试模式，不发布
 ```
 
-#### Telegram Configuration
+#### Telegram配置
 
 ```bash
-TELEGRAM_BOT_TOKEN=       # Telegram bot token
+TELEGRAM_BOT_TOKEN=       # Telegram机器人令牌
 ```
 
-### Model Provider Settings
+### 模型提供商设置
 
-You can configure different AI model providers:
+您可以配置不同的AI模型提供商：
 
 ```bash
-# OpenAI Settings
+# OpenAI设置
 OPENAI_API_KEY=sk-*
 
-# Anthropic Settings
+# Anthropic设置
 ANTHROPIC_API_KEY=
 
-# Together.ai Settings
+# Together.ai设置
 TOGETHER_API_KEY=
 
-# Heurist Settings
+# Heurist设置
 HEURIST_API_KEY=
 
-# Livepeer Settings
+# Livepeer设置
 LIVEPEER_GATEWAY_URL=
 
-# Local Model Settings
+# 本地模型设置
 XAI_MODEL=meta-llama/Llama-3.1-7b-instruct
 ```
 
-### Image Generation
+### 图像生成
 
-Configure image generation in your character file:
+在您的角色文件中配置图像生成：
 
 ```json
 {
@@ -96,7 +96,7 @@ Configure image generation in your character file:
 }
 ```
 
-Example usage:
+示例用法：
 
 ```typescript
 const result = await generateImage(
@@ -104,20 +104,20 @@ const result = await generateImage(
         prompt: 'A cute anime girl with big breasts and straight long black hair wearing orange T-shirt. The T-shirt has "ai16z" texts in the front. The girl is looking at the viewer',
         width: 1024,
         height: 1024,
-        numIterations: 20, // optional
-        guidanceScale: 3, // optional
-        seed: -1, // optional
-        modelId: "FLUX.1-dev", // optional
+        numIterations: 20, // 可选
+        guidanceScale: 3, // 可选
+        seed: -1, // 可选
+        modelId: "FLUX.1-dev", // 可选
     },
     runtime,
 );
 ```
 
-## Character Configuration
+## 角色配置
 
-### Character File Structure
+### 角色文件结构
 
-Character files define your agent's personality and behavior. Create them in the `characters/` directory:
+角色文件定义了您的代理的个性和行为。在`characters/`目录中创建它们：
 
 ```json
 {
@@ -133,28 +133,28 @@ Character files define your agent's personality and behavior. Create them in the
 }
 ```
 
-### Loading Characters
+### 加载角色
 
-You can load characters in several ways:
+您可以通过多种方式加载角色：
 
 ```bash
-# Load default character
+# 加载默认角色
 pnpm start
 
-# Load specific character
+# 加载特定角色
 pnpm start --characters="characters/your-character.json"
 
-# Load multiple characters
+# 加载多个角色
 pnpm start --characters="characters/char1.json,characters/char2.json"
 ```
 
-## Custom Actions
+## 自定义操作
 
-### Adding Custom Actions
+### 添加自定义操作
 
-1. Create a `custom_actions` directory
-2. Add your action files there
-3. Configure in `elizaConfig.yaml`:
+1. 创建一个`custom_actions`目录
+2. 将您的操作文件添加到该目录
+3. 在`elizaConfig.yaml`中配置：
 
 ```yaml
 actions:
@@ -162,36 +162,36 @@ actions:
       path: ./custom_actions/myAction.ts
 ```
 
-### Action Configuration Structure
+### 操作配置结构
 
 ```typescript
 export const myAction: Action = {
     name: "MY_ACTION",
     similes: ["SIMILAR_ACTION", "ALTERNATE_NAME"],
     validate: async (runtime: IAgentRuntime, message: Memory) => {
-        // Validation logic
+        // 验证逻辑
         return true;
     },
-    description: "Action description",
+    description: "操作描述",
     handler: async (runtime: IAgentRuntime, message: Memory) => {
-        // Action logic
+        // 操作逻辑
         return true;
     },
 };
 ```
 
-## Provider Configuration
+## 提供商配置
 
-### Database Providers
+### 数据库提供商
 
-Configure different database backends:
+配置不同的数据库后端：
 
 ```typescript
-// SQLite (Recommended for development)
+// SQLite（推荐用于开发）
 import { SqliteDatabaseAdapter } from "@your-org/agent-framework/adapters";
 const db = new SqliteDatabaseAdapter("./dev.db");
 
-// PostgreSQL (Production)
+// PostgreSQL（生产环境）
 import { PostgresDatabaseAdapter } from "@your-org/agent-framework/adapters";
 const db = new PostgresDatabaseAdapter({
     host: process.env.DB_HOST,
@@ -202,9 +202,9 @@ const db = new PostgresDatabaseAdapter({
 });
 ```
 
-### Model Providers
+### 模型提供商
 
-Configure model providers in your character file:
+在您的角色文件中配置模型提供商：
 
 ```json
 {
@@ -217,31 +217,31 @@ Configure model providers in your character file:
 }
 ```
 
-## Advanced Configuration
+## 高级配置
 
-### Runtime Settings
+### 运行时设置
 
-Fine-tune runtime behavior:
+微调运行时行为：
 
 ```typescript
 const settings = {
-    // Logging
+    // 日志记录
     DEBUG: "eliza:*",
     LOG_LEVEL: "info",
 
-    // Performance
+    // 性能
     MAX_CONCURRENT_REQUESTS: 5,
     REQUEST_TIMEOUT: 30000,
 
-    // Memory
+    // 内存
     MEMORY_TTL: 3600,
     MAX_MEMORY_ITEMS: 1000,
 };
 ```
 
-### Plugin Configuration
+### 插件配置
 
-Enable and configure plugins in `elizaConfig.yaml`:
+在`elizaConfig.yaml`中启用和配置插件：
 
 ```yaml
 plugins:
@@ -258,81 +258,81 @@ plugins:
           size: 1024x1024
 ```
 
-## Configuration Best Practices
+## 配置最佳实践
 
-1. **Environment Segregation**
+1. **环境隔离**
 
-    - Use different `.env` files for different environments
-    - Follow naming convention: `.env.development`, `.env.staging`, `.env.production`
+    - 为不同的环境使用不同的`.env`文件
+    - 遵循命名约定：`.env.development`，`.env.staging`，`.env.production`
 
-2. **Secret Management**
+2. **密钥管理**
 
-    - Never commit secrets to version control
-    - Use secret management services in production
-    - Rotate API keys regularly
+    - 切勿将密钥提交到版本控制
+    - 在生产环境中使用密钥管理服务
+    - 定期轮换API密钥
 
-3. **Character Configuration**
+3. **角色配置**
 
-    - Keep character files modular and focused
-    - Use inheritance for shared traits
-    - Document character behaviors
+    - 保持角色文件模块化和专注
+    - 使用继承共享特性
+    - 记录角色行为
 
-4. **Plugin Management**
+4. **插件管理**
 
-    - Enable only needed plugins
-    - Configure plugin-specific settings in separate files
-    - Monitor plugin performance
+    - 仅启用所需的插件
+    - 在单独的文件中配置插件特定设置
+    - 监控插件性能
 
-5. **Database Configuration**
-    - Use SQLite for development
-    - Configure connection pooling for production
-    - Set up proper indexes
+5. **数据库配置**
+    - 开发环境使用SQLite
+    - 为生产环境配置连接池
+    - 设置适当的索引
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Environment Variables Not Loading**
+1. **环境变量未加载**
 
     ```bash
-    # Check .env file location
+    # 检查.env文件位置
     node -e "console.log(require('path').resolve('.env'))"
 
-    # Verify environment variables
+    # 验证环境变量
     node -e "console.log(process.env)"
     ```
 
-2. **Character Loading Failures**
+2. **角色加载失败**
 
     ```bash
-    # Validate character file
+    # 验证角色文件
     npx ajv validate -s character-schema.json -d your-character.json
     ```
 
-3. **Database Connection Issues**
+3. **数据库连接问题**
     ```bash
-    # Test database connection
+    # 测试数据库连接
     npx ts-node scripts/test-db-connection.ts
     ```
 
-### Configuration Validation
+### 配置验证
 
-Use the built-in config validator:
+使用内置的配置验证器：
 
 ```bash
 pnpm run validate-config
 ```
 
-This will check:
+这将检查：
 
-- Environment variables
-- Character files
-- Database configuration
-- Plugin settings
+- 环境变量
+- 角色文件
+- 数据库配置
+- 插件设置
 
-## Further Resources
+## 进一步资源
 
-- [Quickstart Guide](../quickstart.md) for initial setup
-- [Secrets Management](./secrets-management.md) for secure configuration
-- [Local Development](./local-development.md) for development setup
-- [Advanced Usage](./advanced.md) for complex configurations
+- [快速入门指南](../quickstart.md) 进行初始设置
+- [密钥管理](./secrets-management.md) 进行安全配置
+- [本地开发](./local-development.md) 进行开发设置
+- [高级用法](./advanced.md) 进行复杂配置

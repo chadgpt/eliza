@@ -2,21 +2,21 @@
 sidebar_position: 15
 ---
 
-# 🤝 Trust Engine
+# 🤝 信任引擎
 
-## Overview
+## 概述
 
-The Trust Engine is a sophisticated system for evaluating, tracking, and managing trust scores for token recommendations and trading activity. It combines on-chain analysis, trader metrics, and historical performance to create a comprehensive trust framework.
+信任引擎是一种复杂的系统，用于评估、跟踪和管理代币推荐和交易活动的信任评分。它结合了链上分析、交易者指标和历史表现，创建了一个全面的信任框架。
 
-## Core Components
+## 核心组件
 
-### Trust Score Database
+### 信任评分数据库
 
-The database schema manages various aspects of trust:
+数据库架构管理信任的各个方面：
 
 ```typescript
 interface TrustScoreDatabase {
-  // Core data structures
+  // 核心数据结构
   recommenders: Recommender[];
   metrics: RecommenderMetrics[];
   tokenPerformance: TokenPerformance[];
@@ -46,9 +46,9 @@ interface RecommenderMetrics {
 }
 ```
 
-### Token Analysis
+### 代币分析
 
-The system tracks comprehensive token metrics:
+系统跟踪全面的代币指标：
 
 ```typescript
 interface TokenPerformance {
@@ -70,9 +70,9 @@ interface TokenPerformance {
 }
 ```
 
-## Trust Scoring System
+## 信任评分系统
 
-### Score Calculation
+### 评分计算
 
 ```typescript
 async function calculateTrustScore(
@@ -104,14 +104,14 @@ async function calculateTrustScore(
 }
 ```
 
-### Token Validation
+### 代币验证
 
 ```typescript
 async function validateToken(
   tokenAddress: string,
   performance: TokenPerformance,
 ): Promise<boolean> {
-  // Minimum requirements
+  // 最低要求
   const requirements = {
     minLiquidity: 1000, // $1000 USD
     minHolders: 100,
@@ -119,7 +119,7 @@ async function validateToken(
     minVolume: 500, // $500 USD daily volume
   };
 
-  // Red flags
+  // 红旗
   if (
     performance.rugPull ||
     performance.isScam ||
@@ -129,7 +129,7 @@ async function validateToken(
     return false;
   }
 
-  // Basic requirements
+  // 基本要求
   return (
     performance.liquidity >= requirements.minLiquidity &&
     !performance.rapidDump &&
@@ -138,9 +138,9 @@ async function validateToken(
 }
 ```
 
-## Trade Management
+## 交易管理
 
-### Trade Performance Tracking
+### 交易表现跟踪
 
 ```typescript
 interface TradePerformance {
@@ -185,7 +185,7 @@ async function recordTradePerformance(
 }
 ```
 
-### Risk Management
+### 风险管理
 
 ```typescript
 async function assessTradeRisk(
@@ -205,10 +205,10 @@ async function assessTradeRisk(
     },
   };
 
-  // Calculate composite risk score
+  // 计算综合风险评分
   const riskScore = calculateRiskScore(riskFactors);
 
-  // Determine position sizing
+  // 确定头寸大小
   const maxPosition = determinePositionSize(riskScore);
 
   return {
@@ -218,9 +218,9 @@ async function assessTradeRisk(
 }
 ```
 
-## Recommendation Analysis
+## 推荐分析
 
-### Pattern Detection
+### 模式检测
 
 ```typescript
 async function analyzeRecommendationPatterns(
@@ -237,7 +237,7 @@ async function analyzeRecommendationPatterns(
 }
 ```
 
-### Performance Metrics
+### 表现指标
 
 ```typescript
 interface PerformanceMetrics {
@@ -263,9 +263,9 @@ async function calculatePerformanceMetrics(
 }
 ```
 
-## Integration with Trading System
+## 与交易系统的集成
 
-### Trade Execution
+### 交易执行
 
 ```typescript
 async function executeTrade(
@@ -277,7 +277,7 @@ async function executeTrade(
     recommendation.recommenderId,
   );
 
-  // Calculate position size based on trust score
+  // 根据信任评分计算头寸大小
   const positionSize = calculatePositionSize(
     trustScore,
     riskAssessment.maxPositionSize,
@@ -298,14 +298,14 @@ async function executeTrade(
 }
 ```
 
-### Position Management
+### 头寸管理
 
 ```typescript
 async function managePosition(
   position: TradePosition,
   metrics: TokenPerformance,
 ): Promise<void> {
-  // Exit conditions
+  // 退出条件
   if (
     metrics.rapidDump ||
     metrics.suspiciousVolume ||
@@ -315,7 +315,7 @@ async function managePosition(
     return;
   }
 
-  // Position sizing adjustments
+  // 头寸大小调整
   const newSize = recalculatePosition(position, metrics);
   if (newSize !== position.size) {
     await adjustPosition(position, newSize);
@@ -323,13 +323,13 @@ async function managePosition(
 }
 ```
 
-## Monitoring and Alerts
+## 监控和警报
 
-### Performance Monitoring
+### 性能监控
 
 ```typescript
 async function monitorTrustMetrics(): Promise<void> {
-  // Monitor trust score changes
+  // 监控信任评分变化
   const scoreChanges = await getTrustScoreChanges();
   for (const change of scoreChanges) {
     if (Math.abs(change.delta) > TRUST_THRESHOLD) {
@@ -337,7 +337,7 @@ async function monitorTrustMetrics(): Promise<void> {
     }
   }
 
-  // Monitor trading performance
+  // 监控交易表现
   const performanceMetrics = await getPerformanceMetrics();
   for (const metric of performanceMetrics) {
     if (metric.drawdown > MAX_DRAWDOWN) {
@@ -347,7 +347,7 @@ async function monitorTrustMetrics(): Promise<void> {
 }
 ```
 
-### Alert System
+### 警报系统
 
 ```typescript
 interface TrustAlert {
@@ -374,11 +374,11 @@ async function handleAlert(alert: TrustAlert): Promise<void> {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Trust Score Anomalies**
+1. **信任评分异常**
 
 ```typescript
 async function investigateTrustAnomaly(
@@ -392,7 +392,7 @@ async function investigateTrustAnomaly(
 }
 ```
 
-2. **Trade Execution Failures**
+2. **交易执行失败**
 
 ```typescript
 async function handleTradeFailure(
@@ -404,3 +404,5 @@ async function handleTradeFailure(
   await notifyTradeFailure(trade);
 }
 ```
+
+---

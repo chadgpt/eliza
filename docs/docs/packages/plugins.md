@@ -1,118 +1,118 @@
-# 🧩 Plugins
+# 🧩 插件
 
-## Overview
+## 概述
 
-Eliza's plugin system provides a modular way to extend the core functionality with additional features, actions, evaluators, and providers. Plugins are self-contained modules that can be easily added or removed to customize your agent's capabilities.
+Eliza 的插件系统提供了一种模块化的方法，通过附加功能、操作、评估器和提供者来扩展核心功能。插件是自包含的模块，可以轻松添加或移除，以定制您的代理功能。
 
-## Core Plugin Concepts
+## 核心插件概念
 
-### Plugin Structure
+### 插件结构
 
-Each plugin in Eliza must implement the `Plugin` interface with the following properties:
+Eliza 中的每个插件都必须实现 `Plugin` 接口，并包含以下属性：
 
 ```typescript
 interface Plugin {
-    name: string; // Unique identifier for the plugin
-    description: string; // Brief description of plugin functionality
-    actions?: Action[]; // Custom actions provided by the plugin
-    evaluators?: Evaluator[]; // Custom evaluators for behavior assessment
-    providers?: Provider[]; // Context providers for message generation
-    services?: Service[]; // Additional services (optional)
+    name: string; // 插件的唯一标识符
+    description: string; // 插件功能的简要描述
+    actions?: Action[]; // 插件提供的自定义操作
+    evaluators?: Evaluator[]; // 行为评估的自定义评估器
+    providers?: Provider[]; // 消息生成的上下文提供者
+    services?: Service[]; // 额外的服务（可选）
 }
 ```
 
-## Using Plugins
+## 使用插件
 
-### Installation
+### 安装
 
-1. Install the desired plugin package:
+1. 安装所需的插件包：
 
 ```bash
 pnpm add @elizaos/plugin-[name]
 ```
 
-2. Import and register the plugin in your character configuration:
+2. 在角色配置中导入并注册插件：
 
 ```typescript
 import { bootstrapPlugin } from "@eliza/plugin-bootstrap";
 import { imageGenerationPlugin } from "@eliza/plugin-image-generation";
 import { buttplugPlugin } from "@eliza/plugin-buttplug";
 const character = {
-    // ... other character config
+    // ... 其他角色配置
     plugins: [bootstrapPlugin, imageGenerationPlugin, buttplugPlugin],
 };
 ```
 
 ---
 
-### Available Plugins
+### 可用插件
 
-#### 1. Bootstrap Plugin (`@eliza/plugin-bootstrap`)
+#### 1. Bootstrap 插件 (`@eliza/plugin-bootstrap`)
 
-The bootstrap plugin provides essential baseline functionality:
+Bootstrap 插件提供基本的基础功能：
 
-**Actions:**
+**操作：**
 
-- `continue` - Continue the current conversation flow
-- `followRoom` - Follow a room for updates
-- `unfollowRoom` - Unfollow a room
-- `ignore` - Ignore specific messages
-- `muteRoom` - Mute notifications from a room
-- `unmuteRoom` - Unmute notifications from a room
+- `continue` - 继续当前对话流程
+- `followRoom` - 关注房间以获取更新
+- `unfollowRoom` - 取消关注房间
+- `ignore` - 忽略特定消息
+- `muteRoom` - 静音房间通知
+- `unmuteRoom` - 取消静音房间通知
 
-**Evaluators:**
+**评估器：**
 
-- `fact` - Evaluate factual accuracy
-- `goal` - Assess goal completion
+- `fact` - 评估事实准确性
+- `goal` - 评估目标完成情况
 
-**Providers:**
+**提供者：**
 
-- `boredom` - Manages engagement levels
-- `time` - Provides temporal context
-- `facts` - Supplies factual information
+- `boredom` - 管理参与度
+- `time` - 提供时间上下文
+- `facts` - 提供事实信息
 
-#### 2. Image Generation Plugin (`@eliza/plugin-image-generation`)
+#### 2. 图像生成插件 (`@eliza/plugin-image-generation`)
 
-Enables AI image generation capabilities:
+启用 AI 图像生成功能：
 
-**Actions:**
+**操作：**
 
-- `GENERATE_IMAGE` - Create images based on text descriptions
-- Supports multiple image generation services (Anthropic, Together)
-- Auto-generates captions for created images
+- `GENERATE_IMAGE` - 根据文本描述创建图像
+- 支持多种图像生成服务（Anthropic、Together）
+- 自动生成图像的标题
 
-#### 3. Node Plugin (`@eliza/plugin-node`)
+#### 3. Node 插件 (`@eliza/plugin-node`)
 
-Provides core Node.js-based services:
+提供基于 Node.js 的核心服务：
 
-**Services:**
+**服务：**
 
-- `BrowserService` - Web browsing capabilities
-- `ImageDescriptionService` - Image analysis
-- `LlamaService` - LLM integration
-- `PdfService` - PDF processing
-- `SpeechService` - Text-to-speech
-- `TranscriptionService` - Speech-to-text
-- `VideoService` - Video processing
+- `BrowserService` - 网页浏览功能
+- `ImageDescriptionService` - 图像分析
+- `LlamaService` - LLM 集成
+- `PdfService` - PDF 处理
+- `SpeechService` - 文本转语音
+- `TranscriptionService` - 语音转文本
+- `VideoService` - 视频处理
 
-#### 4. Solana Plugin (`@eliza/plugin-solana`)
+#### 4. Solana 插件 (`@eliza/plugin-solana`)
 
-Integrates Solana blockchain functionality:
+集成 Solana 区块链功能：
 
-**Evaluators:**
+**评估器：**
 
-- `trustEvaluator` - Assess transaction trust scores
+- `trustEvaluator` - 评估交易信任分数
 
-**Providers:**
+**提供者：**
 
-- `walletProvider` - Wallet management
-- `trustScoreProvider` - Transaction trust metrics
+- `walletProvider` - 钱包管理
+- `trustScoreProvider` - 交易信任指标
 
-##### Charity Contributions
+##### 慈善捐款
 
-All Coinbase trades and transfers automatically donate 1% of the transaction amount to charity. Currently, the charity addresses are hardcoded based on the network used for the transaction, with the current charity being supported as X.
+所有 Coinbase 交易和转账会自动捐赠 1% 的交易金额给慈善机构。目前，慈善地址是根据交易使用的网络硬编码的，当前支持的慈善机构为 X。
 
-The charity addresses for each network are as follows:
+每个网络的慈善地址如下：
 
 - **Base**: `0x1234567890123456789012345678901234567890`
 - **Solana**: `pWvDXKu6CpbKKvKQkZvDA66hgsTB6X2AgFxksYogHLV`
@@ -120,57 +120,57 @@ The charity addresses for each network are as follows:
 - **Arbitrum**: `0x1234567890123456789012345678901234567890`
 - **Polygon**: `0x1234567890123456789012345678901234567890`
 
-In the future, we aim to integrate with The Giving Block API to allow for dynamic and configurable donations, enabling support for a wider range of charitable organizations.
+未来，我们计划与 The Giving Block API 集成，以实现动态和可配置的捐赠，支持更多的慈善组织。
 
-#### 5. Coinbase Commerce Plugin (`@eliza/plugin-coinbase`)
+#### 5. Coinbase Commerce 插件 (`@eliza/plugin-coinbase`)
 
-Integrates Coinbase Commerce for payment and transaction management:
+集成 Coinbase Commerce 进行支付和交易管理：
 
-**Actions:**
+**操作：**
 
-- `CREATE_CHARGE` - Create a payment charge using Coinbase Commerce
-- `GET_ALL_CHARGES` - Fetch all payment charges
-- `GET_CHARGE_DETAILS` - Retrieve details for a specific charge
+- `CREATE_CHARGE` - 使用 Coinbase Commerce 创建支付费用
+- `GET_ALL_CHARGES` - 获取所有支付费用
+- `GET_CHARGE_DETAILS` - 检索特定费用的详细信息
 
-**Description:**
-This plugin enables Eliza to interact with the Coinbase Commerce API to create and manage payment charges, providing seamless integration with cryptocurrency-based payment systems.
-
----
-
-##### Coinbase Wallet Management
-
-The plugin automatically handles wallet creation or uses an existing wallet if the required details are provided during the first run.
-
-1. **Wallet Generation on First Run**
-   If no wallet information is provided (`COINBASE_GENERATED_WALLET_HEX_SEED` and `COINBASE_GENERATED_WALLET_ID`), the plugin will:
-
-    - **Generate a new wallet** using the Coinbase SDK.
-    - Automatically **export the wallet details** (`seed` and `walletId`) and securely store them in `runtime.character.settings.secrets` or other configured storage.
-    - Log the wallet’s default address for reference.
-    - If the character file does not exist, the wallet details are saved to a characters/charactername-seed.txt file in the characters directory with a note indicating that the user must manually add these details to settings.secrets or the .env file.
-
-2. **Using an Existing Wallet**
-   If wallet information is available during the first run:
-    - Provide `COINBASE_GENERATED_WALLET_HEX_SEED` and `COINBASE_GENERATED_WALLET_ID` via `runtime.character.settings.secrets` or environment variables.
-    - The plugin will **import the wallet** and use it for processing mass payouts.
+**描述：**
+此插件使 Eliza 能够与 Coinbase Commerce API 交互，以创建和管理支付费用，提供与加密货币支付系统的无缝集成。
 
 ---
 
-#### 6. Coinbase MassPayments Plugin (`@eliza/plugin-coinbase`)
+##### Coinbase 钱包管理
 
-This plugin facilitates the processing of cryptocurrency mass payouts using the Coinbase SDK. It enables the creation and management of mass payouts to multiple wallet addresses, logging all transaction details to a CSV file for further analysis.
+该插件会自动处理钱包创建，或在首次运行时使用现有钱包（如果提供了所需的详细信息）。
 
-**Actions:**
+1. **首次运行时生成钱包**
+   如果未提供钱包信息（`COINBASE_GENERATED_WALLET_HEX_SEED` 和 `COINBASE_GENERATED_WALLET_ID`），插件将：
+
+    - 使用 Coinbase SDK **生成新钱包**。
+    - 自动**导出钱包详细信息**（`seed` 和 `walletId`）并安全地存储在 `runtime.character.settings.secrets` 或其他配置的存储中。
+    - 记录钱包的默认地址以供参考。
+    - 如果角色文件不存在，钱包详细信息将保存到角色目录中的 `characters/charactername-seed.txt` 文件中，并附有说明，指示用户必须手动将这些详细信息添加到 settings.secrets 或 .env 文件中。
+
+2. **使用现有钱包**
+   如果在首次运行时提供了钱包信息：
+    - 通过 `runtime.character.settings.secrets` 或环境变量提供 `COINBASE_GENERATED_WALLET_HEX_SEED` 和 `COINBASE_GENERATED_WALLET_ID`。
+    - 插件将**导入钱包**并用于处理大规模支付。
+
+---
+
+#### 6. Coinbase MassPayments 插件 (`@eliza/plugin-coinbase`)
+
+此插件使用 Coinbase SDK 促进加密货币大规模支付的处理。它使得可以创建和管理对多个钱包地址的大规模支付，并将所有交易详细信息记录到 CSV 文件中以供进一步分析。
+
+**操作：**
 
 - `SEND_MASS_PAYOUT`
-  Sends cryptocurrency mass payouts to multiple wallet addresses.
-    - **Inputs**:
-        - `receivingAddresses` (array of strings): Wallet addresses to receive funds.
-        - `transferAmount` (number): Amount to send to each address (in smallest currency unit, e.g., Wei for ETH).
-        - `assetId` (string): Cryptocurrency asset ID (e.g., `ETH`, `BTC`).
-        - `network` (string): Blockchain network (e.g., `base`, `sol`, `eth`, `arb`, `pol`).
-    - **Outputs**: Logs transaction results (success/failure) in a CSV file.
-    - **Example**:
+  发送加密货币大规模支付到多个钱包地址。
+    - **输入**：
+        - `receivingAddresses`（字符串数组）：接收资金的钱包地址。
+        - `transferAmount`（数字）：发送到每个地址的金额（以最小货币单位，例如 ETH 的 Wei）。
+        - `assetId`（字符串）：加密货币资产 ID（例如 `ETH`、`BTC`）。
+        - `network`（字符串）：区块链网络（例如 `base`、`sol`、`eth`、`arb`、`pol`）。
+    - **输出**：在 CSV 文件中记录交易结果（成功/失败）。
+    - **示例**：
         ```json
         {
             "receivingAddresses": [
@@ -183,33 +183,33 @@ This plugin facilitates the processing of cryptocurrency mass payouts using the 
         }
         ```
 
-**Providers:**
+**提供者：**
 
 - `massPayoutProvider`
-  Retrieves details of past transactions from the generated CSV file.
-    - **Outputs**: A list of transaction records including the following fields:
-        - `address`: Recipient wallet address.
-        - `amount`: Amount sent.
-        - `status`: Transaction status (`Success` or `Failed`).
-        - `errorCode`: Error code (if any).
-        - `transactionUrl`: URL for transaction details (if available).
+  从生成的 CSV 文件中检索过去交易的详细信息。
+    - **输出**：包括以下字段的交易记录列表：
+        - `address`：接收者钱包地址。
+        - `amount`：发送的金额。
+        - `status`：交易状态（`Success` 或 `Failed`）。
+        - `errorCode`：错误代码（如果有）。
+        - `transactionUrl`：交易详细信息的 URL（如果有）。
 
-**Description:**
+**描述：**
 
-The Coinbase MassPayments plugin streamlines cryptocurrency distribution, ensuring efficient and scalable payouts to multiple recipients on supported blockchain networks.
+Coinbase MassPayments 插件简化了加密货币的分发，确保对支持的区块链网络上的多个接收者进行高效和可扩展的支付。
 
-Supported networks:
+支持的网络：
 
-- `base` (Base blockchain)
-- `sol` (Solana)
-- `eth` (Ethereum)
-- `arb` (Arbitrum)
-- `pol` (Polygon)
+- `base`（Base 区块链）
+- `sol`（Solana）
+- `eth`（Ethereum）
+- `arb`（Arbitrum）
+- `pol`（Polygon）
 
-**Setup and Configuration:**
+**设置和配置：**
 
-1. **Configure the Plugin**
-   Add the plugin to your character's configuration:
+1. **配置插件**
+   将插件添加到角色配置中：
 
     ```typescript
     import { coinbaseMassPaymentsPlugin } from "@eliza/plugin-coinbase-masspayments";
@@ -219,40 +219,40 @@ Supported networks:
     };
     ```
 
-2. **Required Configurations**
-   Set the following environment variables or runtime settings:
+2. **所需配置**
+   设置以下环境变量或运行时设置：
 
-    - `COINBASE_API_KEY`: API key for Coinbase SDK
-    - `COINBASE_PRIVATE_KEY`: Private key for secure transactions
-    - `COINBASE_GENERATED_WALLET_HEX_SEED`: Hexadecimal seed of the wallet (if using existing wallet)
-    - `COINBASE_GENERATED_WALLET_ID`: Unique wallet ID (if using existing wallet)
+    - `COINBASE_API_KEY`：Coinbase SDK 的 API 密钥
+    - `COINBASE_PRIVATE_KEY`：用于安全交易的私钥
+    - `COINBASE_GENERATED_WALLET_HEX_SEED`：钱包的十六进制种子（如果使用现有钱包）
+    - `COINBASE_GENERATED_WALLET_ID`：唯一钱包 ID（如果使用现有钱包）
 
-**Wallet Management:**
+**钱包管理：**
 
-The plugin handles wallet creation and management in two ways:
+该插件以两种方式处理钱包创建和管理：
 
-1. **Automatic Wallet Creation**
-   When no wallet details are provided, the plugin will:
+1. **自动创建钱包**
+   当未提供钱包详细信息时，插件将：
 
-    - Generate a new wallet using the Coinbase SDK
-    - Export and store the wallet details in `runtime.character.settings.secrets`
-    - Save details to `characters/charactername-seed.txt` if character file doesn't exist
-    - Log the wallet's default address
+    - 使用 Coinbase SDK 生成新钱包
+    - 导出并存储钱包详细信息在 `runtime.character.settings.secrets`
+    - 如果角色文件不存在，将详细信息保存到 `characters/charactername-seed.txt`
+    - 记录钱包的默认地址
 
-2. **Using Existing Wallet**
-   When wallet information is available:
-    - Provide the required wallet details via settings or environment variables
-    - The plugin will import and use the existing wallet
+2. **使用现有钱包**
+   当提供钱包信息时：
+    - 通过设置或环境变量提供所需的钱包详细信息
+    - 插件将导入并使用现有钱包
 
-**Example Configuration:**
+**示例配置：**
 
 ```typescript
-// For automatic wallet generation
+// 用于自动生成钱包
 runtime.character.settings.secrets = {
-    // Empty settings for first run
+    // 首次运行时的空设置
 };
 
-// For using existing wallet
+// 使用现有钱包
 runtime.character.settings.secrets = {
     COINBASE_GENERATED_WALLET_HEX_SEED:
         "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
@@ -260,7 +260,7 @@ runtime.character.settings.secrets = {
 };
 ```
 
-**Example Call**
+**示例调用**
 
 ```typescript
 const response = await runtime.triggerAction("SEND_MASS_PAYOUT", {
@@ -275,18 +275,18 @@ const response = await runtime.triggerAction("SEND_MASS_PAYOUT", {
 console.log("Mass payout response:", response);
 ```
 
-**Transaction Logging**
+**交易记录**
 
-All transactions (successful and failed) are logged to a `transactions.csv` file in the plugin’s working directory:
+所有交易（成功和失败）都记录在插件工作目录中的 `transactions.csv` 文件中：
 
 ```plaintext
 Address,Amount,Status,Error Code,Transaction URL
 0xA0ba2ACB5846A54834173fB0DD9444F756810f06,5000000000000000,Success,,https://etherscan.io/tx/0x...
 ```
 
-**Example Output:**
+**示例输出：**
 
-When successful, a response similar to the following will be returned:
+成功时，将返回类似以下的响应：
 
 ```json
 {
@@ -294,31 +294,31 @@ When successful, a response similar to the following will be returned:
 }
 ```
 
-**Best Practices:**
+**最佳实践：**
 
-- **Secure Secrets Storage**: Ensure `COINBASE_API_KEY` and `COINBASE_PRIVATE_KEY` are stored securely in `runtime.character.settings.secrets` or environment variables. Either add `COINBASE_GENERATED_WALLET_HEX_SEED`, and `COINBASE_GENERATED_WALLET_ID` from a previous run, or it will be dynamically created
-- **Validation**: Always validate input parameters, especially `receivingAddresses` and `network`, to ensure compliance with expected formats and supported networks.
-- **Error Handling**: Monitor logs for failed transactions or errors in the payout process and adjust retry logic as needed.
+- **安全存储机密**：确保 `COINBASE_API_KEY` 和 `COINBASE_PRIVATE_KEY` 安全存储在 `runtime.character.settings.secrets` 或环境变量中。要么添加 `COINBASE_GENERATED_WALLET_HEX_SEED` 和 `COINBASE_GENERATED_WALLET_ID`，要么它将被动态创建
+- **验证**：始终验证输入参数，特别是 `receivingAddresses` 和 `network`，以确保符合预期格式和支持的网络。
+- **错误处理**：监控日志中的失败交易或支付过程中的错误，并根据需要调整重试逻辑。
 
 ---
 
-#### 7. Coinbase Token Contract Plugin (`@eliza/plugin-coinbase`)
+#### 7. Coinbase Token Contract 插件 (`@eliza/plugin-coinbase`)
 
-This plugin enables the deployment and interaction with various token contracts (ERC20, ERC721, ERC1155) using the Coinbase SDK. It provides functionality for both deploying new token contracts and interacting with existing ones.
+此插件使用 Coinbase SDK 启用与各种代币合约（ERC20、ERC721、ERC1155）的部署和交互。它提供了部署新代币合约和与现有合约交互的功能。
 
-**Actions:**
+**操作：**
 
 1. `DEPLOY_TOKEN_CONTRACT`
-   Deploys a new token contract (ERC20, ERC721, or ERC1155).
+   部署新代币合约（ERC20、ERC721 或 ERC1155）。
 
-    - **Inputs**:
-        - `contractType` (string): Type of contract to deploy (`ERC20`, `ERC721`, or `ERC1155`)
-        - `name` (string): Name of the token
-        - `symbol` (string): Symbol of the token
-        - `network` (string): Blockchain network to deploy on
-        - `baseURI` (string, optional): Base URI for token metadata (required for ERC721 and ERC1155)
-        - `totalSupply` (number, optional): Total supply of tokens (only for ERC20)
-    - **Example**:
+    - **输入**：
+        - `contractType`（字符串）：要部署的合约类型（`ERC20`、`ERC721` 或 `ERC1155`）
+        - `name`（字符串）：代币名称
+        - `symbol`（字符串）：代币符号
+        - `network`（字符串）：要部署的区块链网络
+        - `baseURI`（字符串，可选）：代币元数据的基本 URI（仅适用于 ERC721 和 ERC1155）
+        - `totalSupply`（数字，可选）：代币总供应量（仅适用于 ERC20）
+    - **示例**：
         ```json
         {
             "contractType": "ERC20",
@@ -330,16 +330,16 @@ This plugin enables the deployment and interaction with various token contracts 
         ```
 
 2. `INVOKE_CONTRACT`
-   Invokes a method on a deployed smart contract.
-    - **Inputs**:
-        - `contractAddress` (string): Address of the contract to invoke
-        - `method` (string): Method name to invoke
-        - `abi` (array): Contract ABI
-        - `args` (object, optional): Arguments for the method
-        - `amount` (number, optional): Amount of asset to send (for payable methods)
-        - `assetId` (string, optional): Asset ID to send
-        - `network` (string): Blockchain network to use
-    - **Example**:
+   调用已部署智能合约的方法。
+    - **输入**：
+        - `contractAddress`（字符串）：要调用的合约地址
+        - `method`（字符串）：要调用的方法名称
+        - `abi`（数组）：合约 ABI
+        - `args`（对象，可选）：方法的参数
+        - `amount`（数字，可选）：发送的资产金额（用于可支付方法）
+        - `assetId`（字符串，可选）：发送的资产 ID
+        - `network`（字符串）：要使用的区块链网络
+    - **示例**：
         ```json
         {
           "contractAddress": "0x123...",
@@ -353,21 +353,21 @@ This plugin enables the deployment and interaction with various token contracts 
         }
         ```
 
-**Description:**
+**描述：**
 
-The Coinbase Token Contract plugin simplifies the process of deploying and interacting with various token contracts on supported blockchain networks. It supports:
+Coinbase Token Contract 插件简化了在支持的区块链网络上部署和交互各种代币合约的过程。它支持：
 
-- ERC20 token deployment with customizable supply
-- ERC721 (NFT) deployment with metadata URI support
-- ERC1155 (Multi-token) deployment with metadata URI support
-- Contract method invocation for deployed contracts
+- 可定制供应量的 ERC20 代币部署
+- 支持元数据 URI 的 ERC721（NFT）部署
+- 支持元数据 URI 的 ERC1155（多代币）部署
+- 已部署合约的方法调用
 
-All contract deployments and interactions are logged to a CSV file for record-keeping and auditing purposes.
+所有合约部署和交互都记录在 CSV 文件中，以便记录和审计。
 
-**Usage Instructions:**
+**使用说明：**
 
-1. **Configure the Plugin**
-   Add the plugin to your character's configuration:
+1. **配置插件**
+   将插件添加到角色配置中：
 
     ```typescript
     import { tokenContractPlugin } from "@eliza/plugin-coinbase";
@@ -377,15 +377,15 @@ All contract deployments and interactions are logged to a CSV file for record-ke
     };
     ```
 
-2. **Required Configurations**
-   Ensure the following environment variables or runtime settings are configured:
-    - `COINBASE_API_KEY`: API key for Coinbase SDK
-    - `COINBASE_PRIVATE_KEY`: Private key for secure transactions
-    - Wallet configuration (same as MassPayments plugin)
+2. **所需配置**
+   确保配置以下环境变量或运行时设置：
+    - `COINBASE_API_KEY`：Coinbase SDK 的 API 密钥
+    - `COINBASE_PRIVATE_KEY`：用于安全交易的私钥
+    - 钱包配置（与 MassPayments 插件相同）
 
-**Example Deployments:**
+**示例部署：**
 
-1. **ERC20 Token**
+1. **ERC20 代币**
 
     ```typescript
     const response = await runtime.triggerAction("DEPLOY_TOKEN_CONTRACT", {
@@ -397,7 +397,7 @@ All contract deployments and interactions are logged to a CSV file for record-ke
     });
     ```
 
-2. **NFT Collection**
+2. **NFT 集合**
 
     ```typescript
     const response = await runtime.triggerAction("DEPLOY_TOKEN_CONTRACT", {
@@ -409,7 +409,7 @@ All contract deployments and interactions are logged to a CSV file for record-ke
     });
     ```
 
-3. **Multi-token Collection**
+3. **多代币集合**
     ```typescript
     const response = await runtime.triggerAction("DEPLOY_TOKEN_CONTRACT", {
         contractType: "ERC1155",
@@ -420,7 +420,7 @@ All contract deployments and interactions are logged to a CSV file for record-ke
     });
     ```
 
-**Contract Interaction Example:**
+**合约交互示例：**
 
 ```typescript
 const response = await runtime.triggerAction("INVOKE_CONTRACT", {
@@ -435,118 +435,118 @@ const response = await runtime.triggerAction("INVOKE_CONTRACT", {
 });
 ```
 
-**Best Practices:**
+**最佳实践：**
 
-- Always verify contract parameters before deployment
-- Store contract addresses and deployment details securely
-- Test contract interactions on testnets before mainnet deployment
-- Keep track of deployed contracts using the generated CSV logs
-- Ensure proper error handling for failed deployments or interactions
+- 部署前始终验证合约参数
+- 安全存储合约地址和部署详情
+- 在主网部署前在测试网测试合约交互
+- 使用生成的CSV日志跟踪已部署的合约
+- 确保对失败的部署或交互进行适当的错误处理
 
 ---
 
-#### 8. TEE Plugin (`@elizaos/plugin-tee`)
+#### 8. TEE 插件 (`@elizaos/plugin-tee`)
 
-Integrates [Dstack SDK](https://github.com/Dstack-TEE/dstack) to enable TEE (Trusted Execution Environment) functionality and deploy secure & privacy-enhanced Eliza Agents:
+集成 [Dstack SDK](https://github.com/Dstack-TEE/dstack) 以启用 TEE（可信执行环境）功能并部署安全和隐私增强的 Eliza Agents：
 
-**Providers:**
+**提供者：**
 
-- `deriveKeyProvider` - Allows for secure key derivation within a TEE environment. It supports deriving keys for both Solana (Ed25519) and Ethereum (ECDSA) chains.
-- `remoteAttestationProvider` - Generate a Remote Attestation Quote based on `report_data`.
+- `deriveKeyProvider` - 允许在 TEE 环境中安全地派生密钥。支持为 Solana（Ed25519）和 Ethereum（ECDSA）链派生密钥。
+- `remoteAttestationProvider` - 基于 `report_data` 生成远程认证报告。
 
-**DeriveKeyProvider Usage**
+**DeriveKeyProvider 用法**
 
 ```typescript
 import { DeriveKeyProvider } from "@elizaos/plugin-tee";
 
-// Initialize the provider
+// 初始化提供者
 const provider = new DeriveKeyProvider();
 
-// Derive a raw key
+// 派生原始密钥
 try {
     const rawKey = await provider.rawDeriveKey(
         "/path/to/derive",
         "subject-identifier",
     );
-    // rawKey is a DeriveKeyResponse that can be used for further processing
-    // to get the uint8Array do the following
+    // rawKey 是一个 DeriveKeyResponse，可用于进一步处理
+    // 获取 uint8Array 如下
     const rawKeyArray = rawKey.asUint8Array();
 } catch (error) {
-    console.error("Raw key derivation failed:", error);
+    console.error("原始密钥派生失败:", error);
 }
 
-// Derive a Solana keypair (Ed25519)
+// 派生 Solana 密钥对（Ed25519）
 try {
     const solanaKeypair = await provider.deriveEd25519Keypair(
         "/path/to/derive",
         "subject-identifier",
     );
-    // solanaKeypair can now be used for Solana operations
+    // solanaKeypair 现在可以用于 Solana 操作
 } catch (error) {
-    console.error("Solana key derivation failed:", error);
+    console.error("Solana 密钥派生失败:", error);
 }
 
-// Derive an Ethereum keypair (ECDSA)
+// 派生 Ethereum 密钥对（ECDSA）
 try {
     const evmKeypair = await provider.deriveEcdsaKeypair(
         "/path/to/derive",
         "subject-identifier",
     );
-    // evmKeypair can now be used for Ethereum operations
+    // evmKeypair 现在可以用于 Ethereum 操作
 } catch (error) {
-    console.error("EVM key derivation failed:", error);
+    console.error("EVM 密钥派生失败:", error);
 }
 ```
 
-**RemoteAttestationProvider Usage**
+**RemoteAttestationProvider 用法**
 
 ```typescript
 import { RemoteAttestationProvider } from "@elizaos/plugin-tee";
-// Initialize the provider
+// 初始化提供者
 const provider = new RemoteAttestationProvider();
-// Generate Remote Attestation
+// 生成远程认证
 try {
     const attestation = await provider.generateAttestation("your-report-data");
-    console.log("Attestation:", attestation);
+    console.log("认证:", attestation);
 } catch (error) {
-    console.error("Failed to generate attestation:", error);
+    console.error("生成认证失败:", error);
 }
 ```
 
-**Configuration**
+**配置**
 
-To get a TEE simulator for local testing, use the following commands:
+要获取本地测试的 TEE 模拟器，请使用以下命令：
 
 ```bash
 docker pull phalanetwork/tappd-simulator:latest
-# by default the simulator is available in localhost:8090
+# 默认情况下，模拟器在 localhost:8090 可用
 docker run --rm -p 8090:8090 phalanetwork/tappd-simulator:latest
 ```
 
-When using the provider through the runtime environment, ensure the following settings are configured:
+通过运行环境使用提供者时，请确保配置以下设置：
 
 ```env
- # Optional, for simulator purposes if testing on mac or windows. Leave empty for Linux x86 machines.
+ # 可选，如果在 mac 或 windows 上测试模拟器。Linux x86 机器请留空。
 DSTACK_SIMULATOR_ENDPOINT="http://host.docker.internal:8090"
-WALLET_SECRET_SALT=your-secret-salt // Required to single agent deployments
+WALLET_SECRET_SALT=your-secret-salt // 单个代理部署所需
 ```
 
 ---
 
-#### 9. Webhook Plugin (`@eliza/plugin-coinbase-webhooks`)
+#### 9. Webhook 插件 (`@eliza/plugin-coinbase-webhooks`)
 
-Manages webhooks using the Coinbase SDK, allowing for the creation and management of webhooks to listen for specific events on the Coinbase platform.
+使用 Coinbase SDK 管理 webhooks，允许创建和管理 webhooks 以监听 Coinbase 平台上的特定事件。
 
-**Actions:**
+**操作：**
 
-- `CREATE_WEBHOOK` - Create a new webhook to listen for specific events.
-    - **Inputs**:
-        - `networkId` (string): The network ID where the webhook should listen for events.
-        - `eventType` (string): The type of event to listen for (e.g., transfers).
-        - `eventFilters` (object, optional): Additional filters for the event.
-        - `eventTypeFilter` (string, optional): Specific event type filter.
-    - **Outputs**: Confirmation message with webhook details.
-    - **Example**:
+- `CREATE_WEBHOOK` - 创建一个新的 webhook 以监听特定事件。
+    - **输入**：
+        - `networkId` (string): webhook 应监听事件的网络 ID。
+        - `eventType` (string): 要监听的事件类型（例如，转账）。
+        - `eventFilters` (object, optional): 事件的附加过滤器。
+        - `eventTypeFilter` (string, optional): 特定事件类型过滤器。
+    - **输出**：包含 webhook 详细信息的确认消息。
+    - **示例**：
         ```json
         {
             "networkId": "base",
@@ -555,19 +555,19 @@ Manages webhooks using the Coinbase SDK, allowing for the creation and managemen
         }
         ```
 
-**Providers:**
+**提供者：**
 
-- `webhookProvider` - Retrieves a list of all configured webhooks.
-    - **Outputs**: A list of webhooks with details such as ID, URL, event type, and status.
+- `webhookProvider` - 检索所有配置的 webhooks 列表。
+    - **输出**：包含 ID、URL、事件类型和状态的 webhooks 列表。
 
-**Description:**
+**描述：**
 
-The Webhook Plugin enables Eliza to interact with the Coinbase SDK to create and manage webhooks. This allows for real-time event handling and notifications based on specific criteria set by the user.
+Webhook 插件使 Eliza 能够与 Coinbase SDK 交互，以创建和管理 webhooks。这允许基于用户设置的特定条件进行实时事件处理和通知。
 
-**Usage Instructions:**
+**使用说明：**
 
-1. **Configure the Plugin**
-   Add the plugin to your character’s configuration:
+1. **配置插件**
+   将插件添加到角色的配置中：
 
     ```typescript
     import { webhookPlugin } from "@eliza/plugin-coinbase-webhooks";
@@ -577,16 +577,16 @@ The Webhook Plugin enables Eliza to interact with the Coinbase SDK to create and
     };
     ```
 
-2. **Ensure Secure Configuration**
-   Set the following environment variables or runtime settings to ensure the plugin functions securely:
+2. **确保安全配置**
+   设置以下环境变量或运行时设置，以确保插件安全运行：
 
-    - `COINBASE_API_KEY`: API key for Coinbase SDK.
-    - `COINBASE_PRIVATE_KEY`: Private key for secure transactions.
-    - `COINBASE_NOTIFICATION_URI`: URI where notifications should be sent.
+    - `COINBASE_API_KEY`: Coinbase SDK 的 API 密钥。
+    - `COINBASE_PRIVATE_KEY`: 用于安全交易的私钥。
+    - `COINBASE_NOTIFICATION_URI`: 接收通知的 URI。
 
-**Example Call**
+**示例调用**
 
-To create a webhook:
+创建 webhook：
 
 ```typescript
 const response = await runtime.triggerAction("CREATE_WEBHOOK", {
@@ -594,32 +594,32 @@ const response = await runtime.triggerAction("CREATE_WEBHOOK", {
     eventType: "transfers",
     notificationUri: "https://your-notification-uri.com",
 });
-console.log("Webhook creation response:", response);
+console.log("Webhook 创建响应:", response);
 ```
 
-**Best Practices:**
+**最佳实践：**
 
-- **Secure Secrets Storage**: Ensure `COINBASE_API_KEY`, `COINBASE_PRIVATE_KEY`, and `COINBASE_NOTIFICATION_URI` are stored securely in `runtime.character.settings.secrets` or environment variables.
-- **Validation**: Always validate input parameters to ensure compliance with expected formats and supported networks.
-- **Error Handling**: Monitor logs for errors during webhook creation and adjust retry logic as needed.
+- **安全存储密钥**：确保 `COINBASE_API_KEY`、`COINBASE_PRIVATE_KEY` 和 `COINBASE_NOTIFICATION_URI` 安全存储在 `runtime.character.settings.secrets` 或环境变量中。
+- **验证**：始终验证输入参数以确保符合预期格式和支持的网络。
+- **错误处理**：监控 webhook 创建过程中的错误日志，并根据需要调整重试逻辑。
 
-### 10. Fuel Plugin (`@elizaos/plugin-fuel`)
+### 10. Fuel 插件 (`@elizaos/plugin-fuel`)
 
-The Fuel plugin provides an interface to the Fuel Ignition blockchain.
+Fuel 插件提供与 Fuel Ignition 区块链的接口。
 
-**Actions:**
+**操作：**
 
-1. `TRANSFER_FUEL_ETH` - Transfer ETH to a given Fuel address. - **Inputs**: - `toAddress` (string): The Fuel address to transfer ETH to. - `amount` (string): The amount of ETH to transfer. - **Outputs**: Confirmation message with transaction details. - **Example**:
+1. `TRANSFER_FUEL_ETH` - 向指定的 Fuel 地址转移 ETH。 - **输入**： - `toAddress` (string): 要转移 ETH 的 Fuel 地址。 - `amount` (string): 要转移的 ETH 数量。 - **输出**：包含交易详情的确认消息。 - **示例**：
    ```json
    {
     "toAddress": "0x8F8afB12402C9a4bD9678Bec363E51360142f8443FB171655eEd55dB298828D1",
     "amount": "0.00001"
    }
    ```
-   **Setup and Configuration:**
+   **设置和配置：**
 
-1. **Configure the Plugin**
-   Add the plugin to your character's configuration:
+1. **配置插件**
+   将插件添加到角色的配置中：
 
     ```typescript
     import { fuelPlugin } from "@eliza/plugin-fuel";
@@ -629,75 +629,75 @@ The Fuel plugin provides an interface to the Fuel Ignition blockchain.
     };
     ```
 
-1. **Required Configurations**
-   Set the following environment variables or runtime settings:
+1. **必需配置**
+   设置以下环境变量或运行时设置：
 
-    - `FUEL_WALLET_PRIVATE_KEY`: Private key for secure transactions
+    - `FUEL_WALLET_PRIVATE_KEY`: 用于安全交易的私钥
 
-### Writing Custom Plugins
+### 编写自定义插件
 
-Create a new plugin by implementing the Plugin interface:
+通过实现 Plugin 接口创建新插件：
 
 ```typescript
 import { Plugin, Action, Evaluator, Provider } from "@elizaos/core";
 
 const myCustomPlugin: Plugin = {
     name: "my-custom-plugin",
-    description: "Adds custom functionality",
+    description: "添加自定义功能",
     actions: [
-        /* custom actions */
+        /* 自定义操作 */
     ],
     evaluators: [
-        /* custom evaluators */
+        /* 自定义评估器 */
     ],
     providers: [
-        /* custom providers */
+        /* 自定义提供者 */
     ],
     services: [
-        /* custom services */
+        /* 自定义服务 */
     ],
 };
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Modularity**: Keep plugins focused on specific functionality
-2. **Dependencies**: Clearly document any external dependencies
-3. **Error Handling**: Implement robust error handling
-4. **Documentation**: Provide clear documentation for actions and evaluators
-5. **Testing**: Include tests for plugin functionality
+1. **模块化**：保持插件专注于特定功能
+2. **依赖性**：清楚记录任何外部依赖
+3. **错误处理**：实现健壮的错误处理
+4. **文档**：为操作和评估器提供清晰的文档
+5. **测试**：包括插件功能的测试
 
-## Plugin Development Guidelines
+## 插件开发指南
 
-### Action Development
+### 操作开发
 
-- Implement the `Action` interface
-- Provide clear validation logic
-- Include usage examples
-- Handle errors gracefully
+- 实现 `Action` 接口
+- 提供清晰的验证逻辑
+- 包括使用示例
+- 优雅地处理错误
 
-### Evaluator Development
+### 评估器开发
 
-- Implement the `Evaluator` interface
-- Define clear evaluation criteria
-- Include validation logic
-- Document evaluation metrics
+- 实现 `Evaluator` 接口
+- 定义明确的评估标准
+- 包括验证逻辑
+- 记录评估指标
 
-### Provider Development
+### 提供者开发
 
-- Implement the `Provider` interface
-- Define context generation logic
-- Handle state management
-- Document provider capabilities
+- 实现 `Provider` 接口
+- 定义上下文生成逻辑
+- 处理状态管理
+- 记录提供者能力
 
-## Common Issues & Solutions
+## 常见问题及解决方案
 
-### Plugin Loading Issues
+### 插件加载问题
 
 ```typescript
-// Check if plugins are loaded correctly
+// 检查插件是否正确加载
 if (character.plugins) {
-    console.log("Plugins are: ", character.plugins);
+    console.log("插件是: ", character.plugins);
     const importedPlugins = await Promise.all(
         character.plugins.map(async (plugin) => {
             const importedPlugin = await import(plugin);
@@ -708,39 +708,39 @@ if (character.plugins) {
 }
 ```
 
-### Service Registration
+### 服务注册
 
 ```typescript
-// Proper service registration
+// 正确的服务注册
 registerService(service: Service): void {
     const serviceType = (service as typeof Service).serviceType;
     if (this.services.has(serviceType)) {
-        console.warn(`Service ${serviceType} is already registered`);
+        console.warn(`服务 ${serviceType} 已注册`);
         return;
     }
     this.services.set(serviceType, service);
 }
 ```
 
-## Future Extensions
+## 未来扩展
 
-The plugin system is designed to be extensible. Future additions may include:
+插件系统设计为可扩展。未来可能的添加包括：
 
-- Database adapters
-- Authentication providers
-- Custom model providers
-- External API integrations
-- Workflow automation
-- Custom UI components
+- 数据库适配器
+- 认证提供者
+- 自定义模型提供者
+- 外部 API 集成
+- 工作流自动化
+- 自定义 UI 组件
 
-## Contributing
+## 贡献
 
-To contribute a new plugin:
+要贡献新插件：
 
-1. Follow the plugin structure guidelines
-2. Include comprehensive documentation
-3. Add tests for all functionality
-4. Submit a pull request
-5. Update the plugin registry
+1. 遵循插件结构指南
+2. 包括全面的文档
+3. 为所有功能添加测试
+4. 提交拉取请求
+5. 更新插件注册表
 
-For detailed API documentation and examples, see the [API Reference](/api).
+有关详细的 API 文档和示例，请参见 [API 参考](/api)。

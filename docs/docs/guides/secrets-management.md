@@ -4,35 +4,35 @@ sidebar_position: 11
 
 # 🔐 Secrets Management
 
-A comprehensive guide for managing secrets, API keys, and sensitive configuration in Eliza.
+一份详尽的指南，帮助您在Eliza中管理秘密、API密钥和敏感配置。
 
-## Core Concepts
+## 核心概念
 
-### Environment Variables
+### 环境变量
 
-Eliza uses a hierarchical environment variable system:
+Eliza使用分层的环境变量系统：
 
-1. Character-specific namespaced environment variables (highest priority)
-2. Character-specific secrets
-3. Environment variables
-4. Default values (lowest priority)
+1. 角色特定的命名空间环境变量（最高优先级）
+2. 角色特定的秘密
+3. 环境变量
+4. 默认值（最低优先级）
 
-### Secret Types
+### 秘密类型
 
-Common secrets you'll need to manage:
+您需要管理的常见秘密：
 
 ```bash
-# API Keys
+# API 密钥
 OPENAI_API_KEY=sk-*
 ANTHROPIC_API_KEY=your-key
 ELEVENLABS_XI_API_KEY=your-key
 GOOGLE_GENERATIVE_AI_API_KEY=your-key
 
-# Client Authentication
+# 客户端认证
 DISCORD_API_TOKEN=your-token
 TELEGRAM_BOT_TOKEN=your-token
 
-# Database Credentials
+# 数据库凭证
 SUPABASE_URL=your-url
 SUPABASE_SERVICE_API_KEY=your-key
 
@@ -43,22 +43,22 @@ EVM_PRIVATE_KEY=EXAMPLE_WALLET_PRIVATE_KEY
 SOLANA_PRIVATE_KEY=EXAMPLE_WALLET_PRIVATE_KEY
 SOLANA_PUBLIC_KEY=EXAMPLE_WALLET_PUBLIC_KEY
 
-# Fallback Wallet Configuration (deprecated)
+# 备用钱包配置（已弃用）
 WALLET_PRIVATE_KEY=EXAMPLE_WALLET_PRIVATE_KEY
 WALLET_PUBLIC_KEY=EXAMPLE_WALLET_PUBLIC_KEY
 ```
 
-## Implementation Guide
+## 实施指南
 
-### Basic Setup
+### 基本设置
 
-1. Create a `.env` file from template:
+1. 从模板创建一个 `.env` 文件：
 
 ```bash
 cp .env.example .env
 ```
 
-2. Configure environment discovery:
+2. 配置环境发现：
 
 ```typescript
 import { config } from "dotenv";
@@ -81,9 +81,9 @@ export function findNearestEnvFile(startDir = process.cwd()) {
 }
 ```
 
-### Character-Specific Secrets
+### 角色特定的秘密
 
-Define secrets in character files:
+在角色文件中定义秘密：
 
 ```json
 {
@@ -97,19 +97,19 @@ Define secrets in character files:
 }
 ```
 
-Alternatively, you can use the `CHARACTER.YOUR_CHARACTER_NAME.SECRET_NAME` format inside your `.env` file.
+或者，您可以在 `.env` 文件中使用 `CHARACTER.YOUR_CHARACTER_NAME.SECRET_NAME` 格式。
 
-Access secrets in code:
+在代码中访问秘密：
 
 ```typescript
 const apiKey = runtime.getSetting("OPENAI_API_KEY");
 ```
 
-### Secure Storage
+### 安全存储
 
-#### Database Secrets
+#### 数据库秘密
 
-Use encrypted connection strings:
+使用加密连接字符串：
 
 ```typescript
 class SecureDatabase {
@@ -121,15 +121,15 @@ class SecureDatabase {
   }
 
   private decryptConfig(encrypted: string): DatabaseConfig {
-    // Implement decryption logic
+    // 实现解密逻辑
     return JSON.parse(decrypted);
   }
 }
 ```
 
-#### Wallet Management
+#### 钱包管理
 
-Secure handling of blockchain credentials:
+安全处理区块链凭证：
 
 ```typescript
 class WalletManager {
@@ -142,7 +142,7 @@ class WalletManager {
       throw new Error("Wallet private key not configured");
     }
 
-    // Validate key format
+    // 验证密钥格式
     try {
       const keyBuffer = Buffer.from(privateKey, "base64");
       if (keyBuffer.length !== 64) {
@@ -152,19 +152,19 @@ class WalletManager {
       throw new Error("Invalid private key format");
     }
 
-    // Initialize wallet securely
+    // 安全初始化钱包
     return new Wallet(privateKey);
   }
 }
 ```
 
-### Secret Rotation
+### 秘密轮换
 
-Implement automatic secret rotation:
+实现自动秘密轮换：
 
 ```typescript
 class SecretRotation {
-  private static readonly SECRET_LIFETIME = 90 * 24 * 60 * 60 * 1000; // 90 days
+  private static readonly SECRET_LIFETIME = 90 * 24 * 60 * 60 * 1000; // 90天
 
   async shouldRotateSecret(secretName: string): Promise<boolean> {
     const lastRotation = await this.getLastRotation(secretName);
@@ -172,7 +172,7 @@ class SecretRotation {
   }
 
   async rotateSecret(secretName: string): Promise<void> {
-    // Implement rotation logic
+    // 实现轮换逻辑
     const newSecret = await this.generateNewSecret();
     await this.updateSecret(secretName, newSecret);
     await this.recordRotation(secretName);
@@ -180,16 +180,16 @@ class SecretRotation {
 }
 ```
 
-### Access Control
+### 访问控制
 
-Implement proper access controls:
+实现适当的访问控制：
 
 ```typescript
 class SecretAccess {
   private static readonly ALLOWED_KEYS = [
     "OPENAI_API_KEY",
     "DISCORD_TOKEN",
-    // ... other allowed keys
+    // ... 其他允许的密钥
   ];
 
   static validateAccess(key: string): boolean {
@@ -209,9 +209,9 @@ class SecretAccess {
 }
 ```
 
-### Encryption at Rest
+### 静态加密
 
-Implement encryption for stored secrets:
+实现存储秘密的加密：
 
 ```typescript
 import { createCipheriv, createDecipheriv } from "crypto";
@@ -250,21 +250,21 @@ class SecretEncryption {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Environment Segregation
+### 1. 环境隔离
 
-Maintain separate environment files:
+维护单独的环境文件：
 
 ```bash
-.env.development    # Local development settings
-.env.staging       # Staging environment
-.env.production    # Production settings
+.env.development    # 本地开发设置
+.env.staging       # 预发布环境
+.env.production    # 生产设置
 ```
 
-### 2. Git Security
+### 2. Git 安全
 
-Exclude sensitive files:
+排除敏感文件：
 
 ```gitignore
 # .gitignore
@@ -274,9 +274,9 @@ characters/**/secrets.json
 **/serviceAccount.json
 ```
 
-### 3. Secret Validation
+### 3. 秘密验证
 
-Validate secrets before use:
+在使用前验证秘密：
 
 ```typescript
 async function validateSecrets(character: Character): Promise<void> {
@@ -289,9 +289,9 @@ async function validateSecrets(character: Character): Promise<void> {
 }
 ```
 
-### 4. Error Handling
+### 4. 错误处理
 
-Secure error messages:
+安全的错误消息：
 
 ```typescript
 try {
@@ -302,15 +302,15 @@ try {
   } else if (error instanceof ValidationError) {
     console.error("Invalid secret format");
   } else {
-    // Log securely without exposing secret values
+    // 安全记录日志，不暴露秘密值
     console.error("Error loading secrets");
   }
 }
 ```
 
-## Security Considerations
+## 安全考虑
 
-### 1. Handling API Keys
+### 1. 处理API密钥
 
 ```typescript
 class APIKeyManager {
@@ -322,12 +322,12 @@ class APIKeyManager {
   }
 
   async rotateAPIKey(provider: string): Promise<void> {
-    // Implement key rotation logic
+    // 实现密钥轮换逻辑
   }
 }
 ```
 
-### 2. Secure Configuration Loading
+### 2. 安全配置加载
 
 ```typescript
 class ConfigLoader {
@@ -339,12 +339,12 @@ class ConfigLoader {
     if (!this.sanitizePath(path)) {
       throw new Error("Invalid config path");
     }
-    // Load configuration
+    // 加载配置
   }
 }
 ```
 
-### 3. Memory Security
+### 3. 内存安全
 
 ```typescript
 class SecureMemory {
@@ -361,11 +361,11 @@ class SecureMemory {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. Missing Secrets
+1. 缺少秘密
 
 ```typescript
 if (!process.env.OPENAI_API_KEY) {
@@ -375,11 +375,11 @@ if (!process.env.OPENAI_API_KEY) {
 }
 ```
 
-2. Invalid Secret Format
+2. 无效的秘密格式
 
 ```typescript
 function validateApiKey(key: string): boolean {
-  // OpenAI keys start with 'sk-'
+  // OpenAI 密钥以 'sk-' 开头
   if (key.startsWith("sk-")) {
     return key.length > 20;
   }
@@ -387,7 +387,7 @@ function validateApiKey(key: string): boolean {
 }
 ```
 
-3. Secret Loading Errors
+3. 秘密加载错误
 
 ```typescript
 try {
@@ -404,8 +404,10 @@ try {
 }
 ```
 
-## Related Resources
+## 相关资源
 
-- [Configuration Guide](./configuration.md) for general setup
-- [Local Development](./local-development.md) for development environment
-- [Infrastructure Guide](../advanced/infrastructure.md) for deployment security
+- [配置指南](./configuration.md) 用于一般设置
+- [本地开发](./local-development.md) 用于开发环境
+- [基础设施指南](../advanced/infrastructure.md) 用于部署安全
+
+---

@@ -2,17 +2,17 @@
 sidebar_position: 16
 ---
 
-# 📈 Autonomous Trading
+# 📈 自主交易
 
-## Overview
+## 概述
 
-Eliza's autonomous trading system enables automated token trading on the Solana blockchain. The system integrates with Jupiter aggregator for efficient swaps, implements smart order routing, and includes risk management features.
+Eliza的自主交易系统在Solana区块链上实现了自动化代币交易。该系统集成了Jupiter聚合器以实现高效的交换，实施了智能订单路由，并包含风险管理功能。
 
-## Core Components
+## 核心组件
 
-### Token Provider
+### 代币提供者
 
-Manages token information and market data:
+管理代币信息和市场数据：
 
 ```typescript
 class TokenProvider {
@@ -20,12 +20,12 @@ class TokenProvider {
     private tokenAddress: string,
     private walletProvider: WalletProvider,
   ) {
-    this.cache = new NodeCache({ stdTTL: 300 }); // 5 minutes cache
+    this.cache = new NodeCache({ stdTTL: 300 }); // 5分钟缓存
   }
 
   async fetchPrices(): Promise<Prices> {
     const { SOL, BTC, ETH } = TOKEN_ADDRESSES;
-    // Fetch current prices
+    // 获取当前价格
     return {
       solana: { usd: "0" },
       bitcoin: { usd: "0" },
@@ -46,9 +46,9 @@ class TokenProvider {
 }
 ```
 
-### Swap Execution
+### 交换执行
 
-Implementation of token swaps using Jupiter:
+使用Jupiter实现代币交换：
 
 ```typescript
 async function swapToken(
@@ -58,11 +58,11 @@ async function swapToken(
   outputTokenCA: string,
   amount: number,
 ): Promise<any> {
-  // Get token decimals
+  // 获取代币小数位
   const decimals = await getTokenDecimals(connection, inputTokenCA);
   const adjustedAmount = amount * 10 ** decimals;
 
-  // Fetch quote
+  // 获取报价
   const quoteResponse = await fetch(
     `https://quote-api.jup.ag/v6/quote?inputMint=${inputTokenCA}` +
       `&outputMint=${outputTokenCA}` +
@@ -70,7 +70,7 @@ async function swapToken(
       `&slippageBps=50`,
   );
 
-  // Execute swap
+  // 执行交换
   const swapResponse = await fetch("https://quote-api.jup.ag/v6/swap", {
     method: "POST",
     body: JSON.stringify({
@@ -84,9 +84,9 @@ async function swapToken(
 }
 ```
 
-## Position Management
+## 头寸管理
 
-### Order Book System
+### 订单簿系统
 
 ```typescript
 interface Order {
@@ -116,7 +116,7 @@ class OrderBookProvider {
 }
 ```
 
-### Position Sizing
+### 头寸大小计算
 
 ```typescript
 async function calculatePositionSize(
@@ -125,11 +125,11 @@ async function calculatePositionSize(
 ): Promise<CalculatedBuyAmounts> {
   const { liquidity, marketCap } = tokenData.dexScreenerData.pairs[0];
 
-  // Impact percentages based on liquidity
+  // 基于流动性的影响百分比
   const impactPercentages = {
-    LOW: 0.01, // 1% of liquidity
-    MEDIUM: 0.05, // 5% of liquidity
-    HIGH: 0.1, // 10% of liquidity
+    LOW: 0.01, // 1%的流动性
+    MEDIUM: 0.05, // 5%的流动性
+    HIGH: 0.1, // 10%的流动性
   };
 
   return {
@@ -141,31 +141,31 @@ async function calculatePositionSize(
 }
 ```
 
-## Risk Management
+## 风险管理
 
-### Token Validation
+### 代币验证
 
 ```typescript
 async function validateToken(token: TokenPerformance): Promise<boolean> {
   const security = await fetchTokenSecurity(token.tokenAddress);
 
-  // Red flags check
+  // 红旗检查
   if (
     security.rugPull ||
     security.isScam ||
     token.rapidDump ||
     token.suspiciousVolume ||
-    token.liquidity.usd < 1000 || // Minimum $1000 liquidity
-    token.marketCap < 100000 // Minimum $100k market cap
+    token.liquidity.usd < 1000 || // 最低$1000流动性
+    token.marketCap < 100000 // 最低$100k市值
   ) {
     return false;
   }
 
-  // Holder distribution check
+  // 持有者分布检查
   const holderData = await fetchHolderList(token.tokenAddress);
   const topHolderPercent = calculateTopHolderPercentage(holderData);
   if (topHolderPercent > 0.5) {
-    // >50% held by top holders
+    // 超过50%由顶级持有者持有
     return false;
   }
 
@@ -173,7 +173,7 @@ async function validateToken(token: TokenPerformance): Promise<boolean> {
 }
 ```
 
-### Trade Management
+### 交易管理
 
 ```typescript
 interface TradeManager {
@@ -198,9 +198,9 @@ interface TradeManager {
 }
 ```
 
-## Market Analysis
+## 市场分析
 
-### Price Data Collection
+### 价格数据收集
 
 ```typescript
 async function collectMarketData(
@@ -217,7 +217,7 @@ async function collectMarketData(
 }
 ```
 
-### Technical Analysis
+### 技术分析
 
 ```typescript
 function analyzeMarketConditions(tradeData: TokenTradeData): MarketAnalysis {
@@ -230,9 +230,9 @@ function analyzeMarketConditions(tradeData: TokenTradeData): MarketAnalysis {
 }
 ```
 
-## Trade Execution
+## 交易执行
 
-### Swap Implementation
+### 交换实现
 
 ```typescript
 async function executeSwap(
@@ -244,20 +244,20 @@ async function executeSwap(
     slippage: number;
   },
 ): Promise<string> {
-  // Prepare transaction
+  // 准备交易
   const { swapTransaction } = await getSwapTransaction(input);
 
-  // Sign transaction
+  // 签署交易
   const keypair = getKeypairFromPrivateKey(
     runtime.getSetting("SOLANA_PRIVATE_KEY") ??
       runtime.getSetting("WALLET_PRIVATE_KEY"),
   );
   transaction.sign([keypair]);
 
-  // Execute swap
+  // 执行交换
   const signature = await connection.sendTransaction(transaction);
 
-  // Confirm transaction
+  // 确认交易
   await connection.confirmTransaction({
     signature,
     blockhash: latestBlockhash.blockhash,
@@ -268,7 +268,7 @@ async function executeSwap(
 }
 ```
 
-### DAO Integration
+### DAO集成
 
 ```typescript
 async function executeSwapForDAO(
@@ -282,10 +282,10 @@ async function executeSwapForDAO(
   const authority = getAuthorityKeypair(runtime);
   const [statePDA, walletPDA] = await derivePDAs(authority);
 
-  // Prepare instruction data
+  // 准备指令数据
   const instructionData = prepareSwapInstruction(params);
 
-  // Execute swap through DAO
+  // 通过DAO执行交换
   return invokeSwapDao(
     connection,
     authority,
@@ -296,9 +296,9 @@ async function executeSwapForDAO(
 }
 ```
 
-## Monitoring & Safety
+## 监控与安全
 
-### Health Checks
+### 健康检查
 
 ```typescript
 async function performHealthChecks(): Promise<HealthStatus> {
@@ -311,21 +311,21 @@ async function performHealthChecks(): Promise<HealthStatus> {
 }
 ```
 
-### Safety Limits
+### 安全限制
 
 ```typescript
 const SAFETY_LIMITS = {
-  MAX_POSITION_SIZE: 0.1, // 10% of portfolio
-  MAX_SLIPPAGE: 0.05, // 5% slippage
-  MIN_LIQUIDITY: 1000, // $1000 minimum liquidity
-  MAX_PRICE_IMPACT: 0.03, // 3% price impact
-  STOP_LOSS: 0.15, // 15% stop loss
+  MAX_POSITION_SIZE: 0.1, // 10%的投资组合
+  MAX_SLIPPAGE: 0.05, // 5%的滑点
+  MIN_LIQUIDITY: 1000, // 最低$1000流动性
+  MAX_PRICE_IMPACT: 0.03, // 3%的价格影响
+  STOP_LOSS: 0.15, // 15%的止损
 };
 ```
 
-## Error Handling
+## 错误处理
 
-### Transaction Errors
+### 交易错误
 
 ```typescript
 async function handleTransactionError(
@@ -342,23 +342,25 @@ async function handleTransactionError(
 }
 ```
 
-### Recovery Procedures
+### 恢复程序
 
 ```typescript
 async function recoverFromError(
   error: Error,
   context: TradingContext,
 ): Promise<void> {
-  // Stop all active trades
+  // 停止所有活跃交易
   await stopActiveTrades();
 
-  // Close risky positions
+  // 关闭高风险头寸
   await closeRiskyPositions();
 
-  // Reset system state
+  // 重置系统状态
   await resetTradingState();
 
-  // Notify administrators
+  // 通知管理员
   await notifyAdministrators(error, context);
 }
 ```
+
+---

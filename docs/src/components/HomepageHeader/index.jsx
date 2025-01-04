@@ -12,11 +12,11 @@ function HomepageHeader() {
         <div className={styles.heroSection}>
           <div>
             <h1 className={styles.heroTitle}>
-              eliza is a simple, fast, and{" "}
+              eliza 是一个简单、快速且{" "}
               <span className={styles.headerTextGradient}>
-                lightweight AI agent
+                轻量级的 AI 代理
               </span>{" "}
-              framework
+              框架
             </h1>
             <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
             <div className={styles.buttonGroup}>
@@ -24,7 +24,7 @@ function HomepageHeader() {
                 className="button button--primary button--lg"
                 href="./docs/intro/#"
               >
-                Get Started
+                开始使用
               </a>
               <div className={styles.githubButton}>
                 <iframe
@@ -42,7 +42,7 @@ function HomepageHeader() {
             <img
               src="/eliza/img/blurback.png"
               className={styles.blurPhoto}
-              alt="blurred"
+              alt="模糊背景"
             />
             <pre className={styles.codeBlock}>
               <code className="language-bash">{`npm install @elizaos/core`}</code>

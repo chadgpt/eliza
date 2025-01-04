@@ -2,15 +2,15 @@
 sidebar_position: 13
 ---
 
-# 🎯 Fine-tuning Guide
+# 🎯 精调指南
 
-## Overview
+## 概述
 
-Eliza supports multiple AI model providers and offers extensive configuration options for fine-tuning model behavior, embedding generation, and performance optimization.
+Eliza 支持多种 AI 模型提供商，并提供广泛的配置选项，用于微调模型行为、生成嵌入和优化性能。
 
-## Model Providers
+## 模型提供商
 
-Eliza supports multiple model providers through a flexible configuration system:
+Eliza 通过灵活的配置系统支持多种模型提供商：
 
 ```typescript
 enum ModelProviderName {
@@ -28,9 +28,9 @@ enum ModelProviderName {
 }
 ```
 
-### Provider Configuration
+### 提供商配置
 
-Each provider has specific settings:
+每个提供商都有特定的设置：
 
 ```typescript
 const models = {
@@ -50,27 +50,27 @@ const models = {
       [ModelClass.LARGE]: "claude-3-5-opus-20240229",
     },
   },
-  // ... other providers
+  // ... 其他提供商
 };
 ```
 
-## Model Classes
+## 模型类别
 
-Models are categorized into different classes based on their capabilities:
+模型根据其能力分为不同类别：
 
 ```typescript
 enum ModelClass {
-    SMALL,     // Fast, efficient for simple tasks
-    MEDIUM,    // Balanced performance and capability
-    LARGE,     // Most capable but slower/more expensive
-    EMBEDDING, // Specialized for vector embeddings
-    IMAGE      // Image generation capabilities
+    SMALL,     // 快速，高效处理简单任务
+    MEDIUM,    // 性能与能力平衡
+    LARGE,     // 最强大但较慢/更昂贵
+    EMBEDDING, // 专用于向量嵌入
+    IMAGE      // 图像生成能力
 }
 ```
 
-## Embedding System
+## 嵌入系统
 
-### Configuration
+### 配置
 
 ```typescript
 const embeddingConfig = {
@@ -80,15 +80,15 @@ const embeddingConfig = {
 };
 ```
 
-### Implementation
+### 实现
 
 ```typescript
 async function embed(runtime: IAgentRuntime, input: string): Promise<number[]> {
-  // Check cache first
+  // 首先检查缓存
   const cachedEmbedding = await retrieveCachedEmbedding(runtime, input);
   if (cachedEmbedding) return cachedEmbedding;
 
-  // Generate new embedding
+  // 生成新的嵌入
   const response = await runtime.fetch(
     `${runtime.modelProvider.endpoint}/embeddings`,
     {
@@ -110,11 +110,11 @@ async function embed(runtime: IAgentRuntime, input: string): Promise<number[]> {
 }
 ```
 
-## Fine-tuning Options
+## 精调选项
 
-### Temperature Control
+### 温度控制
 
-Configure model creativity vs. determinism:
+配置模型的创造性与确定性：
 
 ```typescript
 const temperatureSettings = {
@@ -136,9 +136,9 @@ const temperatureSettings = {
 };
 ```
 
-### Context Window
+### 上下文窗口
 
-Manage token limits:
+管理令牌限制：
 
 ```typescript
 const contextSettings = {
@@ -157,9 +157,9 @@ const contextSettings = {
 };
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Caching Strategy
+### 缓存策略
 
 ```typescript
 class EmbeddingCache {
@@ -167,16 +167,16 @@ class EmbeddingCache {
   private cacheDir: string;
 
   constructor() {
-    this.cache = new NodeCache({ stdTTL: 300 }); // 5 minute TTL
+    this.cache = new NodeCache({ stdTTL: 300 }); // 5 分钟 TTL
     this.cacheDir = path.join(__dirname, "cache");
   }
 
   async get(key: string): Promise<number[] | null> {
-    // Check memory cache first
+    // 首先检查内存缓存
     const cached = this.cache.get<number[]>(key);
     if (cached) return cached;
 
-    // Check disk cache
+    // 检查磁盘缓存
     return this.readFromDisk(key);
   }
 
@@ -187,7 +187,7 @@ class EmbeddingCache {
 }
 ```
 
-### Model Selection
+### 模型选择
 
 ```typescript
 async function selectOptimalModel(
@@ -203,7 +203,7 @@ async function selectOptimalModel(
 }
 ```
 
-## Provider-Specific Optimizations
+## 提供商特定优化
 
 ### OpenAI
 
@@ -247,7 +247,7 @@ const anthropicSettings = {
 };
 ```
 
-### Local LLM
+### 本地 LLM
 
 ```typescript
 const llamaLocalSettings = {
@@ -267,7 +267,7 @@ const llamaLocalSettings = {
 };
 ```
 
-### Heurist Provider
+### Heurist 提供商
 
 ```typescript
 const heuristSettings = {
@@ -286,15 +286,15 @@ const heuristSettings = {
     [ModelClass.SMALL]: "hermes-3-llama3.1-8b",
     [ModelClass.MEDIUM]: "mistralai/mixtral-8x7b-instruct",
     [ModelClass.LARGE]: "nvidia/llama-3.1-nemotron-70b-instruct",
-    [ModelClass.EMBEDDING]: "", // Add later
+    [ModelClass.EMBEDDING]: "", // 稍后添加
     [ModelClass.IMAGE]: "FLUX.1-dev",
   },
 };
 ```
 
-## Testing and Validation
+## 测试与验证
 
-### Embedding Tests
+### 嵌入测试
 
 ```typescript
 async function validateEmbedding(
@@ -308,7 +308,7 @@ async function validateEmbedding(
 }
 ```
 
-### Model Performance Testing
+### 模型性能测试
 
 ```typescript
 async function benchmarkModel(
@@ -329,52 +329,52 @@ async function benchmarkModel(
       modelClass,
     });
     results.latency.push(Date.now() - start);
-    // ... additional metrics
+    // ... 其他指标
   }
 
   return results;
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Model Selection Guidelines
+### 模型选择指南
 
-1. **Task Complexity**
+1. **任务复杂性**
 
-   - Use SMALL for simple, quick responses
-   - Use MEDIUM for balanced performance
-   - Use LARGE for complex reasoning
+   - 简单、快速响应使用 SMALL
+   - 性能平衡使用 MEDIUM
+   - 复杂推理使用 LARGE
 
-2. **Context Management**
+2. **上下文管理**
 
-   - Keep prompts concise and focused
-   - Use context windows efficiently
-   - Implement proper context truncation
+   - 保持提示简洁和集中
+   - 高效使用上下文窗口
+   - 实施适当的上下文截断
 
-3. **Temperature Adjustment**
-   - Lower for factual responses
-   - Higher for creative tasks
-   - Balance based on use case
+3. **温度调整**
+   - 事实性响应使用较低温度
+   - 创意任务使用较高温度
+   - 根据使用场景平衡
 
-### Performance Optimization
+### 性能优化
 
-1. **Caching Strategy**
+1. **缓存策略**
 
-   - Cache embeddings for frequently accessed content
-   - Implement tiered caching (memory/disk)
-   - Regular cache cleanup
+   - 为频繁访问的内容缓存嵌入
+   - 实施分层缓存（内存/磁盘）
+   - 定期清理缓存
 
-2. **Resource Management**
-   - Monitor token usage
-   - Implement rate limiting
-   - Optimize batch processing
+2. **资源管理**
+   - 监控令牌使用情况
+   - 实施速率限制
+   - 优化批处理
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Token Limits**
+1. **令牌限制**
 
    ```typescript
    function handleTokenLimit(error: Error) {
@@ -384,7 +384,7 @@ async function benchmarkModel(
    }
    ```
 
-2. **Embedding Errors**
+2. **嵌入错误**
 
    ```typescript
    function handleEmbeddingError(error: Error) {
@@ -394,7 +394,7 @@ async function benchmarkModel(
    }
    ```
 
-3. **Model Availability**
+3. **模型可用性**
    ```typescript
    async function handleModelFailover(error: Error) {
      if (error.message.includes("model not available")) {
@@ -402,3 +402,5 @@ async function benchmarkModel(
      }
    }
    ```
+
+---

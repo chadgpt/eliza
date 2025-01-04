@@ -2,41 +2,41 @@
 sidebar_position: 5
 ---
 
-# 📊 Evaluators
+# 📊 评估器
 
-[Evaluators](/api/interfaces/evaluator) are core components that assess and extract information from conversations. They integrate with the [AgentRuntime](/api/classes/AgentRuntime)'s evaluation system.
-
----
-
-## Overview
-
-Evaluators enable agents to:
-
-- Build long-term memory
-- Track goal progress
-- Extract facts and insights
-- Maintain contextual awareness
+[评估器](/api/interfaces/evaluator) 是评估和提取对话信息的核心组件。它们与 [AgentRuntime](/api/classes/AgentRuntime) 的评估系统集成。
 
 ---
 
-## Quick Start
+## 概述
 
-1. Import the necessary evaluator types:
+评估器使代理能够：
+
+- 构建长期记忆
+- 跟踪目标进展
+- 提取事实和见解
+- 保持上下文意识
+
+---
+
+## 快速开始
+
+1. 导入必要的评估器类型：
 
 ```typescript
 import { Evaluator, IAgentRuntime, Memory, State } from "@elizaos/core-core";
 ```
 
-2. Choose or create an evaluator:
+2. 选择或创建一个评估器：
 
 ```typescript
 const evaluator: Evaluator = {
     name: "BASIC_EVALUATOR",
     similes: ["SIMPLE_EVALUATOR"],
-    description: "Evaluates basic conversation elements",
+    description: "评估基本对话元素",
     validate: async (runtime: IAgentRuntime, message: Memory) => true,
     handler: async (runtime: IAgentRuntime, message: Memory) => {
-        // Evaluation logic here
+        // 评估逻辑
         return result;
     },
     examples: [],
@@ -45,11 +45,11 @@ const evaluator: Evaluator = {
 
 ---
 
-## Built-in Evaluators
+## 内置评估器
 
-### Fact Evaluator
+### 事实评估器
 
-The fact evaluator extracts and stores factual information from conversations.
+事实评估器从对话中提取并存储事实信息。
 
 ```typescript
 interface Fact {
@@ -60,22 +60,22 @@ interface Fact {
 }
 ```
 
-Source: https://github.com/elizaos/eliza/blob/main/packages/core/src/types.ts
+来源: https://github.com/elizaos/eliza/blob/main/packages/core/src/types.ts
 
-**Example Facts:**
+**示例事实:**
 
 ```json
 {
-    "claim": "User completed marathon training",
+    "claim": "用户完成了马拉松训练",
     "type": "fact",
     "in_bio": false,
     "already_known": false
 }
 ```
 
-### Goal Evaluator
+### 目标评估器
 
-From bootstrap plugin - tracks conversation goals:
+来自 bootstrap 插件 - 跟踪对话目标：
 
 ```typescript
 interface Goal {
@@ -93,48 +93,48 @@ interface Objective {
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### Fact Extraction
+### 事实提取
 
-- Validate facts before storage
-- Avoid duplicate entries
-- Include relevant context
-- Properly categorize information types
+- 在存储前验证事实
+- 避免重复条目
+- 包含相关上下文
+- 正确分类信息类型
 
-### Goal Tracking
+### 目标跟踪
 
-- Define clear, measurable objectives
-- Update only changed goals
-- Handle failures gracefully
-- Track partial progress
+- 定义明确、可衡量的目标
+- 仅更新已更改的目标
+- 优雅地处理失败
+- 跟踪部分进展
 
-### Validation
+### 验证
 
-- Keep validation logic efficient
-- Check prerequisites first
-- Consider message content and state
-- Use appropriate memory managers
+- 保持验证逻辑高效
+- 首先检查先决条件
+- 考虑消息内容和状态
+- 使用适当的内存管理器
 
-### Handler Implementation
+### 处理程序实现
 
-- Use runtime services appropriately
-- Store results in correct memory manager
-- Handle errors gracefully
-- Maintain state consistency
+- 适当地使用运行时服务
+- 将结果存储在正确的内存管理器中
+- 优雅地处理错误
+- 保持状态一致性
 
-### Examples
+### 示例
 
-- Provide clear context descriptions
-- Show typical trigger messages
-- Document expected outcomes
-- Cover edge cases
+- 提供清晰的上下文描述
+- 显示典型的触发消息
+- 记录预期结果
+- 覆盖边缘情况
 
 ---
 
-## Creating Custom Evaluators
+## 创建自定义评估器
 
-Implement the Evaluator interface:
+实现 Evaluator 接口：
 
 ```typescript
 interface Evaluator {
@@ -152,11 +152,11 @@ interface Evaluator {
 }
 ```
 
-Source: https://github.com/elizaos/eliza/blob/main/packages/core/src/types.ts
+来源: https://github.com/elizaos/eliza/blob/main/packages/core/src/types.ts
 
-### Memory Integration
+### 内存集成
 
-Example of storing evaluator results:
+存储评估结果的示例：
 
 ```typescript
 try {
@@ -169,21 +169,21 @@ try {
 
     await runtime.memoryManager.createMemory(memory);
 } catch (error) {
-    console.error("Failed to store evaluation result:", error);
+    console.error("存储评估结果失败:", error);
 }
 ```
 
-Source: https://github.com/elizaos/eliza/blob/main/packages/core/src/tests/memory.test.ts
+来源: https://github.com/elizaos/eliza/blob/main/packages/core/src/tests/memory.test.ts
 
-### Memory Usage
+### 内存使用
 
-Evaluators should use runtime memory managers for storage:
+评估器应使用运行时内存管理器进行存储：
 
 ```typescript
 const memoryEvaluator: Evaluator = {
     name: "MEMORY_EVAL",
     handler: async (runtime: IAgentRuntime, message: Memory) => {
-        // Store in message memory
+        // 存储在消息内存中
         await runtime.messageManager.createMemory({
             id: message.id,
             content: message.content,
@@ -192,10 +192,10 @@ const memoryEvaluator: Evaluator = {
             agentId: runtime.agentId,
         });
 
-        // Store in description memory
+        // 存储在描述内存中
         await runtime.descriptionManager.createMemory({
             id: message.id,
-            content: { text: "User description" },
+            content: { text: "用户描述" },
             roomId: message.roomId,
             userId: message.userId,
             agentId: runtime.agentId,
@@ -206,28 +206,28 @@ const memoryEvaluator: Evaluator = {
 
 ---
 
-## Integration with Agent Runtime
+## 与 Agent Runtime 的集成
 
-The [AgentRuntime](/api/classes/AgentRuntime) processes evaluators through its [evaluate](/api/classes/AgentRuntime#evaluate) method:
+[AgentRuntime](/api/classes/AgentRuntime) 通过其 [evaluate](/api/classes/AgentRuntime#evaluate) 方法处理评估器：
 
 ```typescript
-// Register evaluator
+// 注册评估器
 runtime.registerEvaluator(customEvaluator);
 
-// Process evaluations
+// 处理评估
 const results = await runtime.evaluate(message, state);
 ```
 
 ---
 
-## Error Handling
+## 错误处理
 
 ```typescript
 const robustEvaluator: Evaluator = {
     name: "ROBUST_EVAL",
     handler: async (runtime: IAgentRuntime, message: Memory) => {
         try {
-            // Attempt evaluation
+            // 尝试评估
             await runtime.messageManager.createMemory({
                 id: message.id,
                 content: message.content,
@@ -236,13 +236,13 @@ const robustEvaluator: Evaluator = {
                 agentId: runtime.agentId,
             });
         } catch (error) {
-            // Log error and handle gracefully
-            console.error("Evaluation failed:", error);
+            // 记录错误并优雅地处理
+            console.error("评估失败:", error);
 
-            // Store error state if needed
+            // 如果需要，存储错误状态
             await runtime.messageManager.createMemory({
                 id: message.id,
-                content: { text: "Evaluation failed" },
+                content: { text: "评估失败" },
                 roomId: message.roomId,
                 userId: message.userId,
                 agentId: runtime.agentId,
@@ -251,3 +251,5 @@ const robustEvaluator: Evaluator = {
     },
 };
 ```
+
+---

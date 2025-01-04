@@ -2,53 +2,53 @@
 sidebar_position: 2
 ---
 
-# 🤖 Agents
+# 🤖 代理
 
-Agents are the core components of the Eliza framework that handle autonomous interactions. Each agent runs in a runtime environment and can interact through various clients (Discord, Telegram, etc.) while maintaining consistent behavior and memory.
-
----
-
-## Overview
-
-The [AgentRuntime](/api/classes/AgentRuntime) class is the primary implementation of the [IAgentRuntime](/api/interfaces/IAgentRuntime) interface, which manages the agent's core functions, including:
-
-- **Message and Memory Processing**: Storing, retrieving, and managing conversation data and contextual memory.
-- **State Management**: Composing and updating the agent’s state for a coherent, ongoing interaction.
-- **Action Execution**: Handling behaviors such as transcribing media, generating images, and following rooms.
-- **Evaluation and Response**: Assessing responses, managing goals, and extracting relevant information.
+代理是 Eliza 框架的核心组件，负责自主交互。每个代理在运行时环境中运行，并可以通过各种客户端（如 Discord、Telegram 等）进行交互，同时保持一致的行为和记忆。
 
 ---
 
-## Core Components
+## 概述
 
-Each agent runtime consists of key components that enable flexible and extensible functionality:
+[AgentRuntime](/api/classes/AgentRuntime) 类是 [IAgentRuntime](/api/interfaces/IAgentRuntime) 接口的主要实现，管理代理的核心功能，包括：
 
-1. **Clients**: Enable communication across platforms such as Discord, Telegram, and Direct (REST API), with features tailored for each platform.
-2. **Providers**: Extend the agent’s capabilities by integrating with additional services (e.g., time, wallet, or custom data).
-3. **Actions**: Define agent behaviors, such as following rooms, generating images, or processing attachments. Custom actions can be created to tailor behaviors to specific needs.
-4. **Evaluators**: Manage agent responses by assessing message relevance, managing goals, extracting facts, and building long-term memory.
+- **消息和记忆处理**：存储、检索和管理对话数据和上下文记忆。
+- **状态管理**：组成和更新代理的状态，以实现连贯的持续交互。
+- **行为执行**：处理转录媒体、生成图像和跟随房间等行为。
+- **评估和响应**：评估响应、管理目标和提取相关信息。
 
-### AgentRuntime Interface
+---
 
-The `IAgentRuntime` interface defines the main structure of the runtime environment, specifying the configuration and essential components:
+## 核心组件
+
+每个代理运行时由关键组件组成，提供灵活和可扩展的功能：
+
+1. **客户端**：支持跨平台通信，如 Discord、Telegram 和 Direct（REST API），并为每个平台提供定制功能。
+2. **提供者**：通过集成额外服务（如时间、钱包或自定义数据）扩展代理的能力。
+3. **行为**：定义代理行为，如跟随房间、生成图像或处理附件。可以创建自定义行为以满足特定需求。
+4. **评估器**：通过评估消息相关性、管理目标、提取事实和构建长期记忆来管理代理响应。
+
+### AgentRuntime 接口
+
+`IAgentRuntime` 接口定义了运行时环境的主要结构，指定了配置和基本组件：
 
 ```typescript
 interface IAgentRuntime {
-    // Core identification
+    // 核心标识
     agentId: UUID;
     serverUrl: string;
     token: string;
 
-    // Configuration
+    // 配置
     character: Character;
     modelProvider: ModelProviderName;
 
-    // Components
+    // 组件
     actions: Action[];
     evaluators: Evaluator[];
     providers: Provider[];
 
-    // Database & Memory
+    // 数据库和记忆
     databaseAdapter: IDatabaseAdapter;
     messageManager: IMemoryManager;
     descriptionManager: IMemoryManager;
@@ -56,23 +56,23 @@ interface IAgentRuntime {
 }
 ```
 
-Each element in the runtime interface plays a crucial role:
+运行时接口中的每个元素都起着至关重要的作用：
 
-- **Identification**: Agent ID, server URL, and token for authentication and identification.
-- **Configuration**: Character profile and model provider define the agent's personality and language model.
-- **Components**: Actions, evaluators, and providers support extensible behaviors, response evaluation, and service integration.
-- **Memory Management**: Specialized memory managers track conversations, descriptions, and static knowledge to enable contextual and adaptive responses.
+- **标识**：代理 ID、服务器 URL 和令牌用于身份验证和标识。
+- **配置**：角色配置和模型提供者定义了代理的个性和语言模型。
+- **组件**：行为、评估器和提供者支持可扩展的行为、响应评估和服务集成。
+- **记忆管理**：专门的记忆管理器跟踪对话、描述和静态知识，以实现上下文和自适应响应。
 
 ---
 
-## Creating an Agent Runtime
+## 创建代理运行时
 
-This section demonstrates setting up an agent with basic and optional configurations. It provides a working example and sample code that helps users quickly start building:
+本节演示了如何使用基本和可选配置设置代理。它提供了一个工作示例和示例代码，帮助用户快速开始构建：
 
 ```typescript
 import { AgentRuntime, ModelProviderName } from "@elizaos/core";
 
-// Configuration example
+// 配置示例
 const runtime = new AgentRuntime({
     token: "auth-token",
     modelProvider: ModelProviderName.ANTHROPIC,
@@ -88,9 +88,9 @@ const runtime = new AgentRuntime({
 
 ---
 
-## State Management
+## 状态管理
 
-This section covers how agents manage and update state, with a focus on initial state composition and updating methods. The runtime maintains state through the [State](/api/interfaces/state) interface:
+本节介绍了代理如何管理和更新状态，重点是初始状态组成和更新方法。运行时通过 [State](/api/interfaces/state) 接口维护状态：
 
 ```typescript
 interface State {
@@ -113,86 +113,86 @@ interface State {
 }
 ```
 
-State composition and updates are handled through dedicated methods:
+状态组成和更新通过专用方法处理：
 
 ```typescript
-// Compose initial state
+// 组成初始状态
 const state = await runtime.composeState(message, {
     additionalContext: "custom-context",
 });
 
-// Update message state
+// 更新消息状态
 const updatedState = await runtime.updateRecentMessageState(state);
 ```
 
-**Best practices**
+**最佳实践**
 
-- Keep state immutable where possible
-- Use `composeState` for initial state creation
-- Use `updateRecentMessageState` for updates
-- Cache frequently accessed state data
-
----
-
-## Memory Systems
-
-The Eliza framework uses multiple types of memory to support an agent's long-term engagement, contextual understanding, and adaptive responses. Each type of memory serves a specific purpose:
-
-- **Message History**: Stores recent conversations to provide continuity within a session. This helps the agent maintain conversational context and avoid repetitive responses within short-term exchanges.
-
-- **Factual Memory**: Holds specific, context-based facts about the user or environment, such as user preferences, recent activities, or specific details mentioned in previous interactions. This type of memory enables the agent to recall user-specific information across sessions.
-
-- **Knowledge Base**: Contains general knowledge the agent might need to respond to broader queries or provide informative answers. This memory is more static, helping the agent retrieve pre-defined data, common responses, or static character lore.
-
-- **Relationship Tracking**: Manages the agent’s understanding of its relationship with users, including details like user-agent interaction frequency, sentiment, and connection history. It is particularly useful for building rapport and providing a more personalized interaction experience over time.
-
-- **RAG Integration**: Uses a vector search to perform contextual recall based on similarity matching. This enables the agent to retrieve relevant memory snippets or knowledge based on the content and intent of the current conversation, making its responses more contextually relevant.
-
-The runtime uses multiple specialized [IMemoryManager](/api/interfaces/IMemoryManager) instances:
-
-- `messageManager` - conversation messages and responses
-- `descriptionManager` - user descriptions and profiles
-- `loreManager` - static character knowledge
+- 尽可能保持状态不可变
+- 使用 `composeState` 创建初始状态
+- 使用 `updateRecentMessageState` 进行更新
+- 缓存频繁访问的状态数据
 
 ---
 
-## Message Processing
+## 记忆系统
 
-The runtime's message processing is handled through the [processActions](/api/classes/AgentRuntime#processactions) method:
+Eliza 框架使用多种类型的记忆来支持代理的长期参与、上下文理解和自适应响应。每种类型的记忆都有特定的用途：
+
+- **消息历史**：存储最近的对话，以在会话中提供连续性。这有助于代理在短期交流中保持对话上下文，避免重复响应。
+
+- **事实记忆**：保存关于用户或环境的特定上下文事实，如用户偏好、最近活动或先前交互中提到的具体细节。这种类型的记忆使代理能够在会话之间回忆用户特定的信息。
+
+- **知识库**：包含代理可能需要的常识，以响应更广泛的查询或提供信息性答案。这种记忆更为静态，帮助代理检索预定义的数据、常见响应或静态角色背景。
+
+- **关系跟踪**：管理代理对其与用户关系的理解，包括用户-代理交互频率、情感和连接历史。它特别有助于建立融洽关系，并随着时间的推移提供更个性化的交互体验。
+
+- **RAG 集成**：使用向量搜索基于相似性匹配执行上下文回忆。这使代理能够根据当前对话的内容和意图检索相关的记忆片段或知识，使其响应更具上下文相关性。
+
+运行时使用多个专门的 [IMemoryManager](/api/interfaces/IMemoryManager) 实例：
+
+- `messageManager` - 对话消息和响应
+- `descriptionManager` - 用户描述和配置文件
+- `loreManager` - 静态角色知识
+
+---
+
+## 消息处理
+
+运行时的消息处理通过 [processActions](/api/classes/AgentRuntime#processactions) 方法处理：
 
 ```typescript
-// Process message with actions
+// 使用行为处理消息
 await runtime.processActions(message, responses, state, async (newMessages) => {
-    // Handle new messages
+    // 处理新消息
     return [message];
 });
 ```
 
 ---
 
-## Services and Memory Management
+## 服务和记忆管理
 
-Services are managed through the [getService](/api/classes/AgentRuntime#getservice) and [registerService](/api/classes/AgentRuntime#registerservice) methods:
+服务通过 [getService](/api/classes/AgentRuntime#getservice) 和 [registerService](/api/classes/AgentRuntime#registerservice) 方法管理：
 
 ```typescript
-// Register service
+// 注册服务
 runtime.registerService(new TranscriptionService());
 
-// Get service
+// 获取服务
 const service = runtime.getService<ITranscriptionService>(
     ServiceType.TRANSCRIPTION,
 );
 ```
 
-### Memory Management
+### 记忆管理
 
-Memory managers are accessed via [getMemoryManager](/api/classes/AgentRuntime#getmemorymanager):
+记忆管理器通过 [getMemoryManager](/api/classes/AgentRuntime#getmemorymanager) 访问：
 
 ```typescript
-// Get memory manager
+// 获取记忆管理器
 const memoryManager = runtime.getMemoryManager("messages");
 
-// Create memory
+// 创建记忆
 await memoryManager.createMemory({
     id: messageId,
     content: { text: "Message content" },
@@ -201,31 +201,31 @@ await memoryManager.createMemory({
 });
 ```
 
-**Best practices**
+**最佳实践**
 
-- Use appropriate memory managers for different data types
-- Consider memory limits when storing data, regularly clean up memory
-- Use the `unique` flag for deduplicated storage
-- Clean up old memories periodically
-- Use immutability in state management.
-- Log errors and maintain stability during service failures.
+- 为不同数据类型使用适当的记忆管理器
+- 存储数据时考虑记忆限制，定期清理记忆
+- 使用 `unique` 标志进行去重存储
+- 定期清理旧记忆
+- 在状态管理中使用不可变性
+- 记录错误并在服务故障期间保持稳定性
 
 ---
 
-## Evaluation System
+## 评估系统
 
-The runtime's [evaluate](/api/classes/AgentRuntime#evaluate) method processes evaluations:
+运行时的 [evaluate](/api/classes/AgentRuntime#evaluate) 方法处理评估：
 
 ```typescript
-// Evaluate message
+// 评估消息
 const evaluationResults = await runtime.evaluate(message, state, didRespond);
 ```
 
 ---
 
-## Usage Examples
+## 使用示例
 
-1. **Message Processing**:
+1. **消息处理**：
 
 ```typescript
 await runtime.processActions(message, responses, state, (newMessages) => {
@@ -233,7 +233,7 @@ await runtime.processActions(message, responses, state, (newMessages) => {
 });
 ```
 
-2. **State Management**:
+2. **状态管理**：
 
 ```typescript
 const state = await runtime.composeState(message, {
@@ -241,7 +241,7 @@ const state = await runtime.composeState(message, {
 });
 ```
 
-3. **Memory Management**:
+3. **记忆管理**：
 
 ```typescript
 const memoryManager = runtime.getMemoryManager("messages");
@@ -255,9 +255,11 @@ await memoryManager.createMemory({
 
 ---
 
-## Further Reading
+## 延伸阅读
 
-- [Actions Documentation](./actions.md)
-- [Evaluators Documentation](./evaluators.md)
-- [Providers Documentation](./providers.md)
-- [Full API Reference](/api)
+- [行为文档](./actions.md)
+- [评估器文档](./evaluators.md)
+- [提供者文档](./providers.md)
+- [完整 API 参考](/api)
+
+---

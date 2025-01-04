@@ -1,19 +1,19 @@
-# 🔌 Providers
+# 🔌 提供者
 
-[Providers](/api/interfaces/provider) are core modules that inject dynamic context and real-time information into agent interactions. They serve as a bridge between the agent and various external systems, enabling access to market data, wallet information, sentiment analysis, and temporal context.
+[Providers](/api/interfaces/provider) 是核心模块，它们将动态上下文和实时信息注入到代理交互中。它们充当代理与各种外部系统之间的桥梁，提供市场数据、钱包信息、情感分析和时间上下文的访问。
 
 ---
 
-## Overview
+## 概述
 
-A provider's primary purpose is to:
+提供者的主要目的是：
 
-- Supply dynamic contextual information
-- Integrate with the agent runtime
-- Format information for conversation templates
-- Maintain consistent data access
+- 提供动态上下文信息
+- 与代理运行时集成
+- 为对话模板格式化信息
+- 保持一致的数据访问
 
-### Core Structure
+### 核心结构
 
 ```typescript
 interface Provider {
@@ -27,11 +27,11 @@ interface Provider {
 
 ---
 
-## Built-in Providers
+## 内置提供者
 
-### Time Provider
+### 时间提供者
 
-Provides temporal context for agent interactions:
+为代理交互提供时间上下文：
 
 ```typescript
 const timeProvider: Provider = {
@@ -39,19 +39,19 @@ const timeProvider: Provider = {
         const currentDate = new Date();
         const currentTime = currentDate.toLocaleTimeString("en-US");
         const currentYear = currentDate.getFullYear();
-        return `The current time is: ${currentTime}, ${currentYear}`;
+        return `当前时间是：${currentTime}, ${currentYear}`;
     },
 };
 ```
 
-### Facts Provider
+### 事实提供者
 
-From bootstrap plugin - maintains conversation facts:
+来自引导插件 - 维护对话事实：
 
 ```typescript
 const factsProvider: Provider = {
     get: async (runtime: IAgentRuntime, message: Memory, state?: State) => {
-        // Create embedding for recent messages and retrieve relevant facts
+        // 为最近的消息创建嵌入并检索相关事实
         const recentMessages = formatMessages({
             messages: state?.recentMessagesData?.slice(-10),
             actors: state?.actorsData,
@@ -67,39 +67,39 @@ const factsProvider: Provider = {
             agentId: runtime.agentId,
         });
 
-        // Combine and format facts
-        const allFacts = [...recentFactsData]; // Deduplication can be skipped if no overlap
+        // 组合并格式化事实
+        const allFacts = [...recentFactsData]; // 如果没有重叠，可以跳过去重
         const formattedFacts = formatFacts(allFacts);
 
-        return `Key facts that ${runtime.character.name} knows:\n${formattedFacts}`;
+        return `关键事实 ${runtime.character.name} 知道：\n${formattedFacts}`;
     },
 };
 
 export { factsProvider };
 ```
 
-### Boredom Provider
+### 无聊提供者
 
-From bootstrap plugin - manages conversation dynamics and engagement by calculating the boredom level of an agent based on recent messages in a chat room.
+来自引导插件 - 通过计算代理在聊天室中最近消息的无聊程度来管理对话动态和参与度。
 
-1. **Data Structures**:
+1. **数据结构**：
 
-    - **boredomLevels**: An array of objects, each representing a boredom level with a minimum score and a set of status messages that reflect the agent's current engagement.
-    - **interestWords**, **cringeWords**, and **negativeWords**: Arrays of words that influence the boredom score based on their presence in messages.
+    - **boredomLevels**：一个对象数组，每个对象代表一个无聊级别，具有最小分数和一组反映代理当前参与度的状态消息。
+    - **interestWords**、**cringeWords** 和 **negativeWords**：根据消息中出现的词语影响无聊分数的数组。
 
-2. **Boredom Calculation**:
+2. **无聊计算**：
 
-- The `boredomProvider` gets recent messages from the agent’s conversation over the last 15 minutes.
-- It calculates a **boredom score** by analyzing the text of these messages. The score is influenced by:
-    - **Interest words**: Decrease boredom (subtract 1 point).
-    - **Cringe words**: Increase boredom (add 1 point).
-    - **Negative words**: Increase boredom (add 1 point).
-    - **Exclamation marks**: Increase boredom (add 1 point).
-    - **Question marks**: Increase or decrease boredom depending on the sender.
+- `boredomProvider` 获取代理在过去 15 分钟内的最近消息。
+- 它通过分析这些消息的文本来计算**无聊分数**。分数受以下因素影响：
+    - **兴趣词**：减少无聊（减 1 分）。
+    - **尴尬词**：增加无聊（加 1 分）。
+    - **负面词**：增加无聊（加 1 分）。
+    - **感叹号**：增加无聊（加 1 分）。
+    - **问号**：根据发送者增加或减少无聊。
 
-3. **Boredom Level**:
-    - The boredom score is matched to a level from the `boredomLevels` array, which defines how engaged the agent feels.
-    - A random status message from the selected boredom level is chosen and the agent’s name is inserted into the message.
+3. **无聊级别**：
+    - 无聊分数与 `boredomLevels` 数组中的一个级别匹配，该数组定义了代理的参与感。
+    - 从选定的无聊级别中随机选择一个状态消息，并将代理的名字插入到消息中。
 
 ```typescript
 interface BoredomLevel {
@@ -108,7 +108,7 @@ interface BoredomLevel {
 }
 ```
 
-The result is a message that reflects the agent's perceived level of engagement in the conversation, based on their recent interactions.
+结果是一个反映代理在对话中感知的参与度水平的消息，基于他们最近的互动。
 
 ```typescript
 const boredomProvider: Provider = {
@@ -119,67 +119,67 @@ const boredomProvider: Provider = {
         });
 
         return messages.length > 0
-            ? "Actively engaged in conversation"
-            : "No recent interactions";
+            ? "积极参与对话"
+            : "没有最近的互动";
     },
 };
 ```
 
-Features:
+特点：
 
-- Engagement tracking
-- Conversation flow management
-- Natural disengagement
-- Sentiment analysis
-- Response adaptation
+- 参与度跟踪
+- 对话流程管理
+- 自然脱离
+- 情感分析
+- 响应适应
 
 ---
 
-## Implementation
+## 实现
 
-### Basic Provider Template
+### 基本提供者模板
 
 ```typescript
 import { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
 
 const customProvider: Provider = {
     get: async (runtime: IAgentRuntime, message: Memory, state?: State) => {
-        // Get relevant data using runtime services
+        // 使用运行时服务获取相关数据
         const memories = await runtime.messageManager.getMemories({
             roomId: message.roomId,
             count: 5,
         });
 
-        // Format and return context
+        // 格式化并返回上下文
         return formatContextString(memories);
     },
 };
 ```
 
-### Memory Integration
+### 内存集成
 
 ```typescript
 const memoryProvider: Provider = {
     get: async (runtime: IAgentRuntime, message: Memory) => {
-        // Get recent messages
+        // 获取最近的消息
         const messages = await runtime.messageManager.getMemories({
             roomId: message.roomId,
             count: 5,
             unique: true,
         });
 
-        // Get user descriptions
+        // 获取用户描述
         const descriptions = await runtime.descriptionManager.getMemories({
             roomId: message.roomId,
             userId: message.userId,
         });
 
-        // Combine and format
+        // 组合并格式化
         return `
-Recent Activity:
+最近活动：
 ${formatMessages(messages)}
 
-User Context:
+用户上下文：
 ${formatDescriptions(descriptions)}
     `.trim();
     },
@@ -188,18 +188,18 @@ ${formatDescriptions(descriptions)}
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### 1. Data Management
+### 1. 数据管理
 
-- Implement robust caching strategies
-- Use appropriate TTL for different data types
-- Validate data before caching
+- 实施强大的缓存策略
+- 为不同的数据类型使用适当的 TTL
+- 在缓存之前验证数据
 
-### 2. Performance
+### 2. 性能
 
 ```typescript
-// Example of optimized data fetching
+// 优化数据获取示例
 async function fetchDataWithCache<T>(
     key: string,
     fetcher: () => Promise<T>,
@@ -213,35 +213,35 @@ async function fetchDataWithCache<T>(
 }
 ```
 
-### 3. Error Handling
+### 3. 错误处理
 
-- Implement retry mechanisms
-- Provide fallback values
-- Log errors comprehensively
-- Handle API timeouts
+- 实施重试机制
+- 提供备用值
+- 全面记录错误
+- 处理 API 超时
 
-### 4. Security
+### 4. 安全
 
-- Validate input parameters
-- Sanitize returned data
-- Implement rate limiting
-- Handle sensitive data appropriately
+- 验证输入参数
+- 清理返回的数据
+- 实施速率限制
+- 适当处理敏感数据
 
 ---
 
-## Integration with Runtime
+## 与运行时集成
 
-Providers are registered with the [AgentRuntime](/api/classes/AgentRuntime):
+提供者通过 [AgentRuntime](/api/classes/AgentRuntime) 注册：
 
 ```typescript
-// Register provider
+// 注册提供者
 runtime.registerContextProvider(customProvider);
 
-// Providers are accessed through composeState
+// 提供者通过 composeState 访问
 const state = await runtime.composeState(message);
 ```
 
-## Example: Complete Provider
+## 示例：完整提供者
 
 ```typescript
 import { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
@@ -249,39 +249,39 @@ import { Provider, IAgentRuntime, Memory, State } from "@elizaos/core";
 const comprehensiveProvider: Provider = {
     get: async (runtime: IAgentRuntime, message: Memory, state?: State) => {
         try {
-            // Get recent messages
+            // 获取最近的消息
             const messages = await runtime.messageManager.getMemories({
                 roomId: message.roomId,
                 count: 5,
             });
 
-            // Get user context
+            // 获取用户上下文
             const userContext = await runtime.descriptionManager.getMemories({
                 roomId: message.roomId,
                 userId: message.userId,
             });
 
-            // Get relevant facts
+            // 获取相关事实
             const facts = await runtime.messageManager.getMemories({
                 roomId: message.roomId,
                 tableName: "facts",
                 count: 3,
             });
 
-            // Format comprehensive context
+            // 格式化综合上下文
             return `
-# Conversation Context
+# 对话上下文
 ${messages.map((m) => `- ${m.content.text}`).join("\n")}
 
-# User Information
+# 用户信息
 ${userContext.map((c) => c.content.text).join("\n")}
 
-# Related Facts
+# 相关事实
 ${facts.map((f) => `- ${f.content.text}`).join("\n")}
       `.trim();
         } catch (error) {
-            console.error("Provider error:", error);
-            return "Context temporarily unavailable";
+            console.error("提供者错误：", error);
+            return "上下文暂时不可用";
         }
     },
 };
@@ -289,39 +289,41 @@ ${facts.map((f) => `- ${f.content.text}`).join("\n")}
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-1. **Stale Data**
+1. **数据陈旧**
 
     ```typescript
-    // Implement cache invalidation
+    // 实施缓存失效
     const invalidateCache = async (pattern: string) => {
         const keys = await cache.keys(pattern);
         await Promise.all(keys.map((k) => cache.del(k)));
     };
     ```
 
-2. **Rate Limiting**
+2. **速率限制**
 
     ```typescript
-    // Implement backoff strategy
+    // 实施退避策略
     const backoff = async (attempt: number) => {
         const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
         await new Promise((resolve) => setTimeout(resolve, delay));
     };
     ```
 
-3. **API Failures**
+3. **API 失败**
     ```typescript
-    // Implement fallback data sources
+    // 实施备用数据源
     const getFallbackData = async () => {
-        // Attempt alternative data sources
+        // 尝试替代数据源
     };
     ```
 
 ---
 
-## Further Reading
+## 进一步阅读
 
-- [Agent Runtime](./agents.md)
-- [Memory System](../../packages/core)
+- [代理运行时](./agents.md)
+- [内存系统](../../packages/core)
+
+---

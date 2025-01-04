@@ -2,50 +2,50 @@
 sidebar_position: 1
 ---
 
-# 📖 Package Overview
+# 📖 套件概述
 
-## Core Components
+## 核心组件
 
-- **@elizaos/core**: Central framework and shared functionality
-- **@elizaos/agent**: Agent runtime and management
-- **@elizaos/adapters**: Database implementations (PostgreSQL, SQLite, etc.)
-- **@elizaos/clients**: Platform integrations (Discord, Telegram, etc.)
-- **@elizaos/plugins**: Extension modules for additional functionality
+- **@elizaos/core**: 中央框架和共享功能
+- **@elizaos/agent**: 代理运行时和管理
+- **@elizaos/adapters**: 数据库实现（PostgreSQL、SQLite等）
+- **@elizaos/clients**: 平台集成（Discord、Telegram等）
+- **@elizaos/plugins**: 扩展模块以增加功能
 
-## Package Architecture
+## 套件架构
 
-The Eliza framework is built on a modular architecture where each package serves a specific purpose:
+Eliza 框架基于模块化架构构建，每个包都有特定的用途：
 
-1. **Core Package**: Provides the fundamental building blocks
-2. **Agent Package**: Handles agent lifecycle and runtime
-3. **Adapters**: Enable different storage backends
-4. **Clients**: Connect to various platforms
-5. **Plugins**: Add specialized capabilities
+1. **核心包**：提供基本构建模块
+2. **代理包**：处理代理生命周期和运行时
+3. **适配器**：支持不同的存储后端
+4. **客户端**：连接到各种平台
+5. **插件**：添加专门的功能
 
-## Package Dependencies
+## 套件依赖关系
 
 ```mermaid
 graph TD
-    A[Core Package] --> B[Agent Package]
-    A --> C[Database Adapters]
-    A --> D[Client Packages]
-    A --> E[Plugin System]
+    A[核心包] --> B[代理包]
+    A --> C[数据库适配器]
+    A --> D[客户端包]
+    A --> E[插件系统]
     B --> C
     B --> D
     B --> E
 ```
 
-## Getting Started
+## 入门指南
 
 ```
-# Install core package
+# 安装核心包
 pnpm add @elizaos/core
 
-# Install specific adapters
+# 安装特定适配器
 pnpm add @elizaos/adapter-postgres
 pnpm add @elizaos/adapter-sqlite
 
-# Install clients
+# 安装客户端
 pnpm add @elizaos/client-discord
 pnpm add @elizaos/client-Telegram
 ```

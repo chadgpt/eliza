@@ -1,71 +1,71 @@
-# Frequently Asked Questions
+# 常见问题解答
 
-## Eliza FAQ
+## Eliza 常见问题
 
-### What is Eliza?
+### 什么是 Eliza？
 
-**Eliza is an open-source, multi-agent simulation framework for creating and managing autonomous AI agents.** The project aims to empower developers and users to build unique AI personalities that can interact across various platforms, such as Discord, Twitter, and Telegram.
+**Eliza 是一个开源的多代理模拟框架，用于创建和管理自主 AI 代理。** 该项目旨在使开发人员和用户能够构建独特的 AI 个性，这些个性可以在各种平台上进行交互，如 Discord、Twitter 和 Telegram。
 
-### Who is behind Eliza?
+### 谁是 Eliza 的幕后团队？
 
-The Eliza project is led by [Shaw](https://x.com/shawmakesmagic). The project is open source, and its code is available on GitHub: https://github.com/elizaos/eliza
+Eliza 项目由 [Shaw](https://x.com/shawmakesmagic) 领导。该项目是开源的，其代码可在 GitHub 上找到：https://github.com/elizaos/eliza
 
-### How can I get started with Eliza?
+### 如何开始使用 Eliza？
 
-To begin building your own AI agents with Eliza, follow these steps:
+要开始使用 Eliza 构建自己的 AI 代理，请按照以下步骤操作：
 
-1.  **Install Python, Node.js and pnpm**: Ensure you have the necessary software prerequisites installed on your system. We use node v23.
-2.  **Set up your environment**: Create a `.env` file and populate it with the required API keys, database configuration, and platform-specific tokens.
-3.  **Install Eliza**: Use the command `npm install @elizaos/core` or `pnpm add @elizaos/core` to install the Eliza package.
-4.  **Configure your database**: Eliza currently relies on Supabase for local development. Follow the instructions in the documentation to set up your Supabase project and database.
-5.  **Define your agent's character**: Create a character file using the provided JSON format to specify your agent's personality, knowledge, and behavior.
-6.  **Run Eliza locally**: Use the provided commands to start the Eliza framework and interact with your agent.
+1. **安装 Python、Node.js 和 pnpm**：确保您的系统上安装了必要的软件前提条件。我们使用 node v23。
+2. **设置您的环境**：创建一个 `.env` 文件，并填入所需的 API 密钥、数据库配置和平台特定的令牌。
+3. **安装 Eliza**：使用命令 `npm install @elizaos/core` 或 `pnpm add @elizaos/core` 安装 Eliza 包。
+4. **配置您的数据库**：Eliza 目前依赖 Supabase 进行本地开发。按照文档中的说明设置您的 Supabase 项目和数据库。
+5. **定义您的代理角色**：使用提供的 JSON 格式创建一个角色文件，以指定您的代理的个性、知识和行为。
+6. **本地运行 Eliza**：使用提供的命令启动 Eliza 框架并与您的代理进行交互。
 
-### What are the key components of Eliza?
+### Eliza 的关键组件是什么？
 
-Eliza's architecture consists of several interconnected components:
+Eliza 的架构由几个相互关联的组件组成：
 
-- **Agents**: These are the core elements that represent individual AI personalities. Agents operate within a runtime environment and interact with various platforms.
-- **Actions**: Actions are predefined behaviors that agents can execute in response to messages, enabling them to perform tasks and interact with external systems.
-- **Clients**: Clients act as interfaces between agents and specific platforms, such as Discord, Twitter, and Telegram. They handle platform-specific message formats and communication protocols.
-- **Plugins**: Plugins are modular way to extend the core functionality with additional features, actions, evaluators, and providers. They are self-contained modules that can be easily added or removed to customize your agent's capabilities
-- **Providers**: Providers supply agents with contextual information, including time awareness, user relationships, and data from external sources.
-- **Evaluators**: These modules assess and extract information from conversations, helping agents track goals, build memory, and maintain context awareness.
-- **Character Files**: These JSON files define the personality, knowledge, and behavior of each AI agent.
-- **Memory System**: Eliza features a sophisticated memory management system that utilizes vector embeddings and relational database storage to store and retrieve information for agents.
+- **代理**：这些是代表个别 AI 个性的核心元素。代理在运行时环境中操作，并与各种平台进行交互。
+- **动作**：动作是代理可以执行的预定义行为，以响应消息，使其能够执行任务并与外部系统交互。
+- **客户端**：客户端充当代理与特定平台（如 Discord、Twitter 和 Telegram）之间的接口。它们处理平台特定的消息格式和通信协议。
+- **插件**：插件是扩展核心功能的模块化方式，具有额外的功能、动作、评估器和提供者。它们是自包含的模块，可以轻松添加或删除，以定制您的代理功能。
+- **提供者**：提供者为代理提供上下文信息，包括时间意识、用户关系和来自外部来源的数据。
+- **评估器**：这些模块评估并从对话中提取信息，帮助代理跟踪目标、建立记忆并保持上下文意识。
+- **角色文件**：这些 JSON 文件定义每个 AI 代理的个性、知识和行为。
+- **记忆系统**：Eliza 具有一个复杂的记忆管理系统，利用向量嵌入和关系数据库存储来存储和检索代理的信息。
 
-### How can I contribute to the Eliza project?
+### 我如何为 Eliza 项目做贡献？
 
-Eliza welcomes contributions from individuals with a wide range of skills:
+Eliza 欢迎具有广泛技能的个人贡献：
 
-#### Technical Contributions
+#### 技术贡献
 
-- **Develop new actions, clients, providers, and evaluators**: Extend Eliza's functionality by creating new modules or enhancing existing ones.
-- **Contribute to database management**: Improve or expand Eliza's database capabilities using PostgreSQL, SQLite, or SQL.js.
-- **Enhance local development workflows**: Improve documentation and tools for local development using SQLite and VS Code.
-- **Fine-tune models**: Optimize existing models or implement new models for specific tasks and personalities.
-- **Contribute to the autonomous trading system and trust engine**: Leverage expertise in market analysis, technical analysis, and risk management to enhance these features.
+- **开发新动作、客户端、提供者和评估器**：通过创建新模块或增强现有模块来扩展 Eliza 的功能。
+- **贡献数据库管理**：使用 PostgreSQL、SQLite 或 SQL.js 改进或扩展 Eliza 的数据库功能。
+- **增强本地开发工作流**：使用 SQLite 和 VS Code 改进文档和本地开发工具。
+- **微调模型**：优化现有模型或为特定任务和个性实现新模型。
+- **为自主交易系统和信任引擎做贡献**：利用市场分析、技术分析和风险管理方面的专业知识来增强这些功能。
 
-#### Non-Technical Contributions
+#### 非技术贡献
 
-- **Community Management**: Onboard new members, organize events, moderate discussions, and foster a welcoming community.
-- **Content Creation**: Create memes, tutorials, documentation, and videos to share project updates.
-- **Translation**: Translate documentation and other materials to make Eliza accessible to a global audience.
-- **Domain Expertise**: Provide insights and feedback on specific applications of Eliza in various fields.
+- **社区管理**：接纳新成员，组织活动，主持讨论，并营造一个欢迎的社区。
+- **内容创作**：创建表情包、教程、文档和视频以分享项目更新。
+- **翻译**：翻译文档和其他材料，使 Eliza 能够被全球受众访问。
+- **领域专家**：提供对 Eliza 在各个领域的具体应用的见解和反馈。
 
-### What are the future plans for Eliza?
+### Eliza 的未来计划是什么？
 
-The Eliza project is continuously evolving, with ongoing development and community contributions. The team is actively working on:
+Eliza 项目正在不断发展，持续进行开发和社区贡献。团队正在积极致力于：
 
-- **Expanding platform compatibility**: Adding support for more platforms and services.
-- **Improving model capabilities**: Enhance agent performance and capabilities with existing and new models.
-- **Enhancing the trust engine**: Provide robust and secure recommendations within decentralized networks.
-- **Fostering community growth**: Rewarding contributions to expand the project's reach and impact.
+- **扩展平台兼容性**：增加对更多平台和服务的支持。
+- **改进模型能力**：通过现有和新模型提升代理的性能和能力。
+- **增强信任引擎**：在去中心化网络中提供强大且安全的推荐。
+- **促进社区增长**：奖励贡献以扩大项目的影响力和覆盖面。
 
-### How can I contribute to Eliza?
+### 我如何为 Eliza 做贡献？
 
-There are several ways to contribute to the Eliza project:
+有几种方式可以为 Eliza 项目做贡献：
 
-- **Participate in community discussions**: Share your memecoin insights, propose new ideas, and engage with other community members.
-- **Contribute to the development of the Eliza platform**: https://github.com/orgs/elizaos/projects/1/views/3
-- **Help build the Eliza ecosystem**: Create applicatoins / tools, resources, and memes. Give feedback, and spread the word
+- **参与社区讨论**：分享您的 memecoin 见解，提出新想法，并与其他社区成员互动。
+- **为 Eliza 平台的开发做贡献**：https://github.com/orgs/elizaos/projects/1/views/3
+- **帮助构建 Eliza 生态系统**：创建应用程序/工具、资源和表情包。提供反馈，并传播信息。

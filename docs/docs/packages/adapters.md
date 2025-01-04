@@ -2,42 +2,42 @@
 sidebar_position: 1
 ---
 
-# 🔧 Database Adapters
+# 🔧 数据库适配器
 
-## Overview
+## 概述
 
-Database Adapters provide Eliza's persistence layer, enabling storage and retrieval of memories, relationships, goals, and other data through a unified interface. The system supports multiple database backends:
+数据库适配器为Eliza提供持久层，通过统一接口实现记忆、关系、目标和其他数据的存储和检索。系统支持多种数据库后端：
 
-### Available Adapters
+### 可用适配器
 
-Each adapter is optimized for different use cases:
+每个适配器针对不同的使用场景进行了优化：
 
 - **PostgreSQL** (`@elizaos/adapter-postgres`)
 
-    - Production-ready with vector search
-    - Connection pooling and high performance
-    - JSONB and pgvector support
+    - 生产就绪，支持向量搜索
+    - 连接池和高性能
+    - 支持JSONB和pgvector
 
 - **SQLite** (`@elizaos/adapter-sqlite`)
 
-    - Lightweight local development
-    - No external dependencies
-    - Full-text search capabilities
+    - 轻量级本地开发
+    - 无外部依赖
+    - 全文搜索功能
 
 - **Supabase** (`@elizaos/adapter-supabase`)
 
-    - Cloud-native PostgreSQL
-    - Real-time subscriptions
-    - Built-in RPC functions
+    - 云原生PostgreSQL
+    - 实时订阅
+    - 内置RPC函数
 
 - **SQL.js** (`@elizaos/adapter-sqljs`)
-    - In-memory SQLite for testing
-    - Browser compatibility
-    - Zero configuration
+    - 内存中的SQLite用于测试
+    - 浏览器兼容
+    - 零配置
 
-### Architecture Overview
+### 架构概述
 
-Eliza's database adapters provide a unified interface for data persistence across different storage backends. The following diagram shows how adapters integrate with the system:
+Eliza的数据库适配器为不同存储后端提供统一的数据持久化接口。下图展示了适配器如何与系统集成：
 
 ```mermaid
 classDiagram
@@ -126,16 +126,16 @@ classDiagram
     DatabaseAdapter .. Relationship : manages
 ```
 
-Key components:
+关键组件：
 
-- **DatabaseAdapter**: Abstract base class defining the interface
-- **Concrete Adapters**: PostgreSQL, SQLite, Supabase, and SQL.js implementations
-- **Memory Management**: Integration with MemoryManager for data operations
-- **Data Models**: Memory, Goal, and Relationship data structures
+- **DatabaseAdapter**：定义接口的抽象基类
+- **具体适配器**：PostgreSQL、SQLite、Supabase和SQL.js实现
+- **记忆管理**：与MemoryManager集成进行数据操作
+- **数据模型**：记忆、目标和关系数据结构
 
 ---
 
-## Installation
+## 安装
 
 ```bash
 # PostgreSQL
@@ -153,25 +153,25 @@ pnpm add @elizaos/adapter-supabase @supabase/supabase-js
 
 ---
 
-## Quick Start
+## 快速开始
 
-### PostgreSQL Setup
+### PostgreSQL 设置
 
 ```typescript
 import { PostgresDatabaseAdapter } from "@elizaos/adapter-postgres";
 
 const db = new PostgresDatabaseAdapter({
     connectionString: process.env.DATABASE_URL,
-    max: 20, // Connection pool size
+    max: 20, // 连接池大小
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
 });
 
-// Test connection
+// 测试连接
 await db.testConnection();
 ```
 
-### SQLite Setup
+### SQLite 设置
 
 ```typescript
 import { SqliteDatabaseAdapter } from "@elizaos/adapter-sqlite";
@@ -179,7 +179,7 @@ import Database from "better-sqlite3";
 
 const db = new SqliteDatabaseAdapter(
     new Database("./db.sqlite", {
-        // SQLite options
+        // SQLite 选项
         memory: false,
         readonly: false,
         fileMustExist: false,
@@ -187,7 +187,7 @@ const db = new SqliteDatabaseAdapter(
 );
 ```
 
-### Supabase Setup
+### Supabase 设置
 
 ```typescript
 import { SupabaseDatabaseAdapter } from "@elizaos/adapter-supabase";
@@ -200,12 +200,12 @@ const db = new SupabaseDatabaseAdapter(
 
 ---
 
-## Core Features
+## 核心功能
 
-### Memory Operations
+### 记忆操作
 
 ```typescript
-// Create memory
+// 创建记忆
 await db.createMemory({
     id: uuid(),
     type: "messages",
@@ -213,7 +213,7 @@ await db.createMemory({
         text: "Hello world",
         attachments: [],
     },
-    embedding: new Float32Array(1536), // Embedding vector
+    embedding: new Float32Array(1536), // 嵌入向量
     userId,
     roomId,
     agentId,
@@ -221,7 +221,7 @@ await db.createMemory({
     unique: true,
 });
 
-// Search by embedding
+// 按嵌入搜索
 const memories = await db.searchMemories({
     tableName: "messages",
     roomId,
@@ -231,7 +231,7 @@ const memories = await db.searchMemories({
     unique: true,
 });
 
-// Get recent memories
+// 获取最近的记忆
 const recent = await db.getMemories({
     roomId,
     count: 10,
@@ -242,31 +242,31 @@ const recent = await db.getMemories({
 });
 ```
 
-### Relationship Management
+### 关系管理
 
 ```typescript
-// Create relationship
+// 创建关系
 await db.createRelationship({
     userA: user1Id,
     userB: user2Id,
 });
 
-// Get relationship
+// 获取关系
 const relationship = await db.getRelationship({
     userA: user1Id,
     userB: user2Id,
 });
 
-// Get all relationships
+// 获取所有关系
 const relationships = await db.getRelationships({
     userId: user1Id,
 });
 ```
 
-### Goal Management
+### 目标管理
 
 ```typescript
-// Create goal
+// 创建目标
 await db.createGoal({
     id: uuid(),
     roomId,
@@ -279,13 +279,13 @@ await db.createGoal({
     ],
 });
 
-// Update goal status
+// 更新目标状态
 await db.updateGoalStatus({
     goalId,
     status: GoalStatus.COMPLETED,
 });
 
-// Get active goals
+// 获取活动目标
 const goals = await db.getGoals({
     roomId,
     userId,
@@ -294,30 +294,30 @@ const goals = await db.getGoals({
 });
 ```
 
-### Room & Participant Management
+### 房间与参与者管理
 
 ```typescript
-// Create room
+// 创建房间
 const roomId = await db.createRoom();
 
-// Add participant
+// 添加参与者
 await db.addParticipant(userId, roomId);
 
-// Get participants
+// 获取参与者
 const participants = await db.getParticipantsForRoom(roomId);
 
-// Get rooms for participant
+// 获取参与者的房间
 const rooms = await db.getRoomsForParticipant(userId);
 ```
 
 ---
 
-## Vector Search Implementation
+## 向量搜索实现
 
-### PostgreSQL (with pgvector)
+### PostgreSQL（使用pgvector）
 
 ```typescript
-// PostgreSQL vector search
+// PostgreSQL 向量搜索
 async searchMemoriesByEmbedding(
   embedding: number[],
   params: {
@@ -377,10 +377,10 @@ async searchMemoriesByEmbedding(
 }
 ```
 
-### SQLite (with sqlite-vss)
+### SQLite（使用sqlite-vss）
 
 ```typescript
-// SQLite vector search implementation
+// SQLite 向量搜索实现
 async searchMemories(params: {
   tableName: string;
   roomId: UUID;
@@ -420,9 +420,9 @@ async searchMemories(params: {
 
 ---
 
-## Schema Management
+## 模式管理
 
-### PostgreSQL Schema
+### PostgreSQL 模式
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -504,7 +504,7 @@ CREATE TABLE goals (
 );
 ```
 
-### SQLite Schema
+### SQLite 模式
 
 ```typescript
 const sqliteTables = `
@@ -537,12 +537,12 @@ CREATE TABLE IF NOT EXISTS goals (
 
 ---
 
-## Performance Optimization
+## 性能优化
 
-### Connection Pooling
+### 连接池
 
 ```typescript
-// PostgreSQL connection pool
+// PostgreSQL 连接池
 constructor(connectionConfig: any) {
   super();
   this.pool = new Pool({
@@ -558,10 +558,10 @@ constructor(connectionConfig: any) {
 }
 ```
 
-### Prepared Statements
+### 预处理语句
 
 ```typescript
-// SQLite prepared statements
+// SQLite 预处理语句
 class SqliteDatabaseAdapter extends DatabaseAdapter {
     private statements = new Map<string, Statement>();
 
@@ -574,7 +574,7 @@ class SqliteDatabaseAdapter extends DatabaseAdapter {
         return stmt;
     }
 
-    // Use prepared statements
+    // 使用预处理语句
     async getMemoryById(id: UUID): Promise<Memory | null> {
         const stmt = this.prepareStatement(
             "SELECT * FROM memories WHERE id = ?",
@@ -590,10 +590,10 @@ class SqliteDatabaseAdapter extends DatabaseAdapter {
 }
 ```
 
-### Batch Operations
+### 批量操作
 
 ```typescript
-// Batch memory creation
+// 批量创建记忆
 async createMemories(memories: Memory[], tableName: string) {
   const client = await this.pool.connect();
   try {
@@ -632,7 +632,7 @@ async createMemories(memories: Memory[], tableName: string) {
 
 ---
 
-## Error Handling
+## 错误处理
 
 ```typescript
 class DatabaseAdapter {
@@ -648,7 +648,7 @@ class DatabaseAdapter {
         } catch (error) {
             await client.query("ROLLBACK");
             if (error instanceof DatabaseError) {
-                // Handle specific database errors
+                // 处理特定数据库错误
                 if (error.code === "23505") {
                     throw new UniqueViolationError(error);
                 }
@@ -661,61 +661,63 @@ class DatabaseAdapter {
 }
 ```
 
-## Extension Points
+## 扩展点
 
-### Custom Adapter Implementation
+### 自定义适配器实现
 
 ```typescript
 class CustomDatabaseAdapter extends DatabaseAdapter {
     constructor(config: CustomConfig) {
         super();
-        // Initialize custom database connection
+        // 初始化自定义数据库连接
     }
 
-    // Implement required methods
+    // 实现所需方法
     async createMemory(memory: Memory, tableName: string): Promise<void> {
-        // Custom implementation
+        // 自定义实现
     }
 
     async searchMemories(params: SearchParams): Promise<Memory[]> {
-        // Custom implementation
+        // 自定义实现
     }
 
-    // Add custom functionality
+    // 添加自定义功能
     async customOperation(): Promise<void> {
-        // Custom database operation
+        // 自定义数据库操作
     }
 }
 ```
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Connection Management**
+1. **连接管理**
 
-    - Use connection pooling for PostgreSQL
-    - Handle connection failures gracefully
-    - Implement proper cleanup
+    - 对PostgreSQL使用连接池
+    - 优雅处理连接失败
+    - 实现适当的清理
 
-2. **Transaction Handling**
+2. **事务处理**
 
-    - Use transactions for atomic operations
-    - Implement proper rollback handling
-    - Manage nested transactions
+    - 对原子操作使用事务
+    - 实现适当的回滚处理
+    - 管理嵌套事务
 
-3. **Error Handling**
+3. **错误处理**
 
-    - Implement specific error types
-    - Handle constraint violations
-    - Provide meaningful error messages
+    - 实现特定错误类型
+    - 处理约束违规
+    - 提供有意义的错误信息
 
-4. **Resource Management**
-    - Close connections properly
-    - Clean up prepared statements
-    - Monitor connection pools
+4. **资源管理**
+    - 正确关闭连接
+    - 清理预处理语句
+    - 监控连接池
 
-## Related Resources
+## 相关资源
 
-- [Database Schema Reference](/api)
-- [Error Handling](../../packages/core)
+- [数据库模式参考](/api)
+- [错误处理](../../packages/core)
+
+---
